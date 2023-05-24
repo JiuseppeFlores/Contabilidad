@@ -21,7 +21,7 @@
         include('modal_eliminar.php');
         include('alertas.php');
     ?>
-    <div class="container mt-4">
+    <div class="container mt-4 mb-4">
         <div class="row" id="contenedor_mensaje">
             <div class="alert alert-dismissible fade hide" role="alert" id="alerta">
                 <strong id="titulo_mensaje"></strong> <label id="cuerpo_mensaje"></label>
@@ -58,11 +58,9 @@
             ?>
         </div>
     </div>
-
-        <!-- Datos ajax Final -->
-    <div class="content" align="center"> 
-        <center><p>&copy; STIS <?php echo date('Y');?></p></center>
-    </div>
+    <?php
+        include('../Components/footer.php');
+    ?>
 </body>
     <script type="text/javascript" src="../js/mdb.min.js"></script>
     <script type="text/javascript" src="../js/components.js"></script>

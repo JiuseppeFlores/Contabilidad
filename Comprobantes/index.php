@@ -16,6 +16,7 @@
 <body>
     <?php
         include('../components/navbar.php');
+        include('modal_registro.php');
     ?>
     <div class="container mt-4">
         <div class="row" id="contenedor_mensaje">
@@ -26,10 +27,10 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <h3>Asientos</h3>
+                <h3>Comprobantes</h3>
             </div>
             <div class="col-6 text-end">
-                <button class="btn btn-success" data-mdb-toggle="modal" data-mdb-target="#modal_adicionar"><i class="fas fa-plus me-2"></i>Adicionar</button>
+                <button class="btn btn-success" data-mdb-toggle="modal" data-mdb-target="#modal_registro"><i class="fas fa-plus me-2"></i>Adicionar</button>
             </div>
         </div>
         <div class="row mt-2">
@@ -54,11 +55,9 @@
             ?>
         </div>
     </div>
-
-        <!-- Datos ajax Final -->
-    <div class="content" align="center"> 
-        <center><p>&copy; STIS <?php echo date('Y');?></p></center>
-    </div>
+    <?php
+        include('../Components/footer.php');
+    ?>
 </body>
     <script type="text/javascript" src="../js/mdb.min.js"></script>
     <script type="text/javascript" src="../js/components.js"></script>

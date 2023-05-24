@@ -27,7 +27,7 @@
           <a class="nav-link" href="../cuentas/index.php" id="nav_cuentas">Cuentas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="../asientos/index.php" id="nav_asientos">Asientos</a>
+          <a class="nav-link" href="../comprobantes/index.php" id="nav_asientos">Comprobantes</a>
         </li>
       </ul>
       <!-- Left links -->
