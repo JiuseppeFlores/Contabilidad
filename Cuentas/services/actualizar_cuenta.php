@@ -5,14 +5,19 @@
     $response = array('success' => false, 'message' => '');
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        if(isset($_POST['codigo']) && isset($_POST['nombre']) && isset($_POST['grupo'])){
+        if(isset($_POST['id']) && isset($_POST['codigo']) && isset($_POST['descripcion']) && isset($_POST['grupo'])){
             // Datos a registrar en la BD
+            $idCuenta = $_POST['id'];
             $codigo = $_POST['codigo'];
-            $nombre = $_POST['nombre'];
+            $descripcion = $_POST['descripcion'];
             $grupo = $_POST['grupo'];
             // Consulta para insertar los nuevos registros ala tabla
-            $sql = "INSERT INTO tblPlanCuentas (codigo,nombre,grupo) VALUES ( ? , ? , ? ) ;";
-            $params = array($codigo,$nombre,$grupo);
+            $sql = "UPDATE tblCuentas 
+                    SET codigo = ? ,
+                        descripcion = ? ,
+                        grupo = ? 
+                    WHERE idCuenta = ? ;";
+            $params = array($codigo,$descripcion,$grupo,$idCuenta);
             $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
             $stmt = sqlsrv_query( $con, $sql , $params, $options );
             if($stmt === false){
@@ -22,10 +27,10 @@
                 }
             }else{
                 $response['success'] = true;
-                $response['message'] = 'Registro realizado con éxito.';
+                $response['message'] = 'Cuenta actualizada con éxito.';
             }
         }else{
-            $response['message'] = 'Los siguientes campos son necesarios: Código, nombre y grupo';
+            $response['message'] = 'Los siguientes campos son necesarios: Id, código, descripción y grupo.';
         }
     }else{
         $response['message'] = 'La solicitud no es de tipo POST';
