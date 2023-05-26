@@ -11,7 +11,8 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
     <link href="../css/mdb.min.css" rel="stylesheet" />
-    <link href="../scss/mdb.pro.scss" rel="stylesheet" />
+    <link href="../scss/mdb.pro.css" rel="stylesheet" />
+    <link href="../css/select2.min.css" rel="stylesheet" />
     <script src="../js/jquery.min.js"></script>
 </head>
 <body>
@@ -60,8 +61,12 @@
         include('../Components/footer.php');
     ?>
 </body>
+    <script type="text/javascript" src="../js/select2.min.js"></script>
     <script type="text/javascript" src="../js/mdb.min.js"></script>
     <script type="module" src="../js/mdb.pro.js"></script>
     <script type="text/javascript" src="../js/components.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/Asiento.js"></script>
+    <script type="text/javascript" src="js/components.js"></script>
+    
 </html>
