@@ -8,33 +8,36 @@
                 <div class="modal-body">
                     <div class="container">
                         <div class="row">
-                            <div class="form-outline">
-                                <input type="text" name="codigo" class="form-control form-control-lg" aria-describedby="basic-addon1" minlength="1" maxlength="20" required autocomplete="off"/>
+                            <div class="mb-3">
                                 <label class="form-label" for="codigo">Código</label>
+                                <input type="text" name="codigo" class="form-control" minlength="1" maxlength="20" required autocomplete="off"/>
                             </div>
                         </div>
-                        <div class="row mt-4">
-                            <div class="form-outline">
-                                <input type="text" name="descripcion" class="form-control form-control-lg" minlength="3" maxlength="100" required autocomplete="off"/>
+                        <div class="row">
+                            <div class="mb-3">
                                 <label class="form-label" for="descripcion">Descripción</label>
+                                <input type="text" name="descripcion" class="form-control" minlength="3" maxlength="100" required autocomplete="off"/>
                             </div>
                         </div>
-                        <div class="row mt-4">
-                            <select class="form-control form-control-lg form-select text-muted" name="grupo" required>
-                                <option value="" disabled selected> - Seleccione un grupo - </option>
-                                <option value="ACTIVO">ACTIVO</option>
-                                <option value="PASIVO">PASIVO</option>
-                                <option value="PATRIMONIO">PATRIMONIO</option>
-                                <option value="INGRESOS">INGRESOS</option>
-                                <option value="COSTOS">COSTOS</option>
-                                <option value="GASTOS">GASTOS</option>
-                            </select>
+                        <div class="row">
+                            <div class="mb-3">
+                                <label class="form-label" for="grupo">Descripción</label>
+                                <select class="form-select" name="grupo" required>
+                                    <option value="" disabled selected> - Seleccione un grupo - </option>
+                                    <option value="ACTIVO">ACTIVO</option>
+                                    <option value="PASIVO">PASIVO</option>
+                                    <option value="PATRIMONIO">PATRIMONIO</option>
+                                    <option value="INGRESOS">INGRESOS</option>
+                                    <option value="COSTOS">COSTOS</option>
+                                    <option value="GASTOS">GASTOS</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal"><i class="fas fa-xmark me-2"></i>CANCELAR</button>
-                    <button type="submit" class="btn btn-success"><i class="fas fa-plus me-2"></i>ADICIONAR</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x me-2"></i>CANCELAR</button>
+                    <button type="submit" class="btn btn-success"><i class="bi bi-plus me-2"></i>ADICIONAR</button>
                 </div>
             </div>
         </div>

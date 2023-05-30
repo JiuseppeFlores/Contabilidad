@@ -60,7 +60,7 @@ function listar_cuentas(){
     var datos = { pagina : pagina , total : CANTIDAD_REGISTROS };
     $.ajax({
         data: datos,
-        url: 'services/listar_cuentas.php',
+        url: 'Cuentas/services/listar_cuentas.php',
         type: 'GET',
         dataType: 'JSON',
         beforeSend: function(){

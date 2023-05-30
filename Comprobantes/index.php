@@ -5,13 +5,9 @@
     <meta http-equiv= 0  content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comprobantes</title>
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <!-- MDB -->
-    <link href="../css/mdb.min.css" rel="stylesheet" />
-    <link href="../scss/mdb.pro.css" rel="stylesheet" />
+    <!-- BOOTSTRAP -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="../css/select2.min.css" rel="stylesheet" />
     <script src="../js/jquery.min.js"></script>
 </head>
@@ -24,7 +20,7 @@
         <div class="row" id="contenedor_mensaje">
             <div class="alert alert-dismissible fade hide" role="alert" id="alerta">
                 <strong id="titulo_mensaje"></strong> <label id="cuerpo_mensaje"></label>
-                <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
         <div class="row">
@@ -32,7 +28,7 @@
                 <h3>Comprobantes</h3>
             </div>
             <div class="col-6 text-end">
-                <button class="btn btn-success" data-mdb-toggle="modal" data-mdb-target="#modal_registro"><i class="fas fa-plus me-2"></i>Adicionar</button>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_registro"><i class="bi bi-plus me-2"></i>Adicionar</button>
             </div>
         </div>
         <div class="row mt-2">
@@ -62,11 +58,10 @@
     ?>
 </body>
     <script type="text/javascript" src="../js/select2.min.js"></script>
-    <script type="text/javascript" src="../js/mdb.min.js"></script>
-    <script type="module" src="../js/mdb.pro.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="../js/components.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/Asiento.js"></script>
-    <script type="text/javascript" src="js/components.js"></script>
+    <script type="text/javascript" src="Comprobantes/js/app.js"></script>
+    <script type="text/javascript" src="Comprobantes/js/Asiento.js"></script>
+    <script type="text/javascript" src="Comprobantes/js/components.js"></script>
     
 </html>
