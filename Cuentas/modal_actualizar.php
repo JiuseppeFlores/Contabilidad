@@ -4,38 +4,43 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">ACTUALIZAR CUENTA : <span id="id_cuenta"></span></h5>
-                    <input type="hidden" name="id" value="" id="cuenta_id"/>
+                    <input type="hidden" name="id" value="" id="cuenta_editar_id"/>
                 </div>
                 <div class="modal-body">
                     <div class="container">
                         <div class="row">
-                            <div class="form-outline">
-                                <input type="text" name="codigo" class="form-control form-control-lg" aria-describedby="basic-addon1" minlength="1" maxlength="20" required autocomplete="off" id="cuenta_codigo"/>
-                                <label class="form-label" for="codigo">Código</label>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="codigo" id="cuenta_editar_codigo" class="form-control" aria-describedby="basic-addon1" minlength="1" maxlength="20" required autocomplete="off"/>
+                                    <label for="cuenta_editar_codigo">Código</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="form-outline">
-                                <input type="text" name="descripcion" class="form-control form-control-lg" minlength="3" maxlength="100" required autocomplete="off" id="cuenta_descripcion"/>
-                                <label class="form-label" for="descripcion">Descripción</label>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" id="cuenta_editar_descripcion" name="descripcion" class="form-control" minlength="3" maxlength="100" required autocomplete="off"/>
+                                    <label for="cuenta_editar_descripcion">Descripción</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mt-4">
-                            <select class="form-control form-control-lg form-select text-muted" name="grupo" required id="cuenta_grupo">
-                                <option value="" disabled selected> - Seleccione un grupo - </option>
-                                <option value="ACTIVO">ACTIVO</option>
-                                <option value="PASIVO">PASIVO</option>
-                                <option value="PATRIMONIO">PATRIMONIO</option>
-                                <option value="INGRESOS">INGRESOS</option>
-                                <option value="COSTOS">COSTOS</option>
-                                <option value="GASTOS">GASTOS</option>
-                            </select>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="cuenta_editar_grupo" name="grupo" required>
+                                        <option value="" disabled selected> - Seleccione un grupo - </option>
+                                        <option value="ACTIVO">ACTIVO</option>
+                                        <option value="PASIVO">PASIVO</option>
+                                        <option value="PATRIMONIO">PATRIMONIO</option>
+                                        <option value="INGRESOS">INGRESOS</option>
+                                        <option value="COSTOS">COSTOS</option>
+                                        <option value="GASTOS">GASTOS</option>
+                                    </select>
+                                    <label for="cuenta_editar_grupo">Grupo</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal"><i class="fas fa-xmark me-2"></i>CANCELAR</button>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-arrows-rotate me-2"></i>ACTUALIZAR</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x me-2"></i>CANCELAR</button>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-arrow-clockwise me-2"></i>ACTUALIZAR</button>
                 </div>
             </div>
         </div>

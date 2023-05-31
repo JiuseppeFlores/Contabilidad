@@ -13,8 +13,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal"><i class="fas fa-xmark me-2"></i>CANCELAR</button>
-                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash me-2"></i>ELIMINAR</button>
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal"><i class="bi bi-x me-2"></i>CANCELAR</button>
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-2"></i>ELIMINAR</button>
                 </div>
             </div>
         </div>

@@ -33,8 +33,9 @@ function create_input(id,clss,val,tp,name){
 
 function create_select(id){
     const select = document.createElement('select');
-    select.classList = "form-control form-control-lg form-select text-muted mi-selector";
+    select.classList = "form-select";
     select.id = "sl-"+id;
+    select.name = "sl-"+id;
 
     let options = CUENTAS;
 
@@ -44,10 +45,6 @@ function create_select(id){
         opt.innerHTML = option.codigo+" | "+option.cuenta;
         select.appendChild(opt);
     });
-
-    select.onchange = (e) => {
-        document.getElementById("sp-"+id).innerHTML = "asd";
-    };
 
     return select;
 }

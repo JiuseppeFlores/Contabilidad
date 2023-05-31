@@ -60,7 +60,7 @@ function listar_cuentas(){
     var datos = { pagina : pagina , total : CANTIDAD_REGISTROS };
     $.ajax({
         data: datos,
-        url: 'Cuentas/services/listar_cuentas.php',
+        url: 'services/listar_cuentas.php',
         type: 'GET',
         dataType: 'JSON',
         beforeSend: function(){
@@ -83,11 +83,11 @@ function listar_cuentas(){
                     const actions = document.createElement('td');
                     actions.classList = "text-center";
                     actions.innerHTML = `
-                        <button class="btn btn-lg btn-warning btn-floating" onclick="editar_cuenta(`+cuenta.idCuenta+`)" title="Actualizar">
-                            <i class="fas fa-pencil"></i>
+                        <button class="btn btn-warning" onclick="editar_cuenta(`+cuenta.idCuenta+`)" title="Actualizar">
+                            <i class="bi bi-pencil-fill"></i>
                         </button>
-                        <button class="btn btn-lg btn-danger btn-floating" onclick="eliminar_cuenta(`+cuenta.idCuenta+`,'`+cuenta.descripcion+`')" title="Eliminar">
-                            <i class="fas fa-trash"></i>
+                        <button class="btn btn-danger" onclick="eliminar_cuenta(`+cuenta.idCuenta+`,'`+cuenta.descripcion+`')" title="Eliminar">
+                            <i class="bi bi-trash"></i>
                         </button>
                     `;
                     row.appendChild(id);
@@ -103,7 +103,6 @@ function listar_cuentas(){
             console.log("["+ACCION+"] "+response.message);
         },
         error: function(error){
-            $('#modal_adicionar').modal('hide');
             alerta('alerta','titulo_mensaje','cuerpo_mensaje','alert-danger',ACCION,error.statusText);
             console.log("["+ACCION+"] "+error.statusText);
         }
@@ -125,10 +124,10 @@ function editar_cuenta(id_cuenta){
             if(response.success){
                 $('#modal_actualizar').modal('show');
                 $('#id_cuenta').text(response.data.idCuenta);
-                $('#cuenta_id').val(response.data.idCuenta);
-                $('#cuenta_codigo').val(response.data.codigo);
-                $('#cuenta_descripcion').val(response.data.descripcion);
-                $('#cuenta_grupo').val(response.data.grupo);
+                $('#cuenta_editar_id').val(response.data.idCuenta);
+                $('#cuenta_editar_codigo').val(response.data.codigo);
+                $('#cuenta_editar_descripcion').val(response.data.descripcion);
+                $('#cuenta_editar_grupo').val(response.data.grupo);
             }else{
                 alerta('alerta','titulo_mensaje','cuerpo_mensaje','alert-danger',ACCION,response.message);
             }

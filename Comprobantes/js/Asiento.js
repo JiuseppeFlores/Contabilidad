@@ -46,6 +46,10 @@ function adicionar_asiento(){
     row.appendChild(cheque);
     document.getElementById('asientos').appendChild(row);
 
+    $('#sl-'+id).on('change',function(e){
+        console.log($('#sl-'+id).val());
+    });
+
     ASIENTOS.push(new Asiento());
 }
 

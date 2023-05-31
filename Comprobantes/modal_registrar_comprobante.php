@@ -1,5 +1,5 @@
 <form id="form_registro_comprobante">
-    <div class="modal fade" id="modal_registro" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal_registrar_comprobante" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -16,7 +16,7 @@
                             </div>
                             <div class="col-2">
                                 <div class="form-floating">
-                                    <select class="form-select" name="tipo" required id="comprobante_tipo"  aria-label="Tipo de Comprobante">
+                                    <select class="form-select my-select" name="tipo" required id="comprobante_tipo">
                                         <option value="" disabled selected> - Tipo - </option>
                                         <option value="ACTIVO">INGRESO</option>
                                         <option value="PASIVO">EGRESO</option>
@@ -33,7 +33,7 @@
                             </div>
                             <div class="col-2">
                                 <div class="form-floating">
-                                    <input type="number" name="tipo_cambio" id="comprobante_tipo_cambio" class="form-control" minlength="3" maxlength="100" required autocomplete="off"/>
+                                    <input type="decimal" name="tipo_cambio" id="comprobante_tipo_cambio" class="form-control" minlength="1" maxlength="100" required autocomplete="off"/>
                                     <label for="comprobante_tipo_cambio">Tipo de Cambio</label>
                                 </div>
                             </div>
@@ -53,6 +53,7 @@
                                 <div class="form-floating">
                                     <select class="form-control form-select" name="proyecto" required id="comprobante_proyecto">
                                         <option value="" disabled selected> - Proyecto - </option>
+                                        <option value="1">PRUEBA</option>
                                     </select>
                                     <label for="comprobante_proyecto">Proyecto</label>
                                 </div>
@@ -84,8 +85,13 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <button type="button" class="btn btn-primary text-center" onclick="adicionar_asiento()"><i class="bi bi-plus me-2"></i>Añadir Asiento</button>
+                            </div>
+                        </div>
                         <div class="row m-2">
-                            <table class="table table-hover table-bordered border-primary">
+                            <table class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col">CÓDIGO</th>
@@ -104,7 +110,7 @@
                                 <tfoot>
                                     <tr>
                                         <td colspan="11">
-                                            <button type="button" class="btn btn-success" onclick="adicionar_asiento()"><i class="bi bi-plus me-2"></i></i>ADICIONAR</button>
+                                            
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -114,6 +120,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x me-2"></i>CANCELAR</button>
+                    <button type="submit" class="btn btn-success"><i class="bi bi-check me-2"></i>REGISTRAR</button>
                 </div>
             </div>
         </div>
