@@ -1,7 +1,7 @@
 <?php
 
     $host = "localhost";
-    $connectionInfo = array("Database" => "contabilidad", "Uid"=>"jiuseppe", "PWD"=>"stisbolivia", "CharacterSet"=>"UTF-8");
+    $connectionInfo = array("Database" => "contabilidad", "Uid"=>"sa", "PWD"=>"123", "CharacterSet"=>"UTF-8");
     $con = sqlsrv_connect($host, $connectionInfo);
     
     if ( !$con ){

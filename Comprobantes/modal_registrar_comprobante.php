@@ -10,7 +10,7 @@
                         <div class="row">
                             <div class="col-2">
                                 <div class="form-floating">
-                                    <input type="text" name="nro_comprobante" id="nro_comprobante" class="form-control form-control-lg" minlength="3" maxlength="100" required autocomplete="off" disabled value="1"/>
+                                    <input type="text" name="nro_comprobante" id="nro_comprobante" class="form-control form-control-lg" minlength="3" maxlength="100" required autocomplete="off" readonly value="1"/>
                                     <label for="nro_comprobante">Nro de Comprobante</label>
                                 </div>
                             </div>
@@ -18,9 +18,9 @@
                                 <div class="form-floating">
                                     <select class="form-select my-select" name="tipo" required id="comprobante_tipo">
                                         <option value="" disabled selected> - Tipo - </option>
-                                        <option value="ACTIVO">INGRESO</option>
-                                        <option value="PASIVO">EGRESO</option>
-                                        <option value="PATRIMONIO">TRASPASO</option>
+                                        <option value="INGRESO">INGRESO</option>
+                                        <option value="EGRESO">EGRESO</option>
+                                        <option value="TRASPASO">TRASPASO</option>
                                     </select>
                                     <label for="comprobante_tipo">Tipo de Comprobante</label>
                                 </div>
@@ -41,8 +41,8 @@
                                 <div class="form-floating">
                                     <select class="form-control form-select" name="moneda" required id="comprobante_moneda">
                                         <option value="" disabled selected> - Moneda - </option>
-                                        <option value="ACTIVO">Bs.</option>
-                                        <option value="PASIVO">SU$</option>
+                                        <option value="BS">Bs.</option>
+                                        <option value="SUS">SU$</option>
                                     </select>
                                     <label for="comprobante_moneda">Moneda</label>
                                 </div>
@@ -109,9 +109,14 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="11">
-                                            
-                                        </td>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col" id="total_debe"></th>
+                                        <th scope="col" id="total_haber"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
                                     </tr>
                                 </tfoot>
                             </table>

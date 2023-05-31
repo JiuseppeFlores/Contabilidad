@@ -14,6 +14,7 @@
     <body>
         <?php
             include('../components/navbar.php');
+            include('../components/toast.php');
             include('modal_registrar_comprobante.php');
         ?>
         <div class="container mt-4">
@@ -43,7 +44,7 @@
                             <th scope="col">ACCIONES</th>
                         </tr>
                     </thead>
-                    <tbody id="cuentas">
+                    <tbody id="lista_comprobantes">
                         
                     </tbody>
                 </table>
@@ -57,6 +58,7 @@
         <?php
             include('../Components/footer.php');
         ?>
+        <script type="text/javascript" src="../js/environment.js"></script>
         <script type="text/javascript" src="../js/bootstrap.bundle.min.js"></script>
         <script type="text/javascript" src="../js/select2.min.js"></script>
         <script type="text/javascript" src="../js/components.js"></script>

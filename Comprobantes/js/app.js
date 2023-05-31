@@ -1,6 +1,7 @@
 // MARCANDO EL NAV-ITEM CORRESPONDIENTE
 $('#nav_asientos').addClass('active');
-// INICIALIZANDO VARIABLES COMPONENTES
+// INICIALIZANDO EL LISTADO DE COMPROBANTES
+listar_comprobantes();
 
 function adicionar_comprobante(){
     $('#modal_registrar_comprobante').modal('show');
@@ -39,8 +40,93 @@ async function get_counts(){
 $('#form_registro_comprobante').on('submit', function(e){
     e.preventDefault();
     if(ASIENTOS.length > 0){
-
+        const ACCION = "REGISTRAR COMPROBANTE";
+        let datos = $('#form_registro_comprobante').serialize();
+        datos = datos+"&total_asientos="+ASIENTOS.length;
+        $.ajax({
+            data: datos,
+            url: 'services/registrar_comprobante.php',
+            type: 'POST',
+            dataType: 'JSON',
+            beforeSend: function(){
+                console.log("["+ACCION+"] Enviando datos...");
+            },
+            success:function(response){
+                $('#modal_registrar_comprobante').modal('hide');
+                listar_comprobantes()
+                show_toast(
+                    ACCION,
+                    response.message,
+                    response.success ? 'text-bg-success' : 'text-bg-danger'
+                );
+                console.log("["+ACCION+"] "+response.message);
+            },
+            error: function(error){
+                $('#modal_registrar_comprobante').modal('hide');
+                show_toast(ACCION,error.statusText,'text-bg-danger');
+                console.log("["+ACCION+"] ",error);
+            }
+        });
     }else{
         console.log("Debe asignar asientos contables");
     }
 });
+
+function listar_comprobantes(){
+    let params = new URLSearchParams(location.search);
+    var pagina = (params.get('page') == null ? 1 : (parseInt(params.get('page')) > 0 ? parseInt(params.get('page')) : 1 ));
+    const ACCION = "LISTAR COMPROBANTES";
+    var datos = { pagina : pagina , total : CANTIDAD_REGISTROS };
+    $.ajax({
+        data: datos,
+        url: 'services/listar_comprobantes.php',
+        type: 'GET',
+        dataType: 'JSON',
+        beforeSend: function(){
+            console.log("["+ACCION+"] Enviando datos...");
+        },
+        success:function(response){
+            console.log(response);
+            if(response.success){
+                document.getElementById('lista_comprobantes').innerHTML = "";
+                response.data.forEach( (comprobante) => {
+                    // Creacion de filas para la tabla
+                    const row = document.createElement('tr');
+                    const id = document.createElement('td');
+                    id.innerHTML = comprobante.idComprobante;
+                    const numero = document.createElement('td');
+                    numero.innerHTML = comprobante.numero;
+                    const tipo = document.createElement('td');
+                    tipo.innerHTML = comprobante.tipo;
+                    const fecha = document.createElement('td');
+                    fecha.innerHTML = comprobante.fecha.date.split(' ')[0];
+                    const moneda = document.createElement('td');
+                    moneda.innerHTML = comprobante.moneda;
+                    const actions = document.createElement('td');
+                    actions.classList = "text-center";
+                    actions.innerHTML = `
+                        <button class="btn btn-warning" onclick="editar_cuenta(`+comprobante.idComprobante+`)" title="Actualizar">
+                            <i class="bi bi-pencil-fill"></i>
+                        </button>
+                        <button class="btn btn-danger" onclick="eliminar_cuenta(`+comprobante.idComprobante+`)" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    `;
+                    row.appendChild(id);
+                    row.appendChild(numero);
+                    row.appendChild(tipo);
+                    row.appendChild(fecha);
+                    row.appendChild(moneda);
+                    row.appendChild(actions);
+                    document.getElementById('lista_comprobantes').appendChild(row);
+                });
+            }
+            show_toast(ACCION,response.message,response.message?'text-bg-success':'text-bg-danger');
+            console.log("["+ACCION+"] "+response.message);
+        },
+        error: function(error){
+            show_toast(ACCION,error.statusText,'text-bg-danger');
+            console.log("["+ACCION+"] "+error.statusText);
+        }
+    });
+}

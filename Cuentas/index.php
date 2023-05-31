@@ -61,7 +61,7 @@
 </body>
     <script type="text/javascript" src="../js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="../js/components.js"></script>
-    <script type="text/javascript" src="js/environment.js"></script>
+    <script type="text/javascript" src="../js/environment.js"></script>
     <script type="text/javascript" src="js/components.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
 </html>

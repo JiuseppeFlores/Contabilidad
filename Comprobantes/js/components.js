@@ -4,6 +4,7 @@ function create_input(id,clss,val,tp,name){
     const input = document.createElement('input');
     input.type = tp;
     input.id = id;
+    input.name = name;
     input.classList = "form-control";
     input.value = val;
     /*const label = document.createElement('label');
@@ -32,11 +33,11 @@ function create_input(id,clss,val,tp,name){
     return div;
 }
 
-function create_select(id){
+function create_select(name,id){
     const select = document.createElement('select');
     select.classList = "form-select";
     select.id = "sl-"+id;
-    select.name = "sl-"+id;
+    select.name = name;
 
     let options = CUENTAS;
     
