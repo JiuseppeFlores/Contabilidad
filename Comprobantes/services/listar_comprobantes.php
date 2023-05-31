@@ -13,15 +13,31 @@
             $sql = "SELECT * 
                     FROM tblComprobantes tc
                     ORDER BY tc.idComprobante DESC
-                    OFFSET $pagina ROWS
+                    OFFSET ($pagina * $total) ROWS
                     FETCH NEXT $total ROWS ONLY; ";
             $params = array();
             $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
             $stmt = sqlsrv_query( $con, $sql , $params, $options );
             if( $stmt ){
-                $response['data'] = array();
+                $response['data'] = array('vouchers' => array(),'total' => 0);
                 while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC ) ) {
-                    array_push($response['data'], $row);
+                    array_push($response['data']['vouchers'], $row);
+                }
+                // OBTENIENDO EL NÚMERO TOTAL DE REGISTROS
+                $sql = "SELECT COUNT(*) as total
+                        FROM tblComprobantes tc;";
+                $params = array();
+                $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
+                $stmt = sqlsrv_query( $con, $sql , $params, $options );
+                if( $stmt ){
+                    $response['data']['total'] = intval(sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC )['total']);
+                    $response['success'] = true;
+                    $response['message'] = 'Consulta realizada con éxito.';
+                }else{
+                    $errors = sqlsrv_errors();
+                    foreach( $errors as $error ) {
+                        $response['message'] .= $error[ 'message']." , ";
+                    }
                 }
                 $response['success'] = true;
                 $response['message'] = 'Consulta realizada con éxito.';

@@ -18,21 +18,13 @@ $('#form_adicionar_cuenta').on('submit', function(e){
         success:function(response){
             if(response.success){
                 listar_cuentas();
+                $('#modal_adicionar').modal('hide');
             }
-            $('#modal_adicionar').modal('hide');
-            alerta(
-                'alerta',
-                'titulo_mensaje',
-                'cuerpo_mensaje',
-                (response.success ? 'alert-success': 'alert-danger'),
-                ACCION,
-                response.message
-            );
+            show_toast(ACCION,response.message,response.success?'text-bg-success':'text-bg-warning');
             console.log("["+ACCION+"] "+response.message);
         },
         error: function(error){
-            $('#modal_adicionar').modal('hide');
-            alerta('alerta','titulo_mensaje','cuerpo_mensaje','alert-danger',ACCION,error.statusText);
+            show_toast(ACCION,error.statusText,'text-bg-danger');
             console.log("["+ACCION+"] "+error.statusText);
         }
     });
@@ -69,7 +61,7 @@ function listar_cuentas(){
         success:function(response){
             if(response.success){
                 document.getElementById('cuentas').innerHTML = "";;
-                response.data.forEach( (cuenta) => {
+                response.data.accounts.forEach( (cuenta) => {
                     // Creacion de filas para la tabla
                     const row = document.createElement('tr');
                     const id = document.createElement('td');
@@ -97,13 +89,14 @@ function listar_cuentas(){
                     row.appendChild(actions);
                     document.getElementById('cuentas').appendChild(row);
                 });
+                start_pagination( pagina , response.data.total );
             }else{
-                alerta('alerta','titulo_mensaje','cuerpo_mensaje','alert-danger',ACCION,response.message);
+                show_toast(ACCION,response.message,response.success?'text-bg-success':'text-bg-warning');
             }
             console.log("["+ACCION+"] "+response.message);
         },
         error: function(error){
-            alerta('alerta','titulo_mensaje','cuerpo_mensaje','alert-danger',ACCION,error.statusText);
+            show_toast(ACCION,error.statusText,'text-bg-danger');
             console.log("["+ACCION+"] "+error.statusText);
         }
     });
@@ -129,12 +122,12 @@ function editar_cuenta(id_cuenta){
                 $('#cuenta_editar_descripcion').val(response.data.descripcion);
                 $('#cuenta_editar_grupo').val(response.data.grupo);
             }else{
-                alerta('alerta','titulo_mensaje','cuerpo_mensaje','alert-danger',ACCION,response.message);
+                show_toast(ACCION,response.message,'text-bg-warning');
             }
             console.log("["+ACCION+"] "+response.message);
         },
         error: function(error){
-            alerta('alerta','titulo_mensaje','cuerpo_mensaje','alert-danger',ACCION,error.statusText);
+            show_toast(ACCION,error.statusText,'text-bg-danger');
             console.log("["+ACCION+"] "+error.statusText);
         }
     });
@@ -153,20 +146,15 @@ $('#form_actualizar_cuenta').on('submit', function(e){
             console.log("["+ACCION+"] Enviando datos...");
         },
         success:function(response){
-            listar_cuentas();
-            $('#modal_actualizar').modal('hide');
-            alerta(
-                'alerta',
-                'titulo_mensaje',
-                'cuerpo_mensaje',
-                (response.success ? 'alert-success' : 'alert-danger'),
-                ACCION,
-                response.message
-            );
+            if(response.success){
+                listar_cuentas();
+                $('#modal_actualizar').modal('hide');
+            }
+            show_toast(ACCION,response.message,response.success?'text-bg-success':'text-bg-danger');
             console.log("["+ACCION+"] "+response.message);
         },
         error: function(error){
-            alerta('alerta','titulo_mensaje','cuerpo_mensaje','alert-danger',ACCION,error.statusText);
+            show_toast(ACCION,error.statusText,'text-bg-danger');
             console.log("["+ACCION+"] "+error.statusText);
         }
     });
@@ -191,20 +179,15 @@ $('#form_eliminar_cuenta').on('submit', function(e){
             console.log("["+ACCION+"] Enviando datos...");
         },
         success:function(response){
-            listar_cuentas();
-            $('#modal_eliminar').modal('hide');
-            alerta(
-                'alerta',
-                'titulo_mensaje',
-                'cuerpo_mensaje',
-                (response.success ? 'alert-success' : 'alert-danger'),
-                ACCION,
-                response.message
-            );
+            if(response.success){
+                listar_cuentas();
+                $('#modal_eliminar').modal('hide');
+            }
+            show_toast(ACCION,response.message,response.success?'text-bg-success':'text-bg-warning');
             console.log("["+ACCION+"] "+response.message);
         },
         error: function(error){
-            alerta('alerta','titulo_mensaje','cuerpo_mensaje','alert-danger',ACCION,error.statusText);
+            show_toast(ACCION,error.statusText,'text-bg-danger');
             console.log("["+ACCION+"] "+error.statusText);
         }
     });

@@ -90,36 +90,38 @@
                                 <button type="button" class="btn btn-primary text-center" onclick="adicionar_asiento()"><i class="bi bi-plus me-2"></i>Añadir Asiento</button>
                             </div>
                         </div>
-                        <div class="row m-2">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">CÓDIGO</th>
-                                        <th scope="col">CUENTA</th>
-                                        <th scope="col">REFERENCIA</th>
-                                        <th scope="col">C.C.</th>
-                                        <th scope="col">DEBE</th>
-                                        <th scope="col">HABER</th>
-                                        <th scope="col">BCO.</th>
-                                        <th scope="col">N° CHEQUE</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="asientos">
+                        <div class="row mt-2">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped table-bordered align-middle">
+                                    <thead>
+                                        <tr class="table-info text-center">
+                                            <th scope="col">CÓDIGO</th>
+                                            <th scope="col">CUENTA</th>
+                                            <th scope="col">REFERENCIA</th>
+                                            <th scope="col">C.C.</th>
+                                            <th scope="col">DEBE</th>
+                                            <th scope="col">HABER</th>
+                                            <th scope="col">BCO.</th>
+                                            <th scope="col">CHEQUE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="asientos">
 
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th scope="col"></th>
-                                        <th scope="col"></th>
-                                        <th scope="col"></th>
-                                        <th scope="col"></th>
-                                        <th class="text-center" scope="col" id="total_debe"></th>
-                                        <th class="text-center" scope="col" id="total_haber"></th>
-                                        <th scope="col"></th>
-                                        <th scope="col"></th>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                            <th class="text-center" scope="col" id="total_debe"></th>
+                                            <th class="text-center" scope="col" id="total_haber"></th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

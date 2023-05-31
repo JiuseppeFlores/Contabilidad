@@ -18,12 +18,6 @@
             include('modal_registrar_comprobante.php');
         ?>
         <div class="container mt-4">
-            <div class="row" id="contenedor_mensaje">
-                <div class="alert alert-dismissible fade hide" role="alert" id="alerta">
-                    <strong id="titulo_mensaje"></strong> <label id="cuerpo_mensaje"></label>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-6">
                     <h3>Comprobantes</h3>
@@ -33,21 +27,23 @@
                 </div>
             </div>
             <div class="row mt-2">
-                <table class="table table-striped table-hover align-middle">
-                    <thead>
-                        <tr class="table-primary text-center">
-                            <th scope="col">#</th>
-                            <th scope="col">N&Uacute;MERO</th>
-                            <th scope="col">TIPO</th>
-                            <th scope="col">FECHA</th>
-                            <th scope="col">MONEDA</th>
-                            <th scope="col">ACCIONES</th>
-                        </tr>
-                    </thead>
-                    <tbody id="lista_comprobantes">
-                        
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered align-middle">
+                        <thead>
+                            <tr class="table-primary text-center">
+                                <th scope="col">#</th>
+                                <th scope="col">N&Uacute;MERO</th>
+                                <th scope="col">TIPO</th>
+                                <th scope="col">FECHA</th>
+                                <th scope="col">MONEDA</th>
+                                <th scope="col">ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider" id="lista_comprobantes">
+                            
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="row mt-2">
                 <?php

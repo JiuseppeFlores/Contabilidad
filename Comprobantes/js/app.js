@@ -27,11 +27,7 @@ function adicionar_comprobante(){
                 $('#nro_comprobante').val(response.data);
             }else{
                 $('#modal_registrar_comprobante').modal('hide');
-                show_toast(
-                    ACCION,
-                    response.message,
-                    'text-bg-danger'
-                );
+                show_toast(ACCION,response.message,'text-bg-danger');
             }
             console.log("["+ACCION+"] "+response.message);
         },
@@ -56,7 +52,7 @@ async function get_counts(){
         },
         success:function(response){
             if(response.success){
-                response.data.forEach( (count) => {
+                response.data.accounts.forEach( (count) => {
                     CUENTAS.push({
                         id: count.idCuenta,
                         codigo: count.codigo,
@@ -123,7 +119,7 @@ function listar_comprobantes(){
         success:function(response){
             if(response.success){
                 document.getElementById('lista_comprobantes').innerHTML = "";
-                response.data.forEach( (comprobante) => {
+                response.data.vouchers.forEach( (comprobante) => {
                     // Creacion de filas para la tabla
                     const row = document.createElement('tr');
                     const id = document.createElement('td');
@@ -154,6 +150,7 @@ function listar_comprobantes(){
                     row.appendChild(actions);
                     document.getElementById('lista_comprobantes').appendChild(row);
                 });
+                start_pagination( pagina , response.data.total );
             }else{
                 show_toast(ACCION,response.message,'text-bg-danger');
             }

@@ -44,7 +44,7 @@
                         $banco = $_POST['banco'][$i];
                         $cheque = $_POST['cheque'][$i];
 
-                        $sql = "INSERT INTO tblAsientos (idComprobante,idCuenta,referencia,cc,debe,haber,bco,nro_cheque) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? ) ;";
+                        $sql = "INSERT INTO tblAsientos (idComprobante,idCuenta,referencia,cc,debe,haber,bco,cheque) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? ) ;";
                         $params = array($id_comprobante,$cuenta,$referencia,$cc,$debe,$haber,$banco,$cheque);
                         $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
                         $stmt = sqlsrv_query( $con, $sql , $params, $options );
