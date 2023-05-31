@@ -80,7 +80,7 @@
                         <div class="row mt-2">
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <textarea class="form-control" id="comprobante_glosa" name="glosa" rows="2"></textarea>
+                                    <input class="form-control" id="comprobante_glosa" name="glosa"/>
                                     <label for="comprobante_glosa">Glosa</label>
                                 </div>
                             </div>

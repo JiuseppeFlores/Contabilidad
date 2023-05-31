@@ -5,6 +5,7 @@ function create_input(id,clss,val,tp,name){
     input.type = tp;
     input.id = id;
     input.classList = "form-control";
+    input.value = val;
     /*const label = document.createElement('label');
     label.classList = "form-label";
     label.innerText = name;
@@ -38,10 +39,16 @@ function create_select(id){
     select.name = "sl-"+id;
 
     let options = CUENTAS;
+    
+    const opt = document.createElement('option');
+    opt.value = "";
+    opt.innerHTML = " - Seleccione cuenta - ";
+    select.appendChild(opt);
+    select.required = true;
 
     options.forEach( (option) => {
         const opt = document.createElement('option');
-        opt.value = option.idCuenta;
+        opt.value = option.id;
         opt.innerHTML = option.codigo+" | "+option.cuenta;
         select.appendChild(opt);
     });

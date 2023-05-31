@@ -24,7 +24,8 @@ function adicionar_asiento(){
     const cuenta = document.createElement('td');
     cuenta.appendChild(create_span(id));
     const referencia = document.createElement('td');
-    referencia.appendChild(create_input("asd-12","form-control","","text","Lista de Ejemplo"));
+    var ref = document.getElementById('comprobante_glosa').value;
+    referencia.appendChild(create_input("asd-12","form-control",ref,"text","Lista de Ejemplo"));
     const cc = document.createElement('td');
     cc.appendChild(create_input("asd-12","form-control","","text","Lista de Ejemplo"));
     const debe = document.createElement('td');
@@ -47,7 +48,12 @@ function adicionar_asiento(){
     document.getElementById('asientos').appendChild(row);
 
     $('#sl-'+id).on('change',function(e){
-        console.log($('#sl-'+id).val());
+        console.log(CUENTAS);
+        CUENTAS.forEach( (cuenta) => {
+            if(cuenta.id == $(this).val()){
+                $('#sp-'+id).text(cuenta.cuenta);
+            }
+        });
     });
 
     ASIENTOS.push(new Asiento());
