@@ -3,6 +3,12 @@ $('#nav_asientos').addClass('active');
 // INICIALIZANDO EL LISTADO DE COMPROBANTES
 listar_comprobantes();
 
+$('#modal_registrar_comprobante').on('hide.bs.modal', () => {
+    $('#form_registro_comprobante').trigger("reset");
+    $('#asientos').html("");
+    ASIENTOS = [];
+});
+
 function adicionar_comprobante(){
     $('#modal_registrar_comprobante').modal('show');
     $('#comprobante_fecha').val(get_date());
@@ -115,7 +121,6 @@ function listar_comprobantes(){
             console.log("["+ACCION+"] Enviando datos...");
         },
         success:function(response){
-            console.log(response);
             if(response.success){
                 document.getElementById('lista_comprobantes').innerHTML = "";
                 response.data.forEach( (comprobante) => {
@@ -149,8 +154,9 @@ function listar_comprobantes(){
                     row.appendChild(actions);
                     document.getElementById('lista_comprobantes').appendChild(row);
                 });
+            }else{
+                show_toast(ACCION,response.message,'text-bg-danger');
             }
-            show_toast(ACCION,response.message,response.message?'text-bg-success':'text-bg-danger');
             console.log("["+ACCION+"] "+response.message);
         },
         error: function(error){

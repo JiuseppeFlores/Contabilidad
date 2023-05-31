@@ -7,6 +7,7 @@ function create_input(id,clss,val,tp,name){
     input.name = name;
     input.classList = "form-control";
     input.value = val;
+    input.onblur = calcular_totales;
     /*const label = document.createElement('label');
     label.classList = "form-label";
     label.innerText = name;

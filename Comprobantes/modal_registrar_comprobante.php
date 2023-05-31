@@ -113,8 +113,8 @@
                                         <th scope="col"></th>
                                         <th scope="col"></th>
                                         <th scope="col"></th>
-                                        <th scope="col" id="total_debe"></th>
-                                        <th scope="col" id="total_haber"></th>
+                                        <th class="text-center" scope="col" id="total_debe"></th>
+                                        <th class="text-center" scope="col" id="total_haber"></th>
                                         <th scope="col"></th>
                                         <th scope="col"></th>
                                     </tr>

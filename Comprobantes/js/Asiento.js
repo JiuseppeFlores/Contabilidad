@@ -57,5 +57,16 @@ function adicionar_asiento(){
     });
 
     ASIENTOS.push(new Asiento());
+    calcular_totales();
 }
 
+function calcular_totales(){
+    var total_debe = 0;
+    var total_haber = 0;
+    for( i = 1 ; i <= ASIENTOS.length ; i++ ){
+        total_debe += parseFloat($('#debe-'+i).val());
+        total_haber += parseFloat($('#haber-'+i).val());
+    }
+    $('#total_debe').text(total_debe);
+    $('#total_haber').text(total_haber);
+}
