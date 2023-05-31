@@ -10,7 +10,7 @@
                         <div class="row">
                             <div class="col-2">
                                 <div class="form-floating">
-                                    <input type="text" name="nro_comprobante" id="nro_comprobante" class="form-control form-control-lg" minlength="3" maxlength="100" required autocomplete="off" readonly value="1"/>
+                                    <input type="text" name="nro_comprobante" id="nro_comprobante" class="form-control form-control-lg" minlength="3" maxlength="100" required autocomplete="off" readonly/>
                                     <label for="nro_comprobante">Nro de Comprobante</label>
                                 </div>
                             </div>

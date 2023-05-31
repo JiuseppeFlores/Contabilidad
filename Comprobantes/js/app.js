@@ -6,6 +6,35 @@ listar_comprobantes();
 function adicionar_comprobante(){
     $('#modal_registrar_comprobante').modal('show');
     $('#comprobante_fecha').val(get_date());
+    const ACCION = "OBTENER NRO. COMPROBANTE";
+    var datos = { id_proyecto : 1 };
+    $.ajax({
+        data: datos,
+        url: 'services/obtener_numero_comprobante.php',
+        type: 'GET',
+        dataType: 'JSON',
+        beforeSend: function(){
+            console.log("["+ACCION+"] Enviando datos...");
+        },
+        success:function(response){
+            if(response.success){
+                $('#nro_comprobante').val(response.data);
+            }else{
+                $('#modal_registrar_comprobante').modal('hide');
+                show_toast(
+                    ACCION,
+                    response.message,
+                    'text-bg-danger'
+                );
+            }
+            console.log("["+ACCION+"] "+response.message);
+        },
+        error: function(error){
+            $('#modal_registrar_comprobante').modal('hide');
+            show_toast(ACCION,error.statusText,'text-bg-danger');
+            console.log("["+ACCION+"] ",error);
+        }
+    });
 }
 
 async function get_counts(){
