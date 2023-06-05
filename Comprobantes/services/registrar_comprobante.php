@@ -18,7 +18,7 @@
             $nro_recibo = $_POST['nro_recibo'];
             $glosa = $_POST['glosa'];
             // Consulta para insertar los nuevos registros ala tabla
-            $sql = "INSERT INTO tblComprobantes (numero,tipo,fecha,tipo_cambio,moneda,idProyecto,cancelado,nit_ci,nro_recibo,glosa) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ) ;";
+            $sql = "INSERT INTO tblComprobantes (numero,tipo,fecha,tipoCambio,moneda,idProyecto,cancelado,nitCi,nroRecibo,glosa) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ) ;";
             $params = array($nro_comprobante,$tipo,$fecha,$tipo_cambio,$moneda,$id_proyecto,$cancelado,$nit_ci,$nro_recibo,$glosa);
             $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
             $stmt = sqlsrv_query( $con, $sql , $params, $options );
