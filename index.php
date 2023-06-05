@@ -70,15 +70,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Libro Mayor</h5>
-                        <p class="card-text">Documento que incluye los movimientos de cada una de las cuentas de la empresa por separado.</p>
-                        <button onclick="console.log('asd')" class="btn btn-primary">Generar</button>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </body>
