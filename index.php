@@ -70,9 +70,6 @@
                     </div>
                 </div>
             </div>
-            <div>
-                asd
-            </div>
         </div>
     </div>
 </body>
