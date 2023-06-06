@@ -2,6 +2,27 @@
 require_once('../conexion.php');
 require_once('../Tcpdf/tcpdf.php');
 
+$codigoCuenta = '11000.02';
+$fechaInicial = '2023-01-01';
+$fechaFinal = '2023-12-31';
+
+$filtro = '';
+if ($fechaInicial != '' && $fechaFinal != '') {
+    $filtro .= " AND tco.fecha >= '2023-01-01' AND tco.fecha <= '2023-12-31' ";
+    $fechaInicialFormato = new DateTime($fechaInicial);
+    $fechaInicialFormato = $fechaInicialFormato->format('d/m/Y');
+    $fechaFinalFormato = new DateTime($fechaFinal);
+    $fechaFinalFormato = $fechaFinalFormato->format('d/m/Y');
+}
+
+// para la consulta a la base datos
+$sql = "SELECT * FROM tblCuentas tcu LEFT JOIN tblAsientos tas ON tcu.idCuenta = tas.idCuenta LEFT JOIN tblComprobantes tco ON tas.idComprobante = tco.idComprobante WHERE tcu.codigo = $codigoCuenta $filtro;";
+$query = sqlsrv_query($con, $sql);
+$listaAsientos = array();
+while ($row = sqlsrv_fetch_array($query)) {
+    $listaAsientos[] = $row;
+}
+
 class MYPDF extends TCPDF
 {
     public function Header()
@@ -52,13 +73,13 @@ $tabla .= '
 <td colspan="3">Experesado en Bs.</td>
 </tr>
 <tr align="center" style="font-size: 11px;">
-<td colspan="3">Desde 01/01/2020    Hasta 31/05/2023</td>
+<td colspan="3">Desde ' . $fechaInicialFormato . '    Hasta ' . $fechaFinalFormato . '</td>
 </tr>
 <tr style="font-size: 7px;">
 <td></td>
 </tr>
 <tr style="font-size: 12px;">
-<td>CUENTA</td>
+<td>CUENTA ' . $codigoCuenta . '</td>
 <td colspan="2">NOMBRE</td>
 </tr>
 <tr style="font-size: 7px;">
@@ -72,7 +93,7 @@ $tabla .= '
 </table>
 ';
 $pdf->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);
-$pdf->SetFont('helvetica', '', 10);
+$pdf->SetFont('helvetica', '', 9);
 $tabla = '
 <table border="1" cellpadding="2">
 <tr align="center">
@@ -86,8 +107,59 @@ $tabla = '
 <th colspan="2">HABER</th>
 <th colspan="2">SALDOS</th>
 </tr>
+';
+if (count($listaAsientos) > 0) {
+    $saldo = 0;
+    $debeTotal = 0;
+    $haberTotal = 0;
+    foreach ($listaAsientos as $key => $value) {
+        $fecha = $value['fecha']->format('d/m/Y');
+
+        $debe = floatval($value['debe']);
+        $haber = floatval($value['haber']);
+        $saldo = number_format($saldo + $debe - $haber, 2);
+
+        $debeTotal = number_format($debeTotal + $debe, 2);
+        $haberTotal = number_format($haberTotal + $haber, 2);
+
+        $tabla .= '
+        <tr align="center">
+        <td colspan="2">' . $fecha . '</td>
+        <td></td>
+        <td></td>
+        <td>' . $value['tipoCambio'] . '</td>
+        <td colspan="6">' . $value['descripcion'] . '</td>
+        <td colspan="2">' . $value['cheque'] . '</td>
+        <td colspan="2">' . $value['debe'] . '</td>
+        <td colspan="2">' . $value['haber'] . '</td>
+        <td colspan="2">' . $saldo . '</td>
+        </tr>
+        ';
+    }
+} else {
+    $tabla .= '
+    <tr align="center">
+    <td colspan="19">No hay registros en este periodo de fechas.</td>
+    </tr>
+    ';
+}
+$tabla .= '</table>';
+$tabla .= '
+<table border="0" cellpadding="3">
+<tr align="center">
+<td align="right" colspan="13"></td>
+<td colspan="2">' . $debeTotal . '</td>
+<td colspan="2">' . $haberTotal . '</td>
+<td colspan="2"></td>
+</tr>
+<tr align="center">
+<td align="right" colspan="13">SALDO DEUDOR</td>
+<td colspan="4">' . $saldo . '</td>
+<td colspan="2"></td>
+</tr>
 </table>
 ';
+
 $pdf->WriteHTMLCell(0, 0, '', '60', $tabla, 0, 0);
 
 $pdf->output('LIBRO MAYOR.pdf', 'I');
