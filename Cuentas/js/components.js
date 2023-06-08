@@ -12,3 +12,41 @@ function alerta(id_alerta,id_titulo,id_cuerpo,clase,titulo,mensaje){
         $('#'+id_alerta).removeClass(clase);
     }, 5000);
 }
+
+function crear_select(id,name,change){
+    // Creacion de Div contenedor de select
+    const div = document.createElement('div');
+    div.classList = "form-floating mb-3";
+    // Creacion de Select
+    const select = document.createElement('select');
+    select.classList = "form-select";
+    select.name = name;
+    select.required = 'true';
+    select.id = id;
+    select.onchange = change;
+    // Creación de Options
+    const title = name.substring(0,1).toUpperCase() + name.substring(1,name.length);
+    const opt = document.createElement('option');
+    opt.value = "";
+    opt.innerHTML = " - Seleccione " + title + " - ";
+    opt.disabled = 'true';
+    opt.selected = 'true';
+    select.appendChild(opt);
+    select.required = true;
+
+    /*options.forEach( (option) => {
+        const opt = document.createElement('option');
+        opt.value = option.codigo;
+        opt.innerHTML = option.descripcion;
+        select.appendChild(opt);
+    });*/
+    // Creacion de Label
+    const label = document.createElement('label');
+    label.textContent = title;
+    label.htmlFor = "cuenta_"+name;
+
+    div.appendChild(select);
+    div.appendChild(label);
+
+    return div;
+}

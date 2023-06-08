@@ -11,17 +11,18 @@ $('#form_adicionar_cuenta').on('submit', function(e){
         data: datos,
         url: 'services/adicionar_cuenta.php',
         type: 'POST',
-        dataType: 'JSON',
+        dataType: 'TEXT',
         beforeSend: function(){
             console.log("["+ACCION+"] Enviando datos...");
         },
         success:function(response){
-            if(response.success){
+            console.log(response);
+            /*if(response.success){
                 listar_cuentas();
                 $('#modal_adicionar').modal('hide');
             }
             show_toast(ACCION,response.message,response.success?'text-bg-success':'text-bg-warning');
-            console.log("["+ACCION+"] "+response.message);
+            console.log("["+ACCION+"] "+response.message);*/
         },
         error: function(error){
             show_toast(ACCION,error.statusText,'text-bg-danger');
@@ -30,8 +31,13 @@ $('#form_adicionar_cuenta').on('submit', function(e){
     });
 });
 
+$('#modal_adicionar').on('show.bs.modal', () => {
+    cambio_nivel();
+});
+
 $('#modal_adicionar').on('hide.bs.modal', () => {
     $('#form_adicionar_cuenta').trigger("reset");
+    $('#lista_grupo').html("");
 });
 
 $('#modal_actualizar').on('hide.bs.modal', () => {
@@ -192,3 +198,126 @@ $('#form_eliminar_cuenta').on('submit', function(e){
         }
     });
 });
+
+function cambio_nivel(){
+    var nivel = document.querySelector('input[name="nivel"]:checked').value;
+    $('#lista_grupo').html('');
+    $('#lista_rubro').html('');
+    $('#lista_titulo').html('');
+    $('#lista_compuesta').html('');
+    $('#cuenta_codigo_cuenta').val("");
+    $('#cuenta_adicionar_codigo').val("");
+    listar_grupos();
+    switch(nivel){
+        case 'R':
+            $('#lista_grupo').html(crear_select('cuenta_grupos','grupo',cambio_grupo));
+            $('#lista_rubro').html('');
+            $('#lista_titulo').html('');
+            $('#lista_compuesta').html('');
+            break;
+        case 'T':
+            $('#lista_grupo').html(crear_select('cuenta_grupos','grupo',cambio_grupo));
+            $('#lista_rubro').html(crear_select('cuenta_rubros','rubro',cambio_rubro));
+            $('#lista_titulo').html('');
+            $('#lista_compuesta').html('');
+            break;
+        case 'C':
+            $('#lista_grupo').html(crear_select('cuenta_grupos','grupo',cambio_grupo));
+            $('#lista_rubro').html(crear_select('cuenta_rubros','rubro',cambio_grupo));
+            $('#lista_titulo').html(crear_select('cuenta_titulos','titulo',cambio_grupo));
+            $('#lista_compuesta').html('');
+            break;
+        case 'S':
+            $('#lista_grupo').html(crear_select('cuenta_grupos','grupo',cambio_grupo));
+            $('#lista_rubro').html(crear_select('cuenta_rubros','rubro',cambio_grupo));
+            $('#lista_titulo').html(crear_select('cuenta_titulos','titulo',cambio_grupo));
+            $('#lista_compuesta').html(crear_select('cuenta_compuestas','compuesta',cambio_grupo));
+            break;
+    }
+    console.log(nivel);
+}
+
+const cambio_grupo = (e) => {
+    var grupo = $('#cuenta_grupos').val();
+    $('#cuenta_codigo_cuenta').val(grupo);
+    $('#cuenta_adicionar_codigo').val("");
+    var nivel = document.querySelector('input[name="nivel"]:checked').value;
+    if(nivel != 'R'){
+        const opt = document.getElementById('cuenta_rubros').firstElementChild;
+        $('#cuenta_rubros').html(opt);
+        listar_rubros(grupo);
+    }
+}
+
+const cambio_rubro = () => {
+    var grupo = $('#cuenta_grupos').val();
+    var rubro = $('#cuenta_rubros').val();
+    $('#cuenta_codigo_cuenta').val(grupo+rubro);
+    $('#cuenta_adicionar_codigo').val("");
+}
+
+function listar_grupos(){
+    const ACCION = "LISTAR GRUPOS";
+    var datos = {};
+    $.ajax({
+        data: datos,
+        url: 'services/listar_grupos.php',
+        type: 'GET',
+        dataType: 'JSON',
+        beforeSend: function(){
+            console.log("["+ACCION+"] Enviando datos...");
+        },
+        success:function(response){
+            if(response.success){
+                const select = document.getElementById('cuenta_grupos');
+                response.data.forEach( (option) => {
+                    const opt = document.createElement('option');
+                    opt.value = option.grupo;
+                    opt.innerHTML = option.descripcion;
+                    select.appendChild(opt);
+                });
+            }else{
+                show_toast(ACCION,response.message,'text-bg-danger');
+            }
+            console.log("["+ACCION+"] "+response.message);
+        },
+        error: function(error){
+            show_toast(ACCION,error.statusText,'text-bg-danger');
+            console.log("["+ACCION+"] "+error.statusText);
+        }
+    });
+}
+
+function listar_rubros(id_grupo){
+    const ACCION = "LISTAR RUBROS";
+    var datos = {
+        grupo: id_grupo
+    };
+    $.ajax({
+        data: datos,
+        url: 'services/listar_rubros.php',
+        type: 'GET',
+        dataType: 'JSON',
+        beforeSend: function(){
+            console.log("["+ACCION+"] Enviando datos...");
+        },
+        success:function(response){
+            if(response.success){
+                const select = document.getElementById('cuenta_rubros');
+                response.data.forEach( (option) => {
+                    const opt = document.createElement('option');
+                    opt.value = option.grupo;
+                    opt.innerHTML = option.descripcion;
+                    select.appendChild(opt);
+                });
+            }else{
+                show_toast(ACCION,response.message,'text-bg-danger');
+            }
+            console.log("["+ACCION+"] "+response.message);
+        },
+        error: function(error){
+            show_toast(ACCION,error.statusText,'text-bg-danger');
+            console.log("["+ACCION+"] "+error.statusText);
+        }
+    });
+}
