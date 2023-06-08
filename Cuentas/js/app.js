@@ -256,6 +256,22 @@ const cambio_rubro = () => {
     $('#cuenta_adicionar_codigo').val("");
 }
 
+function generar_codigo(){
+    var grupo = $('#cuenta_grupos').val();
+    grupo = grupo == undefined ? '' : grupo;
+    var rubro = $('#cuenta_rubros').val();
+    rubro = rubro == undefined ? '' : rubro;
+    var titulo = $('#cuenta_titulos').val();
+    titulo = titulo == undefined ? '' : titulo;
+    var compuesta = $('#cuenta_compuestas').val();
+    compuesta = compuesta == undefined ? '' : compuesta;
+
+    var id = $('#cuenta_adicionar_codigo').val();
+
+    $('#cuenta_codigo_cuenta').val(grupo+rubro+titulo+compuesta+id);
+    
+}
+
 function listar_grupos(){
     const ACCION = "LISTAR GRUPOS";
     var datos = {};

@@ -50,7 +50,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-floating mb-3">
-                                    <input id="cuenta_adicionar_codigo" type="text" name="codigo" class="form-control" minlength="1" maxlength="1" required autocomplete="off"/>
+                                    <input id="cuenta_adicionar_codigo" type="text" name="codigo" class="form-control" minlength="1" maxlength="1" required autocomplete="off" onblur="generar_codigo()"/>
                                     <label for="cuenta_adicionar_codigo">Código</label>
                                 </div>
                             </div>
