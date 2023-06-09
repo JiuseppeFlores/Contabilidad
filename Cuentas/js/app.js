@@ -11,18 +11,17 @@ $('#form_adicionar_cuenta').on('submit', function(e){
         data: datos,
         url: 'services/adicionar_cuenta.php',
         type: 'POST',
-        dataType: 'TEXT',
+        dataType: 'JSON',
         beforeSend: function(){
             console.log("["+ACCION+"] Enviando datos...");
         },
         success:function(response){
-            console.log(response);
-            /*if(response.success){
+            if(response.success){
                 listar_cuentas();
                 $('#modal_adicionar').modal('hide');
             }
             show_toast(ACCION,response.message,response.success?'text-bg-success':'text-bg-warning');
-            console.log("["+ACCION+"] "+response.message);*/
+            console.log("["+ACCION+"] "+response.message);
         },
         error: function(error){
             show_toast(ACCION,error.statusText,'text-bg-danger');
@@ -210,39 +209,43 @@ function cambio_nivel(){
     listar_grupos();
     switch(nivel){
         case 'R':
+            document.getElementById('cuenta_adicionar_codigo').maxLength = 1;
             $('#lista_grupo').html(crear_select('cuenta_grupos','grupo',cambio_grupo));
             $('#lista_rubro').html('');
             $('#lista_titulo').html('');
             $('#lista_compuesta').html('');
             break;
         case 'T':
+            document.getElementById('cuenta_adicionar_codigo').maxLength = 2;
             $('#lista_grupo').html(crear_select('cuenta_grupos','grupo',cambio_grupo));
             $('#lista_rubro').html(crear_select('cuenta_rubros','rubro',cambio_rubro));
             $('#lista_titulo').html('');
             $('#lista_compuesta').html('');
             break;
         case 'C':
+            document.getElementById('cuenta_adicionar_codigo').maxLength = 2;
             $('#lista_grupo').html(crear_select('cuenta_grupos','grupo',cambio_grupo));
-            $('#lista_rubro').html(crear_select('cuenta_rubros','rubro',cambio_grupo));
-            $('#lista_titulo').html(crear_select('cuenta_titulos','titulo',cambio_grupo));
+            $('#lista_rubro').html(crear_select('cuenta_rubros','rubro',cambio_rubro));
+            $('#lista_titulo').html(crear_select('cuenta_titulos','titulo',cambio_titulo));
             $('#lista_compuesta').html('');
             break;
         case 'S':
+            document.getElementById('cuenta_adicionar_codigo').maxLength = 4;
             $('#lista_grupo').html(crear_select('cuenta_grupos','grupo',cambio_grupo));
-            $('#lista_rubro').html(crear_select('cuenta_rubros','rubro',cambio_grupo));
-            $('#lista_titulo').html(crear_select('cuenta_titulos','titulo',cambio_grupo));
-            $('#lista_compuesta').html(crear_select('cuenta_compuestas','compuesta',cambio_grupo));
+            $('#lista_rubro').html(crear_select('cuenta_rubros','rubro',cambio_rubro));
+            $('#lista_titulo').html(crear_select('cuenta_titulos','titulo',cambio_titulo));
+            $('#lista_compuesta').html(crear_select('cuenta_compuestas','compuesta',cambio_compuesta));
             break;
     }
-    console.log(nivel);
 }
 
-const cambio_grupo = (e) => {
+const cambio_grupo = () => {
     var grupo = $('#cuenta_grupos').val();
     $('#cuenta_codigo_cuenta').val(grupo);
     $('#cuenta_adicionar_codigo').val("");
     var nivel = document.querySelector('input[name="nivel"]:checked').value;
     if(nivel != 'R'){
+        document.getElementById('cuenta_rubros').value = "";
         const opt = document.getElementById('cuenta_rubros').firstElementChild;
         $('#cuenta_rubros').html(opt);
         listar_rubros(grupo);
@@ -253,6 +256,40 @@ const cambio_rubro = () => {
     var grupo = $('#cuenta_grupos').val();
     var rubro = $('#cuenta_rubros').val();
     $('#cuenta_codigo_cuenta').val(grupo+rubro);
+    $('#cuenta_adicionar_codigo').val("");
+
+    var nivel = document.querySelector('input[name="nivel"]:checked').value;
+    if(nivel != 'R' && nivel != 'T'){
+        document.getElementById('cuenta_titulos').value = "";
+        const opt = document.getElementById('cuenta_titulos').firstElementChild;
+        $('#cuenta_titulos').html(opt);
+        listar_titulos(grupo,rubro);
+    }
+}
+
+const cambio_titulo = () => {
+    var grupo = $('#cuenta_grupos').val();
+    var rubro = $('#cuenta_rubros').val();
+    var titulo = $('#cuenta_titulos').val();
+    $('#cuenta_codigo_cuenta').val(grupo+rubro+titulo);
+    $('#cuenta_adicionar_codigo').val("");
+
+    var nivel = document.querySelector('input[name="nivel"]:checked').value;
+    if(nivel != 'R' && nivel != 'T' && nivel != 'C'){
+        document.getElementById('cuenta_compuestas').value = "";
+        const opt = document.getElementById('cuenta_compuestas').firstElementChild;
+        $('#cuenta_compuestos').html(opt);
+        listar_compuestas(grupo,rubro,titulo);
+    }
+}
+
+const cambio_compuesta = () => {
+    var grupo = $('#cuenta_grupos').val();
+    var rubro = $('#cuenta_rubros').val();
+    var titulo = $('#cuenta_titulos').val();
+    var compuesta = $('#cuenta_compuestas').val();
+
+    $('#cuenta_codigo_cuenta').val(grupo+rubro+titulo+compuesta);
     $('#cuenta_adicionar_codigo').val("");
 }
 
@@ -322,7 +359,78 @@ function listar_rubros(id_grupo){
                 const select = document.getElementById('cuenta_rubros');
                 response.data.forEach( (option) => {
                     const opt = document.createElement('option');
-                    opt.value = option.grupo;
+                    opt.value = option.rubro;
+                    opt.innerHTML = option.descripcion;
+                    select.appendChild(opt);
+                });
+            }else{
+                show_toast(ACCION,response.message,'text-bg-danger');
+            }
+            console.log("["+ACCION+"] "+response.message);
+        },
+        error: function(error){
+            show_toast(ACCION,error.statusText,'text-bg-danger');
+            console.log("["+ACCION+"] "+error.statusText);
+        }
+    });
+}
+
+function listar_titulos(id_grupo,id_rubro){
+    const ACCION = "LISTAR TITULOS";
+    var datos = {
+        grupo: id_grupo,
+        rubro: id_rubro
+    };
+    $.ajax({
+        data: datos,
+        url: 'services/listar_titulos.php',
+        type: 'GET',
+        dataType: 'JSON',
+        beforeSend: function(){
+            console.log("["+ACCION+"] Enviando datos...");
+        },
+        success:function(response){
+            if(response.success){
+                const select = document.getElementById('cuenta_titulos');
+                response.data.forEach( (option) => {
+                    const opt = document.createElement('option');
+                    opt.value = option.titulo;
+                    opt.innerHTML = option.descripcion;
+                    select.appendChild(opt);
+                });
+            }else{
+                show_toast(ACCION,response.message,'text-bg-danger');
+            }
+            console.log("["+ACCION+"] "+response.message);
+        },
+        error: function(error){
+            show_toast(ACCION,error.statusText,'text-bg-danger');
+            console.log("["+ACCION+"] "+error.statusText);
+        }
+    });
+}
+
+function listar_compuestas(id_grupo,id_rubro,id_titulo){
+    const ACCION = "LISTAR TITULOS";
+    var datos = {
+        grupo: id_grupo,
+        rubro: id_rubro,
+        titulo: id_titulo
+    };
+    $.ajax({
+        data: datos,
+        url: 'services/listar_compuestas.php',
+        type: 'GET',
+        dataType: 'JSON',
+        beforeSend: function(){
+            console.log("["+ACCION+"] Enviando datos...");
+        },
+        success:function(response){
+            if(response.success){
+                const select = document.getElementById('cuenta_compuestas');
+                response.data.forEach( (option) => {
+                    const opt = document.createElement('option');
+                    opt.value = option.compuesta;
                     opt.innerHTML = option.descripcion;
                     select.appendChild(opt);
                 });

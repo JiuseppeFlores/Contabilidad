@@ -5,18 +5,21 @@
     $response = array('success' => false, 'message' => '');
 
     if($_SERVER['REQUEST_METHOD'] == 'GET'){
-        if(isset($_GET['grupo'])){
+        if(isset($_GET['grupo']) && isset($_GET['rubro'])){
             // Consulta para insertar los nuevos registros ala tabla
-            $nivel = 'R';
+            $nivel = 'T';
             $grupo = $_GET['grupo'];
+            $rubro = $_GET['rubro'];
             $sql = "SELECT * 
                     FROM tblCuentas tc
                     WHERE tc.nivel = ?
                         AND tc.grupo = ?
+                        AND tc.rubro = ?
                         AND tc.grupo IS NOT NULL
                         AND tc.rubro IS NOT NULL
+                        AND tc.titulo IS NOT NULL
                     ORDER BY tc.codigo ASC; ";
-            $params = array($nivel,$grupo);
+            $params = array($nivel,$grupo,$rubro);
             $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
             $stmt = sqlsrv_query( $con, $sql , $params, $options );
             if( $stmt ){
@@ -33,7 +36,7 @@
                 }
             }
         }else{
-            $response['message'] = 'El parámetro grupo es necesario.';
+            $response['message'] = 'Los parámetros grupo y rubro son necesarios.';
         }
     }else{
         $response['message'] = 'La solicitud no es de tipo GET.';

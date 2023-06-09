@@ -35,7 +35,6 @@
                 $response['success'] = true;
                 $response['message'] = 'Registro adicionado con éxito.';
             }
-            print_r($_POST);
         }else{
             $response['message'] = 'Los siguientes campos son necesarios: Código, descripción y grupo.';
         }
