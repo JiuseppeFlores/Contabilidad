@@ -13,7 +13,7 @@ function alerta(id_alerta,id_titulo,id_cuerpo,clase,titulo,mensaje){
     }, 5000);
 }
 
-function crear_select(id,name,change){
+function crear_select(id,name,change,mode){
     // Creacion de Div contenedor de select
     const div = document.createElement('div');
     div.classList = "form-floating mb-3";
@@ -23,6 +23,7 @@ function crear_select(id,name,change){
     select.name = name;
     select.required = 'true';
     select.id = id;
+    select.dataset.mode = mode;
     select.onchange = change;
     // Creación de Options
     const title = name.substring(0,1).toUpperCase() + name.substring(1,name.length);

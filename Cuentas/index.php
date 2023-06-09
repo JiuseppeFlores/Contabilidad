@@ -21,7 +21,7 @@
     <div class="container mt-4 mb-4">
         <div class="row">
             <div class="col-6">
-                <h3>Cuentas</h3>
+                <h3>Plan de Cuentas</h3>
             </div>
             <div class="col-6 text-end">
                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_adicionar"><i class="bi bi-plus me-2"></i>Adicionar</button>
@@ -29,10 +29,10 @@
         </div>
         <div class="row mt-2">
             <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered align-middle">
+                <table class="table table-sm table-hover table-bordered align-middle">
                     <thead class="table-primary">
                         <tr class="text-center">
-                            <th scope="col">#</th>
+                            <!--<th scope="col">#</th>-->
                             <th scope="col">C&Oacute;DIGO</th>
                             <th scope="col">CUENTA</th>
                             <th scope="col">GRUPO</th>

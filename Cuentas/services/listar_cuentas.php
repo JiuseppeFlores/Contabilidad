@@ -10,11 +10,16 @@
             $pagina = intval($_GET['pagina']) - 1;
             $total = $_GET['total'];
             // Consulta para insertar los nuevos registros ala tabla
-            $sql = "SELECT * 
-                    FROM tblCuentas tpc
-                    ORDER BY tpc.idCuenta DESC
+            // Consulta con paginacion
+            /*$sql = "SELECT * 
+                    FROM tblCuentas tc
+                    ORDER BY tc.codigo ASC
                     OFFSET ($pagina * $total) ROWS
-                    FETCH NEXT $total ROWS ONLY; ";
+                    FETCH NEXT $total ROWS ONLY; ";*/
+            // Consulta sin paginación
+            $sql = "SELECT * 
+                    FROM tblCuentas tc
+                    ORDER BY tc.codigo ASC; ";
             $params = array();
             $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
             $stmt = sqlsrv_query( $con, $sql , $params, $options );
@@ -25,7 +30,7 @@
                 }
                 // OBTENIENDO EL NÚMERO TOTAL DE REGISTROS
                 $sql = "SELECT COUNT(*) as total
-                        FROM tblCuentas tpc;";
+                        FROM tblCuentas tc;";
                 $params = array();
                 $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
                 $stmt = sqlsrv_query( $con, $sql , $params, $options );
