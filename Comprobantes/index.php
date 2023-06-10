@@ -1,3 +1,7 @@
+<?php
+    include('../php/functions.php');
+    isSessionActive('../');
+?>
 <!DOCTYPE html>
     <html lang="es">
     <head>
