@@ -135,10 +135,10 @@ function listar_comprobantes(){
                     const actions = document.createElement('td');
                     actions.classList = "text-center";
                     actions.innerHTML = `
-                        <button class="btn btn-warning" onclick="editar_cuenta(`+comprobante.idComprobante+`)" title="Actualizar">
+                        <button class="btn btn-sm btn-warning" onclick="editar_cuenta(`+comprobante.idComprobante+`)" title="Actualizar">
                             <i class="bi bi-pencil-fill"></i>
                         </button>
-                        <button class="btn btn-danger" onclick="eliminar_cuenta(`+comprobante.idComprobante+`)" title="Eliminar">
+                        <button class="btn btn-sm btn-danger" onclick="eliminar_cuenta(`+comprobante.idComprobante+`)" title="Eliminar">
                             <i class="bi bi-trash"></i>
                         </button>
                     `;
