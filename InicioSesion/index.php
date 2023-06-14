@@ -1,3 +1,9 @@
+<?php
+  include("../php/functions.php");
+  if(isSessionStarted()){
+    header('Location: ../index.php');
+  };
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -30,6 +36,9 @@
 </head>
 
 <body>
+  <?php
+    include('../components/toast.php');
+  ?>
   <!-- Start your project here-->
   <section class="vh-100">
     <div class="container-fluid h-custom">
@@ -66,23 +75,23 @@
                 <div class="card-body">
                     <!-- PIN -->
                     <div class="form-floating mb-4">
-                    <input type="text" id="is_pin" name="pin" class="form-control form-control-lg"
-                        placeholder="Ingrese su PIN" />
-                    <label for="is_pin">PIN</label>
+                      <input type="text" id="is_pin" name="pin" class="form-control form-control-lg"
+                          placeholder="Ingrese su PIN" />
+                      <label for="is_pin">PIN</label>
                     </div>
 
                     <!-- Usuario -->
                     <div class="form-floating mb-4">
-                    <input type="text" id="is_usuario" name="usuario" class="form-control form-control-lg"
-                        placeholder="Ingrese su usuario" />
-                    <label for="is_usuario">Usuario</label>
+                      <input type="text" id="is_usuario" name="usuario" class="form-control form-control-lg"
+                          placeholder="Ingrese su usuario" />
+                      <label for="is_usuario">Usuario</label>
                     </div>
 
                     <!-- Contraseña -->
                     <div class="form-floating mb-3">
-                    <input type="password" id="is_contrasenia" name="contrasenia" class="form-control form-control-lg"
-                        placeholder="Ingrese su contrasenia" />
-                    <label class="form-label" for="is_contrasenia">Contraseña</label>
+                      <input type="password" id="is_contrasenia" name="contrasenia" class="form-control form-control-lg"
+                          placeholder="Ingrese su contrasenia" />
+                      <label class="form-label" for="is_contrasenia">Contraseña</label>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center">
@@ -134,8 +143,8 @@
 
   <!-- MDB -->
   <script type="text/javascript" src="../js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="../js/components.js"></script>
   <!-- Custom scripts -->
   <script type="text/javascript" src="js/app.js"></script>
 </body>
-
 </html>

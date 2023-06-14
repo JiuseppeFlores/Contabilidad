@@ -40,6 +40,13 @@
             </a>
         <!-- Left links -->
         </div>
+        <div class="d-flex" role="search">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="nav_cerrar_sesion">Cerrar Sesión</a>
+                </li>
+            </ul>
+        </div>
         <!-- Collapsible wrapper -->
     </div>
     <!-- Container wrapper -->
@@ -76,6 +83,7 @@
             </div>
         </div>
     </div>
-</body>
+    <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

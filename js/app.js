@@ -1,10 +1,9 @@
-$('#form_iniciar_sesion').on('submit', (e) => {
-    e.preventDefault();
-    const ACCION = "INICIAR SESIÓN";
-    var datos = $('#form_iniciar_sesion').serialize();
+$('#nav_cerrar_sesion').on('click',() => {
+    const ACCION = "CERRAR SESIÓN";
+    var datos = {};
     $.ajax({
         data: datos,
-        url: 'services/iniciar_sesion.php',
+        url: '../php/services/cerrar_sesion.php',
         type: 'POST',
         dataType: 'JSON',
         beforeSend: function(){

@@ -1,7 +1,6 @@
 <?php
 
-    include('php/functions.php');
-    include('php/environments.php');
+    require('php/environments.php');
     // CONEXION CON LA BASE DE DATOS
     $server_com = $SERVER_COMPANIES;
     $database_com = $DB_NAME_COMPANIES;
