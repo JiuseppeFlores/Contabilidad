@@ -15,6 +15,9 @@
     <script src="js/jquery.min.js"></script>
 </head>
 <body>
+    <?php
+        include("components/toast.php");
+    ?>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <!-- Container wrapper -->
@@ -54,7 +57,7 @@
     <!-- Navbar -->
     <div class="container mt-4 mb-4">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-6 mt-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Cuentas</h5>
@@ -63,7 +66,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6 mt-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Comprobantes</h5>
@@ -72,18 +75,28 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6 mt-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Libro Mayor</h5>
                         <p class="card-text">Documento que incluye los movimientos de cada una de las cuentas de la empresa por separado.</p>
-                        <button onclick="console.log('asd')" class="btn btn-primary">Generar</button>
+                        <a href="LibroMayor/index.php" class="btn btn-primary">Generar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 mt-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Balance de Sumas y Saldos</h5>
+                        <p class="card-text">Documento que muestra una relación de las cuentas utilizadas en el libro diario y del saldo que tienen en una fecha concreta.</p>
+                        <a href="#" class="btn btn-primary">Generar</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/components.js"></script>
     <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
