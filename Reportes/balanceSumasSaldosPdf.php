@@ -1,4 +1,10 @@
 <?php
+
+ob_start();
+error_reporting(E_ALL & ~E_NOTICE);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+
 require_once('../conexion.php');
 require_once('../Tcpdf/tcpdf.php');
 
@@ -145,5 +151,5 @@ $tabla .= '
 ';
 
 $pdf->WriteHTMLCell(0, 0, '', '45', $tabla, 0, 0);
-
+ob_end_clean();
 $pdf->output('BALANCE DE SUMAS Y SALDOS.pdf', 'I');

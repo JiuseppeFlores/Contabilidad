@@ -2,6 +2,11 @@
 require_once('../conexion.php');
 require_once('../Tcpdf/tcpdf.php');
 
+ob_start();
+error_reporting(E_ALL & ~E_NOTICE);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+
 $codigoCuenta = '11000.02';
 $fechaInicial = '2023-01-01';
 $fechaFinal = '2023-12-31';
@@ -161,5 +166,5 @@ $tabla .= '
 ';
 
 $pdf->WriteHTMLCell(0, 0, '', '60', $tabla, 0, 0);
-
+ob_end_clean();
 $pdf->output('LIBRO MAYOR.pdf', 'I');
