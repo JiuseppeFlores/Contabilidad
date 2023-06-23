@@ -5,7 +5,7 @@
                 <div class="modal-header bg-success text-light">
                     <h5 class="modal-title" id="exampleModalLabel">ADICIONAR CUENTA</h5>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" tabindex="-1">
                     <div class="container">
                         <div class="row">
                             <div class="col-12">
@@ -43,6 +43,24 @@
                             </div>
                             <label for="" class="form-label text-muted"><b>Cuenta Contable:</b></label>
                             <div class="col-12">
+                                <div class="form-floating">
+                                    <select class="form-select" aria-label="Default select example" id="ca_rubro" data-dropdown-parent="#modal_adicionar">
+                                        <option selected>Open this select menu</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                    <label for="ca_rubro">Rubro</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="ca_codigo" class="form-label">Código Cuenta</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="ca_codigo_base">1101</span>
+                                    <input type="text" class="form-control" id="ca_codigo" aria-describedby="ca_codigo_base">
+                                </div>
+                            </div>
+                            <div class="col-12">
                                 <div class="form-floating mb-3">
                                     <input type="text" name="codigo_cuenta" id="ca_codigo_cuenta" class="form-control-plaintext" required readonly/>
                                     <label for="ca_codigo_cuenta">Código Cuenta</label>
@@ -59,6 +77,17 @@
                                     <input id="ca_descripcion" type="text" name="descripcion" class="form-control" minlength="3" maxlength="100" required autocomplete="off"/>
                                     <label for="ca_descripcion">Nombre</label>
                                 </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="ca_movimiento" name="movimiento">
+                                    <label class="form-check-label" for="ca_movimiento">
+                                        Movimiento
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                
                             </div>
                         </div>
                     </div>

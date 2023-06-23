@@ -31,6 +31,9 @@ $('#form_adicionar_cuenta').on('submit', function(e){
 });
 
 $('#modal_adicionar').on('show.bs.modal', () => {
+    $("#ca_rubro").select2({
+        theme: "bootstrap-5"
+    });
     cambio_nivel('ca');
 });
 
