@@ -58,10 +58,8 @@ $('#modal_eliminar').on('hide.bs.modal', () => {
 });
 
 function listar_cuentas(){
-    let params = new URLSearchParams(location.search);
-    var pagina = (params.get('page') == null ? 1 : (parseInt(params.get('page')) > 0 ? parseInt(params.get('page')) : 1 ));
     const ACCION = "LISTAR CUENTAS";
-    var datos = { pagina : pagina , total : CANTIDAD_REGISTROS };
+    var datos = {  };
     $.ajax({
         data: datos,
         url: 'services/listar_cuentas.php',
@@ -72,56 +70,43 @@ function listar_cuentas(){
         },
         success:function(response){
             if(response.success){
-                document.getElementById('cuentas').innerHTML = "";;
-                response.data.accounts.forEach( (cuenta) => {
-                    // Creacion de filas para la tabla
-                    const row = document.createElement('tr');
-                    /*const id = document.createElement('td');
-                    id.innerHTML = cuenta.idCuenta;*/
-                    const codigo = document.createElement('td');
-                    codigo.innerHTML = cuenta.codigo;
-                    const descripcion = document.createElement('td');
-                    descripcion.innerHTML = cuenta.descripcion;
+                document.getElementById('tbl_cuentas').innerHTML = "";
+                response.data.forEach( (cuenta) => {
+                    var sp = "&nbsp;";
                     switch(cuenta.nivel){
-                        case 'G':
-                            descripcion.classList = "ps-1";
-                            row.classList = "fw-bold";
-                            break;
-                        case 'R':
-                            descripcion.classList = "ps-2";
-                            row.classList = "fw-semibold";
-                            break;
-                        case 'T':
-                            descripcion.classList = "ps-3";
-                            row.classList = "fw-semibold";
-                            break;
-                        case 'C':
-                            descripcion.classList = "ps-4";
-                            break;
-                        case 'S':
-                            descripcion.classList = "ps-5";
-                            break;
-                    }
-                    const grupo = document.createElement('td');
-                    grupo.innerHTML = cuenta.grupo;
-                    const actions = document.createElement('td');
-                    actions.classList = "text-center";
-                    actions.innerHTML = cuenta.nivel == 'G' ? '' : `
-                        <button class="btn btn-sm btn-primary" onclick="editar_cuenta(`+cuenta.idCuenta+`)" title="Editar">
-                            <i class="bi bi-pencil-fill"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="eliminar_cuenta(`+cuenta.idCuenta+`,'`+cuenta.descripcion+`')" title="Eliminar">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    `;
-                    //row.appendChild(id);
-                    row.appendChild(codigo);
-                    row.appendChild(descripcion);
-                    row.appendChild(grupo);
-                    row.appendChild(actions);
-                    document.getElementById('cuentas').appendChild(row);
+                        case 'G':sp = '';break;
+                        case 'R':sp = sp.repeat(4);break;
+                        case 'T':sp = sp.repeat(8);break;
+                        case 'C':sp = sp.repeat(12);break;
+                        case 'S':sp = sp.repeat(16);break;
+                        case 'A':sp = sp.repeat(20);break;
+                    };
+                    cuenta.descripcion = sp + cuenta.descripcion;
                 });
-                //start_pagination( pagina , response.data.total );
+                $('#tbl_cuentas').bootstrapTable({
+                    search: true,
+                    searchAlign: "left",
+                    rowStyle: rowStyle,
+                    columns: [{
+                      field: 'codigo',
+                      title: 'CÓDIGO',
+                    }, {
+                      field: 'descripcion',
+                      title: 'DESCRIPCIÓN',
+                    }, {
+                        field: 'movimiento',
+                        title: 'MOVIMIENTO',
+                    }, {
+                        field: 'operate',
+                        title: 'ACCIONES',
+                        align: 'center',
+                        clickToSelect: false,
+                        events: window.operateEvents,
+                        formatter: operateFormatter
+                    }],
+                    data: response.data/*,
+                    onDblClickRow: test*/
+                });
             }else{
                 show_toast(ACCION,response.message,response.success?'text-bg-success':'text-bg-warning');
             }
@@ -133,6 +118,55 @@ function listar_cuentas(){
         }
     });
 }
+
+function operateFormatter(value, row, index) {
+    if(row.nivel == 'G'){
+        return [
+            ''
+        ].join('');
+    }else{
+        return [
+            '<a class="edit" href="javascript:void(0)" title="Editar">',
+            '<i class="bi bi-pencil-fill text-primary"></i>',
+            '</a>  ',
+            '<a class="remove" href="javascript:void(0)" title="Eliminar">',
+            '<i class="bi bi-trash-fill text-danger"></i>',
+            '</a>'
+        ].join('');
+    }
+}
+
+window.operateEvents = {
+    'click .edit': function (e, value, row, index) {
+      //alert('You click like action, row: ' + JSON.stringify(row))
+      editar_cuenta(row.idCuenta);
+    },
+    'click .remove': function (e, value, row, index) {
+        eliminar_cuenta(row.idCuenta,row.descripcion.replaceAll("&nbsp;", ''));
+      /*$table.bootstrapTable('remove', {
+        field: 'id',
+        values: [row.id]
+      })*/
+    }
+  }
+
+function rowStyle(row, index) {
+    var classes = [
+      'fw-semibold text-muted'
+    ]
+
+    if( row.movimiento == 1 ){
+        return {
+            css: {
+              color: 'blue'
+            }
+        };
+    }else{
+        return {
+            classes: classes[0]
+        };  
+    }
+  }
 
 function editar_cuenta(id_cuenta){
     const ACCION = "EDITAR CUENTA";

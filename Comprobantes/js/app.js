@@ -2,6 +2,7 @@
 $('#nav_asientos').addClass('active');
 // INICIALIZANDO EL LISTADO DE COMPROBANTES
 listar_comprobantes();
+listar_cuentas();
 
 $('#modal_registrar_comprobante').on('hide.bs.modal', () => {
     $('#form_registro_comprobante').trigger("reset");
@@ -161,4 +162,70 @@ function listar_comprobantes(){
             console.log("["+ACCION+"] "+error.statusText);
         }
     });
+}
+
+$('#modal_lista_cuentas').on('show.bs.modal', () => {
+    console.log("asd");
+});
+
+function listar_cuentas(){
+    const ACCION = "LISTAR CUENTAS";
+    var datos = { };
+    $.ajax({
+        data: datos,
+        url: 'services/listar_cuentas.php',
+        type: 'GET',
+        dataType: 'JSON',
+        beforeSend: function(){
+            console.log("["+ACCION+"] Enviando datos...");
+        },
+        success:function(response){
+            if(response.success){
+                console.log(response);
+                response.data.forEach( (cuenta) => {
+                    var sp = "&nbsp";
+                    switch(cuenta.nivel){
+                        case 'G':
+                            sp = '';
+                            break;
+                        case 'R':
+                            sp = sp.repeat(4);
+                            break;
+                        case 'T':
+                            sp = sp.repeat(8);
+                            break;
+                        case 'C':
+                            sp = sp.repeat(12);
+                            break;
+                        case 'S':
+                            sp = sp.repeat(16);
+                            break;
+                    };
+                    cuenta.descripcion = sp + cuenta.descripcion;
+                });
+                $('#t_cuentas').bootstrapTable({
+                    columns: [{
+                      field: 'codigo',
+                      title: 'Codigo'
+                    }, {
+                      field: 'descripcion',
+                      title: 'Descripción'
+                    }],
+                    data: response.data,
+                    onDblClickRow: test
+                });
+            }else{
+                show_toast(ACCION,response.message,'text-bg-danger');
+            }
+            console.log("["+ACCION+"] "+response.message);
+        },
+        error: function(error){
+            show_toast(ACCION,error.statusText,'text-bg-danger');
+            console.log("["+ACCION+"] "+error.statusText);
+        }
+    });
+}
+
+function test(e){
+    console.log(e);
 }

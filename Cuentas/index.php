@@ -15,6 +15,8 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     <script src="../js/jquery.min.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap-table.min.css">
+    <script src="../js/bootstrap-table.min.js"></script>
 </head>
 <body>
     <?php
@@ -35,19 +37,8 @@
         </div>
         <div class="row mt-2">
             <div class="table-responsive">
-                <table class="table table-sm table-hover table-bordered align-middle">
-                    <thead class="table-primary">
-                        <tr class="text-center">
-                            <!--<th scope="col">#</th>-->
-                            <th scope="col">C&Oacute;DIGO</th>
-                            <th scope="col">CUENTA</th>
-                            <th scope="col">GRUPO</th>
-                            <th scope="col">ACCIONES</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-group-divider" id="cuentas">
-                        
-                    </tbody>
+                <table class="table table-sm table-hover caption-top" id="tbl_cuentas">
+                    
                 </table>
             </div>
         </div>
