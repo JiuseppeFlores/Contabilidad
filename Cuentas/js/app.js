@@ -18,7 +18,7 @@ $('#form_adicionar_cuenta').on('submit', function(e){
         success:function(response){
             if(response.success){
                 listar_cuentas();
-                $('#modal_adicionar').modal('hide');
+                //$('#modal_adicionar').modal('hide');
             }
             show_toast(ACCION,response.message,response.success?'text-bg-success':'text-bg-warning');
             console.log("["+ACCION+"] "+response.message);
@@ -307,7 +307,7 @@ function cambio_nivel(modo){
             text_nivel = "Compuesta";
             break;
         case 'S':
-            document.getElementById(modo + '_codigo').maxLength = 4;
+            document.getElementById(modo + '_codigo').maxLength = 2;
             $(id_grupo).html(crear_select(id_sl_grupos,'grupo',cambio_grupo,modo));
             $(id_rubro).html(crear_select(id_sl_rubros,'rubro',cambio_rubro,modo));
             $(id_titulo).html(crear_select(id_sl_titulos,'titulo',cambio_titulo,modo));
@@ -413,7 +413,7 @@ function generar_codigo(modo){
             id = id.length == 1 ? '0' + id : id;
             break;
         case 'S':
-            id = id.length < 4 ? '0'.repeat(4-id.length) + id : id;
+            id = id.length == 1 ? '0' + id : id;
             break;
     }
     document.getElementById(modo + '_codigo').value = id;

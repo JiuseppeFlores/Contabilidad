@@ -51,7 +51,7 @@
                         <div class="row mt-2">
                             <div class="col-2">
                                 <div class="form-floating">
-                                    <select class="form-control form-select" name="proyecto" required id="comprobante_proyecto">
+                                    <select class="form-control form-select" name="proyecto" id="comprobante_proyecto">
                                         <option value="" disabled selected> - Proyecto - </option>
                                         <option value="1">PRUEBA</option>
                                     </select>
@@ -66,13 +66,13 @@
                             </div>
                             <div class="col-2">
                                 <div class="form-floating">
-                                    <input type="number" name="nit_ci" id="comprobante_nit_ci" class="form-control" minlength="3" maxlength="100" required autocomplete="off"/>
+                                    <input type="number" name="nit_ci" id="comprobante_nit_ci" class="form-control" minlength="3" maxlength="100" autocomplete="off"/>
                                     <label for="comprobante_nit_ci">NIT/CI</label>
                                 </div>
                             </div>
                             <div class="col-2">
                                 <div class="form-floating">
-                                    <input type="number" name="nro_recibo" id="comprobante_nro_recibo" class="form-control" minlength="3" maxlength="100" required autocomplete="off"/>
+                                    <input type="number" name="nro_recibo" id="comprobante_nro_recibo" class="form-control" minlength="3" maxlength="100" autocomplete="off"/>
                                     <label for="comprobante_nro_recibo">Nro. de Recibo</label>
                                 </div>
                             </div>

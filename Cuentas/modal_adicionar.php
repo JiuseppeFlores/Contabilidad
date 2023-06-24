@@ -43,22 +43,7 @@
                             </div>
                             <label for="" class="form-label text-muted"><b>Cuenta Contable:</b></label>
                             <div class="col-12">
-                                <div class="form-floating">
-                                    <select class="form-select" aria-label="Default select example" id="ca_rubro" data-dropdown-parent="#modal_adicionar">
-                                        <option selected>Open this select menu</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                    <label for="ca_rubro">Rubro</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <label for="ca_codigo" class="form-label">Código Cuenta</label>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" id="ca_codigo_base">1101</span>
-                                    <input type="text" class="form-control" id="ca_codigo" aria-describedby="ca_codigo_base">
-                                </div>
+                                
                             </div>
                             <div class="col-12">
                                 <div class="form-floating mb-3">
