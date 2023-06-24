@@ -1,9 +1,3 @@
-// MARCANDO EL NAV-ITEM CORRESPONDIENTE
-$('#nav_asientos').addClass('active');
-// INICIALIZANDO EL LISTADO DE COMPROBANTES
-listar_comprobantes();
-listar_cuentas();
-
 $('#modal_registrar_comprobante').on('hide.bs.modal', () => {
     $('#form_registro_comprobante').trigger("reset");
     $('#asientos').html("");
@@ -119,39 +113,38 @@ function listar_comprobantes(){
         },
         success:function(response){
             if(response.success){
-                document.getElementById('lista_comprobantes').innerHTML = "";
-                response.data.vouchers.forEach( (comprobante) => {
-                    // Creacion de filas para la tabla
-                    const row = document.createElement('tr');
-                    const id = document.createElement('td');
-                    id.innerHTML = comprobante.idComprobante;
-                    const numero = document.createElement('td');
-                    numero.innerHTML = comprobante.numero;
-                    const tipo = document.createElement('td');
-                    tipo.innerHTML = comprobante.tipo;
-                    const fecha = document.createElement('td');
-                    fecha.innerHTML = comprobante.fecha.date.split(' ')[0];
-                    const moneda = document.createElement('td');
-                    moneda.innerHTML = comprobante.moneda;
-                    const actions = document.createElement('td');
-                    actions.classList = "text-center";
-                    actions.innerHTML = `
-                        <button class="btn btn-sm btn-warning" onclick="editar_cuenta(`+comprobante.idComprobante+`)" title="Actualizar">
-                            <i class="bi bi-pencil-fill"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="eliminar_cuenta(`+comprobante.idComprobante+`)" title="Eliminar">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    `;
-                    row.appendChild(id);
-                    row.appendChild(numero);
-                    row.appendChild(tipo);
-                    row.appendChild(fecha);
-                    row.appendChild(moneda);
-                    row.appendChild(actions);
-                    document.getElementById('lista_comprobantes').appendChild(row);
+                $('#tbl_comprobantes').bootstrapTable({
+                    search: true,
+                    searchAlign: "left",
+                    showPagination: "true",
+                    editable: "true",
+                    columns: [{
+                        field: 'numero',
+                        title: 'NÚMERO',
+                        align: 'center',
+                    }, {
+                        field: 'tipo',
+                        title: 'TIPO',
+                        align: 'center',
+                    }, {
+                        field: 'fecha',
+                        title: 'FECHA',
+                        align: 'center',
+                    }, {
+                        field: 'glosa',
+                        title: 'GLOSA',
+                    }, {
+                        field: 'actions',
+                        title: 'ACCIONES',
+                        align: 'center',
+                        clickToSelect: false,
+                        events: window.operateEvents,
+                        formatter: operateFormatter
+                    }],
+                    data: response.data.comprobantes/*,
+                    onDblClickRow: test*/
                 });
-                start_pagination( pagina , response.data.total );
+                //start_pagination( pagina , response.data.total );
             }else{
                 show_toast(ACCION,response.message,'text-bg-danger');
             }
@@ -162,6 +155,37 @@ function listar_comprobantes(){
             console.log("["+ACCION+"] "+error.statusText);
         }
     });
+}
+
+function operateFormatter(value, row, index) {
+    if(row.nivel == 'G'){
+        return [
+            ''
+        ].join('');
+    }else{
+        return [
+            '<a class="edit" href="javascript:void(0)" title="Editar">',
+            '<i class="bi bi-pencil-fill text-primary"></i>',
+            '</a>  ',
+            '<a class="remove" href="javascript:void(0)" title="Eliminar">',
+            '<i class="bi bi-trash-fill text-danger"></i>',
+            '</a>'
+        ].join('');
+    }
+}
+
+window.operateEvents = {
+    'click .edit': function (e, value, row, index) {
+      //alert('You click like action, row: ' + JSON.stringify(row))
+      editar_cuenta(row.idCuenta);
+    },
+    'click .remove': function (e, value, row, index) {
+        eliminar_cuenta(row.idCuenta,row.descripcion.replaceAll("&nbsp;", ''));
+      /*$table.bootstrapTable('remove', {
+        field: 'id',
+        values: [row.id]
+      })*/
+    }
 }
 
 $('#modal_lista_cuentas').on('show.bs.modal', () => {

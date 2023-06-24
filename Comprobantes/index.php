@@ -36,20 +36,9 @@
             </div>
             <div class="row mt-2">
                 <div class="table-responsive">
-                    <table class="table table-sm table-striped table-hover table-bordered align-middle">
-                        <thead>
-                            <tr class="table-primary text-center">
-                                <th scope="col">#</th>
-                                <th scope="col">N&Uacute;MERO</th>
-                                <th scope="col">TIPO</th>
-                                <th scope="col">FECHA</th>
-                                <th scope="col">MONEDA</th>
-                                <th scope="col">ACCIONES</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-group-divider" id="lista_comprobantes">
-                            
-                        </tbody>
+                    <table class="table table-hover align-middle"
+                            id="tbl_comprobantes">
+
                     </table>
                 </div>
             </div>
@@ -59,16 +48,17 @@
                 ?>
             </div>
         </div>
-        <?php
-            include('../Components/footer.php');
-        ?>
-        <script type="text/javascript" src="../js/environment.js"></script>
-        <script type="text/javascript" src="../js/bootstrap.bundle.min.js"></script>
-        <script type="text/javascript" src="../js/select2.min.js"></script>
-        <script type="text/javascript" src="../js/components.js"></script>
-        <script type="text/javascript" src="../js/functions.js"></script>
-        <script type="text/javascript" src="js/app.js"></script>
-        <script type="text/javascript" src="js/Asiento.js"></script>
-        <script type="text/javascript" src="js/components.js"></script>
     </body>
+    <?php
+        include('../Components/footer.php');
+    ?>
+    <script type="text/javascript" src="../js/environment.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="../js/select2.min.js"></script>
+    <script type="text/javascript" src="../js/components.js"></script>
+    <script type="text/javascript" src="../js/functions.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/Asiento.js"></script>
+    <script type="text/javascript" src="js/components.js"></script>
 </html>

@@ -10,7 +10,7 @@
                         <div class="row">
                             <div class="col-2">
                                 <div class="form-floating">
-                                    <input type="text" name="nro_comprobante" id="nro_comprobante" class="form-control form-control-lg" minlength="3" maxlength="100" required autocomplete="off" readonly/>
+                                    <input type="text" name="nro_comprobante" id="nro_comprobante" class="form-control form-control-sm" minlength="3" maxlength="100" required autocomplete="off" readonly/>
                                     <label for="nro_comprobante">Nro de Comprobante</label>
                                 </div>
                             </div>
@@ -51,17 +51,8 @@
                         <div class="row mt-2">
                             <div class="col-2">
                                 <div class="form-floating">
-                                    <select class="form-control form-select" name="proyecto" id="comprobante_proyecto">
-                                        <option value="" disabled selected> - Proyecto - </option>
-                                        <option value="1">PRUEBA</option>
-                                    </select>
-                                    <label for="comprobante_proyecto">Proyecto</label>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="form-floating">
-                                    <input type="text" name="cancelado" id="comprobante_cancelado" class="form-control" minlength="3" maxlength="100" required autocomplete="off"/>
-                                    <label for="comprobante_cancelado">Cancelado a</label>
+                                    <input type="text" name="detalle" id="comprobante_detalle" class="form-control" minlength="3" maxlength="100" required autocomplete="off"/>
+                                    <label for="comprobante_detalle">Detalle</label>
                                 </div>
                             </div>
                             <div class="col-2">

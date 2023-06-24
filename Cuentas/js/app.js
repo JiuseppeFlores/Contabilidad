@@ -96,6 +96,7 @@ function listar_cuentas(){
                     }, {
                         field: 'movimiento',
                         title: 'MOVIMIENTO',
+                        align: 'center',
                     }, {
                         field: 'operate',
                         title: 'ACCIONES',
@@ -152,14 +153,13 @@ window.operateEvents = {
 
 function rowStyle(row, index) {
     var classes = [
-      'fw-semibold text-muted'
+      'fw-semibold text-muted',
+      'text-primary',
     ]
 
     if( row.movimiento == 1 ){
         return {
-            css: {
-              color: 'blue'
-            }
+            classes: classes[1]
         };
     }else{
         return {

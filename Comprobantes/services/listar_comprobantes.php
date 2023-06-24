@@ -19,9 +19,10 @@
             $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
             $stmt = sqlsrv_query( $con, $sql , $params, $options );
             if( $stmt ){
-                $response['data'] = array('vouchers' => array(),'total' => 0);
+                $response['data'] = array('comprobantes' => array(),'total' => 0);
                 while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC ) ) {
-                    array_push($response['data']['vouchers'], $row);
+                    $row['fecha'] = $row['fecha']->format("d-m-Y");
+                    array_push($response['data']['comprobantes'], $row);
                 }
                 // OBTENIENDO EL NÚMERO TOTAL DE REGISTROS
                 $sql = "SELECT COUNT(*) as total
