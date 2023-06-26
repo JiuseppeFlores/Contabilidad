@@ -9,8 +9,8 @@ require_once('../conexion.php');
 require_once('../Tcpdf/tcpdf.php');
 
 $codigoCuenta = '11000.02';
-$fechaInicial = '2023-01-01';
-$fechaFinal = '2023-12-31';
+$fechaInicial = isset($_POST['fechaInicial']) ? $_POST['fechaInicial'] : '2023-01-01';
+$fechaFinal = isset($_POST['fechaFinal']) ? $_POST['fechaFinal'] : '2023-12-01';
 
 $filtro = '';
 if ($fechaInicial != '' && $fechaFinal != '') {

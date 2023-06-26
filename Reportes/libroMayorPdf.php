@@ -7,9 +7,9 @@ error_reporting(E_ALL & ~E_NOTICE);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
-$codigoCuenta = '11000.02';
-$fechaInicial = '2023-01-01';
-$fechaFinal = '2023-12-31';
+$codigoCuenta = isset($_POST['codigoCuenta']) ? $_POST['codigoCuenta'] : '11000001';
+$fechaInicial = isset($_POST['fechaInicial']) ? $_POST['fechaInicial'] : '2023-01-01';
+$fechaFinal = isset($_POST['fechaFinal']) ? $_POST['fechaFinal'] : '2023-12-31';
 
 $filtro = '';
 if ($fechaInicial != '' && $fechaFinal != '') {
@@ -22,6 +22,7 @@ if ($fechaInicial != '' && $fechaFinal != '') {
 
 // para la consulta a la base datos
 $sql = "SELECT * FROM tblCuentas tcu LEFT JOIN tblAsientos tas ON tcu.idCuenta = tas.idCuenta LEFT JOIN tblComprobantes tco ON tas.idComprobante = tco.idComprobante WHERE tcu.codigo = $codigoCuenta $filtro;";
+echo $sql;
 $query = sqlsrv_query($con, $sql);
 $listaAsientos = array();
 while ($row = sqlsrv_fetch_array($query)) {
@@ -122,7 +123,10 @@ if (count($listaAsientos) > 0) {
 
         $debe = floatval($value['debe']);
         $haber = floatval($value['haber']);
-        $saldo = number_format($saldo + $debe - $haber, 2);
+        // echo 'saldo ' . gettype($saldo) . '<br>';
+        // echo 'debe ' . gettype($debe) . '<br>';
+        // echo 'haber ' . gettype($haber) . '<br>';
+        $saldo2 = floatval($saldo) + $debe - $haber;
 
         $debeTotal = number_format($debeTotal + $debe, 2);
         $haberTotal = number_format($haberTotal + $haber, 2);
@@ -137,7 +141,7 @@ if (count($listaAsientos) > 0) {
         <td colspan="2">' . $value['cheque'] . '</td>
         <td colspan="2">' . $value['debe'] . '</td>
         <td colspan="2">' . $value['haber'] . '</td>
-        <td colspan="2">' . $saldo . '</td>
+        <td colspan="2">' . number_format($saldo2, 2) . '</td>
         </tr>
         ';
     }

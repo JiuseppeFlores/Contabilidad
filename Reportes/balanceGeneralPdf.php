@@ -174,6 +174,7 @@ $tabla = '
 <table cellpadding="2">';
 foreach ($listaGrupo as $key => $value) {
     if (count($value['children']) != 0) {
+        $totalGrupo = 0;
         $tabla .= '
         <tr>
         <td colspan="48"><u><b>' . $value['descripcion'] . '</b></u></td>
@@ -182,6 +183,7 @@ foreach ($listaGrupo as $key => $value) {
             if (count($valueRubro['children']) != 0) {
                 foreach ($valueRubro['children'] as $key => $valueTitulo) {
                     if (count($valueTitulo['children']) != 0) {
+                        $subtotal = 0;
                         $tabla .= '
                         <tr>
                         <td></td>
@@ -198,6 +200,7 @@ foreach ($listaGrupo as $key => $value) {
                                         <td align="rigth" border="1" colspan="10">' . $valueSubcuenta['totalDebe'] . '</td>
                                         </tr>';
                                     }
+                                    $subtotal = $subtotal + $valueSubcuenta['totalDebe'];
                                 }
                             } else {
                                 $tabla .= '
@@ -211,16 +214,17 @@ foreach ($listaGrupo as $key => $value) {
                         $tabla .= '
                         <tr>
                         <td align="rigth" colspan="38"><b>SUBTOTAL DISPONIBLE</b></td>
-                        <td align="rigth" border="1" colspan="10">121231</td>
+                        <td align="rigth" border="1" colspan="10">' . $subtotal . '</td>
                         </tr>';
                     }
                 }
+                $totalGrupo = $totalGrupo + $subtotal;
             }
         }
         $tabla .= '
         <tr>
         <td align="rigth" colspan="38"><b>TOTAL ' . $value['descripcion'] . '</b></td>
-        <td align="rigth" border="1" colspan="10">191919191</td>
+        <td align="rigth" border="1" colspan="10"> ' . $totalGrupo . '</td>
         </tr>';
     }
 }
