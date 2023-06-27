@@ -126,10 +126,10 @@ if (count($listaAsientos) > 0) {
         // echo 'saldo ' . gettype($saldo) . '<br>';
         // echo 'debe ' . gettype($debe) . '<br>';
         // echo 'haber ' . gettype($haber) . '<br>';
-        $saldo2 = floatval($saldo) + $debe - $haber;
+        $saldo2 = floatval($saldo2) + $debe - $haber;
 
-        $debeTotal = number_format($debeTotal + $debe, 2);
-        $haberTotal = number_format($haberTotal + $haber, 2);
+        $debeTotal = $debeTotal + $debe;
+        $haberTotal = $haberTotal + $haber;
 
         $tabla .= '
         <tr align="center">
@@ -138,10 +138,10 @@ if (count($listaAsientos) > 0) {
         <td></td>
         <td>' . $value['tipoCambio'] . '</td>
         <td colspan="6" align="left">' . $value['referencia'] . '</td>
-        <td colspan="2">' . $value['cheque'] . '</td>
-        <td colspan="2">' . $value['debe'] . '</td>
-        <td colspan="2">' . $value['haber'] . '</td>
-        <td colspan="2">' . number_format($saldo2, 2) . '</td>
+        <td colspan="2" align="left">' . $value['cheque'] . '</td>
+        <td colspan="2" align="rigth">' . number_format($value['debe'], 2) . '</td>
+        <td colspan="2" align="rigth">' . number_format($value['haber'], 2) . '</td>
+        <td colspan="2" align="rigth">' . number_format($saldo2, 2) . '</td>
         </tr>
         ';
     }
@@ -157,13 +157,13 @@ $tabla .= '
 <table border="0" cellpadding="3">
 <tr align="center">
 <td align="right" colspan="13"></td>
-<td colspan="2">' . $debeTotal . '</td>
-<td colspan="2">' . $haberTotal . '</td>
+<td colspan="2" align="right">' . number_format($debeTotal, 2) . '</td>
+<td colspan="2" align="right">' . number_format($haberTotal, 2) . '</td>
 <td colspan="2"></td>
 </tr>
 <tr align="center">
 <td align="right" colspan="13">SALDO DEUDOR</td>
-<td colspan="4">' . $saldo . '</td>
+<td colspan="4">' . number_format($saldo2, 2) . '</td>
 <td colspan="2"></td>
 </tr>
 </table>
