@@ -2,6 +2,20 @@ $(document).ready(function(){
     var fecha_actual = obtenerFecha();
     $('#lm_fecha_inicial').val(fecha_actual);
     $('#lm_fecha_final').val(fecha_actual);
+    $('#t_cuentas').bootstrapTable({
+        search: true,
+        searchAlign: "left",
+        rowStyle: rowStyle,
+        columns: [{
+          field: 'codigo',
+          title: 'Codigo'
+        }, {
+          field: 'descripcion',
+          title: 'Descripción'
+        }],
+        data: [],
+        onDblClickRow: seleccionarCuenta
+    });
     $('#tbl_registros').bootstrapTable({
         search: true,
         searchAlign: "left",
@@ -44,7 +58,7 @@ $('#lm_descripcion').on('click', () => {
         },
         success:function(response){
             if(response.success){
-                //console.log(response);
+                console.log(response);
                 response.data.forEach( (cuenta) => {
                     var sp = "&nbsp;";
                     switch(cuenta.nivel){
@@ -57,21 +71,8 @@ $('#lm_descripcion').on('click', () => {
                     };
                     cuenta.descripcion = sp + cuenta.descripcion;
                 });
-                $('#t_cuentas').bootstrapTable({
-                    search: true,
-                    searchAlign: "left",
-                    rowStyle: rowStyle,
-                    columns: [{
-                      field: 'codigo',
-                      title: 'Codigo'
-                    }, {
-                      field: 'descripcion',
-                      title: 'Descripción'
-                    }],
-                    data: response.data,
-                    onDblClickRow: seleccionarCuenta
-
-                });
+                $('#t_cuentas').bootstrapTable('removeAll');
+                $('#t_cuentas').bootstrapTable('load', response.data);
                 $('#modal_lista_cuentas').modal('show');
             }else{
                 show_toast(ACCION,response.message,'text-bg-danger');
@@ -88,26 +89,22 @@ $('#lm_descripcion').on('click', () => {
 function rowStyle(row, index) {
     var classes = [
       'fw-semibold text-muted',
-      'text-primary',
-    ]
+      'text-primary'
+    ];
 
-    if( row.movimiento == "SI" ){
+    if( row.movimiento == 1 ){
         return {
             classes: classes[1]
         };
     }else{
-        if( row.movimiento == "NO" ){
-            return {
-                classes: classes[0]
-            };
-        }else{
-
-        }
+        return {
+            classes: classes[0]
+        };
     }
 }
 
 function seleccionarCuenta(e){
-    if(e.movimiento == "SI"){
+    if(e.movimiento == 1){
         console.log("Valido");
         document.getElementById('lm_descripcion').value = e.descripcion.replaceAll("&nbsp;", '');
         document.getElementById('lm_codigo').value = e.codigo;

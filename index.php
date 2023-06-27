@@ -80,7 +80,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Libro Mayor</h5>
                         <p class="card-text">Documento que incluye los movimientos de cada una de las cuentas de la empresa por separado.</p>
-                        <a href="LibroMayor/index.php" class="btn btn-primary">Generar</a>
+                        <a href="LibroMayor/index.php" class="btn btn-primary">Libro Mayor</a>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Balance de Sumas y Saldos</h5>
                         <p class="card-text">Documento que muestra una relación de las cuentas utilizadas en el libro diario y del saldo que tienen en una fecha concreta.</p>
-                        <a href="#" class="btn btn-primary">Generar</a>
+                        <a href="BalanceSumasSaldos/index.php" class="btn btn-primary">Balance de Sumas y Saldos</a>
                     </div>
                 </div>
             </div>
