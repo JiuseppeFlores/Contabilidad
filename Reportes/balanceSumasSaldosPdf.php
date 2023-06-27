@@ -105,26 +105,30 @@ if (count($listaRegistros) > 0) {
     foreach ($listaRegistros as $key => $value) {
         $debe = floatval($value['debe']);
         $haber = floatval($value['haber']);
-        $saldo = number_format($debe - $haber, 2);
+        $saldo = $debe - $haber;
+        echo '<br>';
+        echo 'debe: ' . $debe . '<br>';
+        echo 'haber: ' . $haber . '<br>';
+        echo 'saldo: ' . $saldo . '<br>';
         if ($saldo < 0) {
             $acreedor = $saldo;
-            $deudor = 0.00;
+            $deudor = 0;
         } else {
             $deudor = $saldo;
-            $acreedor = 0.00;
+            $acreedor = 0;
         }
 
-        $debeTotal = number_format($debeTotal + $debe, 2);
-        $haberTotal = number_format($haberTotal + $haber, 2);
-        $deudorTotal = number_format($deudorTotal + $deudor, 2);
-        $acreedorTotal = number_format($acreedorTotal + $acreedor, 2);
+        $debeTotal = $debeTotal + $debe;
+        $haberTotal = $haberTotal + $haber;
+        $deudorTotal = $deudorTotal + $deudor;
+        $acreedorTotal = $acreedorTotal + $acreedor;
 
         $tabla .= '
         <tr align="center">
         <td colspan="2" align="left">' . $value['codigo'] . '</td>
         <td colspan="6" align="left">' . $value['descripcion'] . '</td>
-        <td colspan="2" align="rigth">' . $value['debe'] . '</td>
-        <td colspan="2" align="rigth">' . $value['haber'] . '</td>
+        <td colspan="2" align="rigth">' . number_format($value['debe'], 2) . '</td>
+        <td colspan="2" align="rigth">' . number_format($value['haber'], 2) . '</td>
         <td colspan="2" align="rigth">' . number_format($deudor, 2) . '</td>
         <td colspan="2" align="rigth">' . number_format($acreedor, 2) . '</td>
         </tr>
@@ -142,10 +146,10 @@ $tabla .= '
 <table border="1" cellpadding="3">
 <tr align="right">
 <td align="right" colspan="8"><b>TOTALES</b></td>
-<td colspan="2">' . $debeTotal . '</td>
-<td colspan="2">' . $haberTotal . '</td>
-<td colspan="2">' . $deudorTotal . '</td>
-<td colspan="2">' . $acreedorTotal . '</td>
+<td colspan="2">' . number_format($debeTotal, 2) . '</td>
+<td colspan="2">' . number_format($haberTotal, 2) . '</td>
+<td colspan="2">' . number_format($deudorTotal, 2) . '</td>
+<td colspan="2">' . number_format($acreedorTotal, 2) . '</td>
 </tr>
 </table>
 ';

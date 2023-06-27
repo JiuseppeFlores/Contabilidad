@@ -8,8 +8,8 @@ ini_set('log_errors', 1);
 require_once('../conexion.php');
 require_once('../Tcpdf/tcpdf.php');
 
-$fechaInicial = '2023-01-01';
-$fechaFinal = '2023-12-31';
+$fechaInicial = isset($_POST['fechaInicial']) ? $_POST['fechaInicial'] : '2023-01-01';
+$fechaFinal = isset($_POST['fechaFinal']) ? $_POST['fechaFinal'] : '2023-12-31';
 
 $filtro = '';
 if ($fechaInicial != '' && $fechaFinal != '') {
@@ -20,13 +20,15 @@ if ($fechaInicial != '' && $fechaFinal != '') {
     $fechaFinalFormato = $fechaFinalFormato->format('d/m/Y');
 }
 
-$sql = "SELECT tbc.*, SUM(tba.debe) totalDebe FROM tblCuentas tbc LEFT JOIN tblAsientos tba ON tbc.idCuenta = tba.idCuenta GROUP BY tbc.idCuenta, tbc.codigo, tbc.descripcion, tbc.grupo, tbc.rubro, tbc.titulo, tbc.compuesta, tbc.subcuenta, tbc.nivel, tbc.moneda;";
+$sql = "SELECT tbc.*, SUM(tba.debe) totalDebe, SUM(tba.haber) totalHaber FROM tblCuentas tbc LEFT JOIN tblAsientos tba ON tbc.idCuenta = tba.idCuenta GROUP BY tbc.idCuenta, tbc.codigo, tbc.descripcion, tbc.grupo, tbc.rubro, tbc.titulo, tbc.compuesta, tbc.subcuenta, tbc.auxiliar, tbc.nivel, tbc.movimiento, tbc.moneda;";
+echo $sql;
 $query = sqlsrv_query($con, $sql);
 $listaGrupo = array();
 $listaRubro = array();
 $listaTitulo = array();
 $listaCompuesta = array();
 $listaSubcuenta = array();
+$listaAuxiliar = array();
 while ($row = sqlsrv_fetch_array($query)) {
     switch ($row['nivel']) {
         case 'G':
@@ -44,6 +46,9 @@ while ($row = sqlsrv_fetch_array($query)) {
         case 'S':
             $listaSubcuenta[] = $row;
             break;
+        case 'A':
+            $listaAuxiliar[] = $row;
+            break;
         default:
             break;
     }
@@ -52,15 +57,29 @@ $listaCompuesta2 = $listaCompuesta;
 // print_r($listaCompuesta2);
 // echo '<br><br>';
 
+foreach ($listaSubcuenta as $key => $value) {
+    $value['children'] = array();
+    foreach ($listaAuxiliar as $key2 => $value2) {
+        // print_r($value);
+        // echo '<br><br>';
+        if ($value['subcuenta'] == $value2['subcuenta'] && $value['compuesta'] == $value2['compuesta'] && $value['titulo'] == $value2['titulo'] && $value['rubro'] == $value2['rubro'] && $value['grupo'] == $value2['grupo']) {
+            $value['children'][] = $value2;
+        }
+        $listaSubcuenta[$key] = $value;
+    }
+}
+
 foreach ($listaCompuesta as $key => $value) {
     $value['children'] = array();
     foreach ($listaSubcuenta as $key2 => $value2) {
         // print_r($value);
         // echo '<br><br>';
-        if ($value['compuesta'] == $value2['compuesta'] && $value['titulo'] == $value2['titulo'] && $value['rubro'] == $value2['rubro'] && $value['grupo'] == $value2['grupo']) {
-            $value['children'][] = $value2;
+        if (count($value2['children']) != 0) {
+            if ($value['compuesta'] == $value2['compuesta'] && $value['titulo'] == $value2['titulo'] && $value['rubro'] == $value2['rubro'] && $value['grupo'] == $value2['grupo']) {
+                $value['children'][] = $value2;
+            }
+            $listaCompuesta[$key] = $value;
         }
-        $listaCompuesta[$key] = $value;
     }
 }
 
@@ -171,7 +190,7 @@ $tabla .= '
 $pdf->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);
 $pdf->SetFont('helvetica', '', 9);
 $tabla = '
-<table cellpadding="2">';
+<table border="1" cellpadding="2">';
 foreach ($listaGrupo as $key => $value) {
     if (count($value['children']) != 0) {
         $totalGrupo = 0;
