@@ -161,9 +161,17 @@ $tabla .= '
 <td colspan="2" align="rigth">' . number_format($haberTotal, 2) . '</td>
 <td colspan="2"></td>
 </tr>
-<tr align="center">
-<td align="rigth" colspan="13">SALDO DEUDOR</td>
-<td colspan="4">' . number_format($saldo2, 2) . '</td>
+<tr align="center">';
+if ($saldo2 < 0){
+    $tabla .= '
+    <td align="rigth" colspan="13">SALDO ACREEDOR</td>
+    <td colspan="4">' . number_format((-1)*$saldo2, 2) . '</td>';
+} else {
+    $tabla .= '
+    <td align="rigth" colspan="13">SALDO DEUDOR</td>
+    <td colspan="4">' . number_format($saldo2, 2) . '</td>';
+}
+$tabla .= '
 <td colspan="2"></td>
 </tr>
 </table>
