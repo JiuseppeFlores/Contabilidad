@@ -6,7 +6,7 @@ $('#modal_registrar_comprobante').on('hide.bs.modal', () => {
 
 function adicionar_comprobante(){
     $('#modal_registrar_comprobante').modal('show');
-    $('#comprobante_fecha').val(get_date());
+    $('#comprobante_fecha').val(obtenerFecha());
     const ACCION = "OBTENER NRO. COMPROBANTE";
     var datos = { id_proyecto : 1 };
     $.ajax({

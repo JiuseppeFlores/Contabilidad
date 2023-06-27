@@ -1,4 +1,4 @@
-function get_date(){
+function obtenerFecha(){
     const fecha = new Date();
     var year = fecha.getFullYear();
     var month = (fecha.getMonth() + 1) < 10 ? '0'+(fecha.getMonth() + 1) : (fecha.getMonth() + 1);
