@@ -130,7 +130,7 @@ if (count($listaRegistros) > 0) {
         <td colspan="2" align="rigth">' . number_format($value['debe'], 2) . '</td>
         <td colspan="2" align="rigth">' . number_format($value['haber'], 2) . '</td>
         <td colspan="2" align="rigth">' . number_format($deudor, 2) . '</td>
-        <td colspan="2" align="rigth">' . number_format($acreedor, 2) . '</td>
+        <td colspan="2" align="rigth">' . number_format((-1) * $acreedor, 2) . '</td>
         </tr>
         ';
     }
@@ -149,7 +149,7 @@ $tabla .= '
 <td colspan="2">' . number_format($debeTotal, 2) . '</td>
 <td colspan="2">' . number_format($haberTotal, 2) . '</td>
 <td colspan="2">' . number_format($deudorTotal, 2) . '</td>
-<td colspan="2">' . number_format($acreedorTotal, 2) . '</td>
+<td colspan="2">' . number_format((-1) * $acreedorTotal, 2) . '</td>
 </tr>
 </table>
 ';
