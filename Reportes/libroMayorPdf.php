@@ -154,15 +154,15 @@ if (count($listaAsientos) > 0) {
 }
 $tabla .= '</table>';
 $tabla .= '
-<table border="0" cellpadding="3">
+<table border="0" cellpadding="2">
 <tr align="center">
 <td align="right" colspan="13"></td>
-<td colspan="2" align="right">' . number_format($debeTotal, 2) . '</td>
-<td colspan="2" align="right">' . number_format($haberTotal, 2) . '</td>
+<td colspan="2" align="rigth">' . number_format($debeTotal, 2) . '</td>
+<td colspan="2" align="rigth">' . number_format($haberTotal, 2) . '</td>
 <td colspan="2"></td>
 </tr>
 <tr align="center">
-<td align="right" colspan="13">SALDO DEUDOR</td>
+<td align="rigth" colspan="13">SALDO DEUDOR</td>
 <td colspan="4">' . number_format($saldo2, 2) . '</td>
 <td colspan="2"></td>
 </tr>
