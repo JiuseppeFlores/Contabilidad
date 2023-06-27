@@ -25,30 +25,19 @@
         <div class="row">
             <div class="col-6">
                 <h3>Balance de Sumas y Saldos</h3>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" disabled>
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Varias Cuentas</label>
-                </div>
             </div>
         </div>
         <div class="row mt-2 align-items-center">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-2 mb-3">
                 <div class="form-floating">
-                    <input type="text" name="descripcion" id="lm_descripcion" class="form-control form-control-sm" require readonly value=""/>
-                    <input type="hidden" name="codigo" id="lm_codigo"/>
-                    <label>Cuenta</label>
+                    <input type="date" name="fecha_inicial" id="ss_fecha_inicial" class="form-control form-control-sm" require autocomplete="off"/>
+                    <label for="ss_fecha_inicial">Fecha Inicial</label>
                 </div>
             </div>
             <div class="col-md-2 mb-3">
                 <div class="form-floating">
-                    <input type="date" name="fecha_inicial" id="lm_fecha_inicial" class="form-control form-control-sm" require autocomplete="off"/>
-                    <label for="lm_fecha_inicial">Fecha Inicial</label>
-                </div>
-            </div>
-            <div class="col-md-2 mb-3">
-                <div class="form-floating">
-                    <input type="date" name="fecha_final" id="lm_fecha_final" class="form-control form-control-sm" require autocomplete="off"/>
-                    <label for="lm_fecha_final">Fecha Final</label>
+                    <input type="date" name="fecha_final" id="ss_fecha_final" class="form-control form-control-sm" require autocomplete="off"/>
+                    <label for="ss_fecha_final">Fecha Final</label>
                 </div>
             </div>
             <div class="col-md-4 mb-3">
