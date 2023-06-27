@@ -61,8 +61,9 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Cuentas</h5>
-                        <p class="card-text">Gestione las cuentas contables de su negocio.</p>
-                        <a href="cuentas/index.php" class="btn btn-primary">Ir a cuentas</a>
+                        <div class="list-group">
+                            <a href="cuentas/index.php" class="list-group-item list-group-item-action">Plan de Cuentas</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,17 +71,19 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Comprobantes</h5>
-                        <p class="card-text">Registrar comprobantes de las transacciones de su negocio.</p>
-                        <a href="comprobantes/index.php" class="btn btn-primary">Registrar comprobantes</a>
+                        <div class="list-group">
+                            <a href="comprobantes/index.php" class="list-group-item list-group-item-action">Comprobantes</a>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 mt-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Libro Mayor</h5>
-                        <p class="card-text">Documento que incluye los movimientos de cada una de las cuentas de la empresa por separado.</p>
-                        <a href="LibroMayor/index.php" class="btn btn-primary">Libro Mayor</a>
+                        <h5 class="card-title">Libros</h5>
+                        <div class="list-group">
+                            <a href="LibroMayor/index.php" class="list-group-item list-group-item-action">Libro Mayor</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -88,8 +91,20 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Balance de Sumas y Saldos</h5>
-                        <p class="card-text">Documento que muestra una relación de las cuentas utilizadas en el libro diario y del saldo que tienen en una fecha concreta.</p>
-                        <a href="BalanceSumasSaldos/index.php" class="btn btn-primary">Balance de Sumas y Saldos</a>
+                        <div class="list-group">
+                            <a href="BalanceSumasSaldos/index.php" class="list-group-item list-group-item-action">Balance de Sumas y Saldos</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 mt-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Estados Financieros</h5>
+                        <div class="list-group">
+                            <a href="BalanceGeneral/index.php" class="list-group-item list-group-item-action">Balance General</a>
+                            <a href="EstadoResultados/index.php" class="list-group-item list-group-item-action">Estado de Resultados</a>
+                        </div>
                     </div>
                 </div>
             </div>
