@@ -38,14 +38,13 @@
                     for( $i = 0 ; $i < $nro_asientos ; $i++ ){
                         $cuenta = $_POST['cuenta'][$i];
                         $referencia = $_POST['referencia'][$i];
-                        $cc = $_POST['cc'][$i];
                         $debe = $_POST['debe'][$i];
                         $haber = $_POST['haber'][$i];
                         $banco = $_POST['banco'][$i];
                         $cheque = $_POST['cheque'][$i];
 
-                        $sql = "INSERT INTO tblAsientos (idComprobante,idCuenta,referencia,cc,debe,haber,bco,cheque) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? ) ;";
-                        $params = array($id_comprobante,$cuenta,$referencia,$cc,$debe,$haber,$banco,$cheque);
+                        $sql = "INSERT INTO tblAsientos (idComprobante,idCuenta,referencia,debe,haber,bco,cheque) VALUES ( ? , ? , ? , ? , ? , ? , ? ) ;";
+                        $params = array($id_comprobante,$cuenta,$referencia,$debe,$haber,$banco,$cheque);
                         $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
                         $stmt = sqlsrv_query( $con, $sql , $params, $options );
                         if( $stmt === false ){

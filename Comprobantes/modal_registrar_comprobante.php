@@ -1,12 +1,12 @@
 <form id="form_registro_comprobante">
     <div class="modal fade" id="modal_registrar_comprobante" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
+        <div class="modal-dialog modal-dialog-centered" style="width:100% !important;margin:20px;max-width:100% !important;">
+            <div class="modal-content" style="width:95vw !important;margin:20px;">
+                <div class="modal-header bg-success text-light">
                     <h5 class="modal-title">REGISTRO DE COMPROBANTES</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="container">
+                    <div class="container-fluid">
                         <div class="row">
                             <div class="col-2">
                                 <div class="form-floating">
@@ -33,15 +33,15 @@
                             </div>
                             <div class="col-2">
                                 <div class="form-floating">
-                                    <input type="decimal" name="tipo_cambio" id="comprobante_tipo_cambio" class="form-control" minlength="1" maxlength="100" required autocomplete="off"/>
+                                    <input type="decimal" name="tipo_cambio" id="comprobante_tipo_cambio" class="form-control" minlength="1" maxlength="100" required autocomplete="off" value="6.96"/>
                                     <label for="comprobante_tipo_cambio">Tipo de Cambio</label>
                                 </div>
                             </div>
                             <div class="col-2">
                                 <div class="form-floating">
                                     <select class="form-control form-select" name="moneda" required id="comprobante_moneda">
-                                        <option value="" disabled selected> - Moneda - </option>
-                                        <option value="BS">Bs.</option>
+                                        <option value="" disabled> - Moneda - </option>
+                                        <option value="BS" selected>Bs.</option>
                                         <option value="SUS">SU$</option>
                                     </select>
                                     <label for="comprobante_moneda">Moneda</label>
@@ -71,7 +71,7 @@
                         <div class="row mt-2">
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <input class="form-control" id="comprobante_glosa" name="glosa"/>
+                                    <input class="form-control" id="comprobante_glosa" name="glosa" autocomplete="off"/>
                                     <label for="comprobante_glosa">Glosa</label>
                                 </div>
                             </div>
@@ -83,17 +83,20 @@
                         </div>
                         <div class="row mt-2">
                             <div class="table-responsive">
-                                <table class="table table-hover table-striped table-bordered align-middle">
+                                <table class="table table-hover table-bordered align-middle">
                                     <thead>
                                         <tr class="table-info text-center">
                                             <th scope="col">CÓDIGO</th>
                                             <th scope="col">CUENTA</th>
                                             <th scope="col">REFERENCIA</th>
-                                            <th scope="col">C.C.</th>
-                                            <th scope="col">DEBE</th>
-                                            <th scope="col">HABER</th>
+                                            <!--<th scope="col">C.C.</th>-->
+                                            <th scope="col">DEBE (Bs)</th>
+                                            <th scope="col">HABER (Bs)</th>
+                                            <th scope="col">DEBE ($us)</th>
+                                            <th scope="col">HABER ($us)</th>
                                             <th scope="col">BCO.</th>
                                             <th scope="col">CHEQUE</th>
+                                            <th scope="col">IVA</th>
                                         </tr>
                                     </thead>
                                     <tbody id="asientos">
@@ -101,14 +104,12 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th scope="col"></th>
-                                            <th scope="col"></th>
-                                            <th scope="col"></th>
-                                            <th scope="col"></th>
+                                            <th scope="col" colspan="3"></th>
                                             <th class="text-center" scope="col" id="total_debe"></th>
                                             <th class="text-center" scope="col" id="total_haber"></th>
-                                            <th scope="col"></th>
-                                            <th scope="col"></th>
+                                            <th scope="col" id="total_debe_s"></th>
+                                            <th scope="col" id="total_haber_s"></th>
+                                            <th scope="col" colspan="3"></th>
                                         </tr>
                                     </tfoot>
                                 </table>

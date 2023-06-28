@@ -1,6 +1,52 @@
+$('#tbl_comprobantes').bootstrapTable({
+    search: true,
+    searchAlign: "left",
+    showPagination: "true",
+    editable: "true",
+    detailView: 1,
+    onExpandRow: function (index, row, $detail) {
+      /* eslint no-use-before-define: ["error", { "functions": false }]*/
+      //expandTable($detail, cells - 1)
+      console.log(index,row,$detail);
+      console.log("detalle:",row);
+      //listarAsientos($detail);
+    },
+    columns: [{
+        field: 'numero',
+        title: 'NÚMERO',
+        align: 'center',
+    }, {
+        field: 'tipo',
+        title: 'TIPO',
+        align: 'center',
+    }, {
+        field: 'fecha',
+        title: 'FECHA',
+        align: 'center',
+    }, {
+        field: 'glosa',
+        title: 'GLOSA',
+    }, {
+        field: 'actions',
+        title: 'ACCIONES',
+        align: 'center',
+        clickToSelect: false,
+        events: window.operateEvents,
+        formatter: operateFormatter
+    }],
+    data: []
+});
+
+//listar_comprobantes();
+
+
 $('#modal_registrar_comprobante').on('hide.bs.modal', () => {
     $('#form_registro_comprobante').trigger("reset");
     $('#asientos').html("");
+    $('#total_debe').text("");
+    $('#total_haber').text("");
+    $('#total_debe_s').text("");
+    $('#total_haber_s').text("");
     ASIENTOS = [];
 });
 
@@ -36,7 +82,7 @@ function adicionar_comprobante(){
 
 async function get_counts(){
     const ACCION = "OBTENER CUENTAS";
-    var datos = { pagina : 1 , total : 1000 };
+    var datos = { movimiento: 1 };
     $.ajax({
         data: datos,
         url: '../Cuentas/services/listar_cuentas.php',
@@ -47,7 +93,7 @@ async function get_counts(){
         },
         success:function(response){
             if(response.success){
-                response.data.accounts.forEach( (count) => {
+                response.data.forEach( (count) => {
                     CUENTAS.push({
                         id: count.idCuenta,
                         codigo: count.codigo,
@@ -66,6 +112,18 @@ async function get_counts(){
 $('#form_registro_comprobante').on('submit', function(e){
     e.preventDefault();
     if(ASIENTOS.length > 0){
+        var debe = parseFloat($('#total_debe').text());
+        var haber = parseFloat($('#total_haber').text());
+        var debe_s = parseFloat($('#total_debe_s').text());
+        var haber_s = parseFloat($('#total_haber_s').text());
+
+        console.log(debe,haber);
+
+        if(debe != haber && debe_s != haber_s){
+            alert("Existe diferencia en las sumas de DEBE y HABER");
+            return;
+        }
+
         const ACCION = "REGISTRAR COMPROBANTE";
         let datos = $('#form_registro_comprobante').serialize();
         datos = datos+"&total_asientos="+ASIENTOS.length;
@@ -95,6 +153,7 @@ $('#form_registro_comprobante').on('submit', function(e){
         });
     }else{
         console.log("Debe asignar asientos contables");
+        alert("Debe asignar asientos contables");
     }
 });
 
@@ -113,37 +172,9 @@ function listar_comprobantes(){
         },
         success:function(response){
             if(response.success){
-                $('#tbl_comprobantes').bootstrapTable({
-                    search: true,
-                    searchAlign: "left",
-                    showPagination: "true",
-                    editable: "true",
-                    columns: [{
-                        field: 'numero',
-                        title: 'NÚMERO',
-                        align: 'center',
-                    }, {
-                        field: 'tipo',
-                        title: 'TIPO',
-                        align: 'center',
-                    }, {
-                        field: 'fecha',
-                        title: 'FECHA',
-                        align: 'center',
-                    }, {
-                        field: 'glosa',
-                        title: 'GLOSA',
-                    }, {
-                        field: 'actions',
-                        title: 'ACCIONES',
-                        align: 'center',
-                        clickToSelect: false,
-                        events: window.operateEvents,
-                        formatter: operateFormatter
-                    }],
-                    data: response.data.comprobantes/*,
-                    onDblClickRow: test*/
-                });
+                //console.log(response);
+                $('#tbl_comprobantes').bootstrapTable('removeAll');
+                $('#tbl_comprobantes').bootstrapTable('load', response.data.comprobantes);
                 //start_pagination( pagina , response.data.total );
             }else{
                 show_toast(ACCION,response.message,'text-bg-danger');

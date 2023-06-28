@@ -22,6 +22,7 @@
             include('../components/navbar.php');
             include('../components/toast.php');
             include('modal_registrar_comprobante.php');
+            include('modal_registrar_factura.php');
             include('modal_cuentas.php');
         ?>
         <div class="container mt-4">
@@ -30,7 +31,7 @@
                     <h3>Comprobantes</h3>
                 </div>
                 <div class="col-6 text-end">
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal_lista_cuentas"><i class="bi bi-plus me-2"></i>Test</button>
+                    <a class="btn btn-warning" data-bs-toggle="modal" href="#modal_lista_cuentas"><i class="bi bi-plus me-2"></i>Test</a>
                     <button class="btn btn-success" onclick="adicionar_comprobante()"><i class="bi bi-plus me-2"></i>Adicionar</button>
                 </div>
             </div>
