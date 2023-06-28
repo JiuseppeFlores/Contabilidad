@@ -18,6 +18,9 @@
           <a class="nav-link" href="../comprobantes/index.php" id="nav_asientos">Comprobantes</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="../Asientos/" id="nav_asientos_cont">Asientos Contables</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="../LibroMayor/index.php" id="nav_asientos">Libro Mayor</a>
         </li>
         <li class="nav-item">
