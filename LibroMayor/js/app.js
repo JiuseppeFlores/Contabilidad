@@ -45,6 +45,7 @@ $(document).ready(function(){
         data: []
     });
 });
+
 $('#lm_descripcion').on('click', () => {
     const ACCION = "LISTAR CUENTAS";
     var datos = { };

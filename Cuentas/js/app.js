@@ -1,10 +1,133 @@
-// MARCANDO EL NAV-ITEM CORRESPONDIENTE
-$('#nav_cuentas').addClass('active');
-// INICIALIZANDO EL LISTADO DE CUENTAS
-listar_cuentas();
+$(document).ready(function(){
+    // MARCANDO EL NAV-ITEM CORRESPONDIENTE
+    $('#nav_cuentas').addClass('active');
+    // INICIALIZANDO EL LISTADO DE CUENTAS
+    $('#t_cuentas').bootstrapTable({
+        search: true,
+        searchAlign: "left",
+        rowStyle: rowStyle,
+        columns: [{
+          field: 'codigo',
+          title: 'Codigo'
+        }, {
+          field: 'descripcion',
+          title: 'Descripción'
+        }],
+        data: [],
+        onDblClickRow: seleccionarCuenta
+    });
+    $('#tbl_cuentas').bootstrapTable({
+        search: true,
+        searchAlign: "left",
+        rowStyle: rowStyle,
+        columns: [{
+          field: 'codigo',
+          title: 'CÓDIGO',
+        }, {
+          field: 'descripcion',
+          title: 'DESCRIPCIÓN',
+        }, {
+            field: 'movimiento',
+            title: 'MOVIMIENTO',
+            align: 'center',
+        }, {
+            field: 'operate',
+            title: 'ACCIONES',
+            align: 'center',
+            clickToSelect: false,
+            events: window.operateEvents,
+            formatter: operateFormatter
+        }],
+        data: []
+    });
+    listar_cuentas(); 
+});
+
+$('#modal_lista_cuentas').on('show.bs.modal', () => {
+    const ACCION = "LISTAR CUENTAS";
+    var datos = {
+        movimiento: 0
+     };
+    $.ajax({
+        data: datos,
+        url: 'services/listar_cuentas.php',
+        type: 'GET',
+        dataType: 'JSON',
+        beforeSend: function(){
+            console.log("["+ACCION+"] Enviando datos...");
+        },
+        success:function(response){
+            if(response.success){
+                response.data.forEach( (cuenta) => {
+                    var sp = "&nbsp;";
+                    switch(cuenta.nivel){
+                        case 'G':sp = '';break;
+                        case 'R':sp = sp.repeat(4);break;
+                        case 'T':sp = sp.repeat(8);break;
+                        case 'C':sp = sp.repeat(12);break;
+                        case 'S':sp = sp.repeat(16);break;
+                    };
+                    cuenta.descripcion = sp + cuenta.descripcion;
+                });
+                $('#t_cuentas').bootstrapTable('removeAll');
+                $('#t_cuentas').bootstrapTable('load', response.data);
+            }else{
+                show_toast(ACCION,response.message,'text-bg-danger');
+            }
+            console.log("["+ACCION+"] "+response.message);
+        },
+        error: function(error){
+            show_toast(ACCION,error.statusText,'text-bg-danger');
+            console.log("["+ACCION+"] "+error.statusText);
+        }
+    });
+});
+
+function rowStyle(row, index) {
+    var classes = [
+      'fw-semibold text-muted',
+      'text-primary'
+    ];
+
+    if( row.movimiento == 1 ){
+        return {
+            classes: classes[1]
+        };
+    }else{
+        return {
+            classes: classes[0]
+        };
+    }
+}
+
+function seleccionarCuenta(e){
+    document.getElementById('ca_descripcion').value = e.descripcion.replaceAll("&nbsp;", '');
+    document.getElementById('ca_codigo_base').textContent = e.codigo;
+    $("#ca_movimiento").prop('checked', e.nivel == 'S' ? true : false);
+    $("#ca_movimiento").prop('readonly', e.nivel == 'S' ? true : false);
+    $('#modal_lista_cuentas').modal('hide');
+    $('#modal_adicionar').modal('show');
+    $('#ca_grupo').val(e.grupo);
+    $('#ca_rubro').val(e.rubro);
+    $('#ca_titulo').val(e.titulo);
+    $('#ca_compuesta').val(e.compuesta);
+    $('#ca_subcuenta').val(e.subcuenta);
+    let niveles = ['G','R','T','C','S','A'];
+    $('#ca_nivel').val(niveles[niveles.indexOf(e.nivel) + 1]);
+}
+
+function actualizarCodigo(){
+    var codigo = $("#ca_codigo_cuenta").val();
+    $("#ca_codigo_cuenta").val(parseInt(codigo) < 10 ? "0"+codigo : parseInt(codigo) >= 10 ? codigo : "00");
+    $('#ca_codigo').val($('#ca_codigo_base').text() + $('#ca_codigo_cuenta').val());
+}
 // ADICIONAR CUENTA NUEVA
 $('#form_adicionar_cuenta').on('submit', function(e){
     e.preventDefault();
+    if($('#ca_descripcion').val().trim() == ''){
+        alert("Seleccione un nivel de cuenta.");
+        return;
+    }
     const ACCION = "ADICIONAR CUENTA";
     var datos = $('#form_adicionar_cuenta').serialize();
     $.ajax({
@@ -18,7 +141,7 @@ $('#form_adicionar_cuenta').on('submit', function(e){
         success:function(response){
             if(response.success){
                 listar_cuentas();
-                //$('#modal_adicionar').modal('hide');
+                $('#modal_adicionar').modal('hide');
             }
             show_toast(ACCION,response.message,response.success?'text-bg-success':'text-bg-warning');
             console.log("["+ACCION+"] "+response.message);
@@ -30,16 +153,9 @@ $('#form_adicionar_cuenta').on('submit', function(e){
     });
 });
 
-$('#modal_adicionar').on('show.bs.modal', () => {
-    $("#ca_rubro").select2({
-        theme: "bootstrap-5"
-    });
-    cambio_nivel('ca');
-});
-
 $('#modal_adicionar').on('hide.bs.modal', () => {
     $('#form_adicionar_cuenta').trigger("reset");
-    $('#lista_grupo').html("");
+    $('#ca_codigo_base').html("");
 });
 
 $('#modal_actualizar').on('show.bs.modal', () => {
@@ -70,7 +186,6 @@ function listar_cuentas(){
         },
         success:function(response){
             if(response.success){
-                document.getElementById('tbl_cuentas').innerHTML = "";
                 response.data.forEach( (cuenta) => {
                     var sp = "&nbsp;";
                     switch(cuenta.nivel){
@@ -83,31 +198,8 @@ function listar_cuentas(){
                     };
                     cuenta.descripcion = sp + cuenta.descripcion;
                 });
-                $('#tbl_cuentas').bootstrapTable({
-                    search: true,
-                    searchAlign: "left",
-                    rowStyle: rowStyle,
-                    columns: [{
-                      field: 'codigo',
-                      title: 'CÓDIGO',
-                    }, {
-                      field: 'descripcion',
-                      title: 'DESCRIPCIÓN',
-                    }, {
-                        field: 'movimiento',
-                        title: 'MOVIMIENTO',
-                        align: 'center',
-                    }, {
-                        field: 'operate',
-                        title: 'ACCIONES',
-                        align: 'center',
-                        clickToSelect: false,
-                        events: window.operateEvents,
-                        formatter: operateFormatter
-                    }],
-                    data: response.data/*,
-                    onDblClickRow: test*/
-                });
+                $('#tbl_cuentas').bootstrapTable('removeAll');
+                $('#tbl_cuentas').bootstrapTable('load', response.data);
             }else{
                 show_toast(ACCION,response.message,response.success?'text-bg-success':'text-bg-warning');
             }

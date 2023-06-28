@@ -25,6 +25,7 @@
         include('modal_actualizar.php');
         include('modal_eliminar.php');
         include('../components/toast.php');
+        include('../Components/modal_cuentas.php');
     ?>
     <div class="container mt-4 mb-4">
         <div class="row">
@@ -37,7 +38,7 @@
         </div>
         <div class="row mt-2">
             <div class="table-responsive">
-                <table class="table table-sm table-hover caption-top" id="tbl_cuentas">
+                <table class="table table-sm table-hover" id="tbl_cuentas">
                     
                 </table>
             </div>
