@@ -36,4 +36,24 @@
             unset($_COOKIE['user']);
         }
     }
+
+    function dataCompany(){
+        // Obteniendo el ID de la empresa
+        $id = $_COOKIE['id_company'];
+        // Preparando la consulta SQL para la obtencion de datos de la empresa
+        require_once('../conexion_empresa.php');
+        $sql = "SELECT TOP 1 *
+                FROM tblEmpresas te
+                WHERE te.idEmpresa = ? ;";
+        $params = array($id);
+        $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
+        $stmt = sqlsrv_query( $con, $sql , $params, $options );
+
+        if( $stmt ){
+            return sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC );
+        }else{
+            return false;
+        }
+
+    }
 ?>

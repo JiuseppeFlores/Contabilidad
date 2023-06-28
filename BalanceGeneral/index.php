@@ -28,16 +28,50 @@
             </div>
         </div>
         <div class="row mt-2 align-items-center">
-            <div class="col-md-2 mb-3">
-                <div class="form-floating">
-                    <input type="date" name="fecha_inicial" id="ss_fecha_inicial" class="form-control form-control-sm" require autocomplete="off"/>
-                    <label for="ss_fecha_inicial">Fecha Inicial</label>
+            <div class="col-12">
+                <label for="" class="form-label text-muted"><b>Nivel de Cuenta:</b></label>
+                <div class="mb-3 mt-2 ms-2 me-2">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="nivel" id="bg_grupo" value="G" disabled>
+                        <label class="form-check-label" for="bg_grupo">Grupo</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="nivel" id="bg_rubro" value="R" disabled>
+                        <label class="form-check-label" for="bg_rubro">Rubro</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="nivel" id="bg_titulo" value="T" checked>
+                        <label class="form-check-label" for="bg_titulo">Título</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="nivel" id="bg_compuesta" value="C" disabled>
+                        <label class="form-check-label" for="bg_compuesta">Compuesta</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="nivel" id="bg_subcuenta" value="S" disabled>
+                        <label class="form-check-label" for="bg_subcuenta">Sub Cuenta</label>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-2 mb-3">
-                <div class="form-floating">
-                    <input type="date" name="fecha_final" id="ss_fecha_final" class="form-control form-control-sm" require autocomplete="off"/>
-                    <label for="ss_fecha_final">Fecha Final</label>
+            <div class="col-md-12 mb-3">
+                <label for="" class="form-label text-muted"><b>Moneda:</b></label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="moneda" id="bg_bs" value="BOLIVIANOS" checked>
+                        <label class="form-check-label" for="bg_bs">Bolivianos</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="moneda" id="bg_sus" value="DOLARES" disabled>
+                        <label class="form-check-label" for="bg_sus">Dólares</label>
+                    </div>
+                    <!--<div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="moneda" id="bg_ufv" value="UFV" disabled>
+                        <label class="form-check-label" for="bg_ufv">UFV</label>
+                    </div>-->
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="moneda" id="bg_bm" value="BIMONETARIO" disabled>
+                        <label class="form-check-label" for="bg_bm">Bimonetario</label>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4 mb-3">

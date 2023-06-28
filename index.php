@@ -17,6 +17,8 @@
 <body>
     <?php
         include("components/toast.php");
+        include("BalanceGeneral/modal_balance_general.php");
+        include("EstadoResultados/modal_estado_resultados.php");
     ?>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
@@ -102,8 +104,8 @@
                     <div class="card-body">
                         <h5 class="card-title">Estados Financieros</h5>
                         <div class="list-group">
-                            <a href="BalanceGeneral/index.php" class="list-group-item list-group-item-action">Balance General</a>
-                            <a href="EstadoResultados/index.php" class="list-group-item list-group-item-action">Estado de Resultados</a>
+                            <a href="BalanceGeneral/index.php" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#modal_balance_general">Balance General</a>
+                            <a href="EstadoResultados/index.php" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#modal_estado_resultados">Estado de Resultados</a>
                         </div>
                     </div>
                 </div>
@@ -111,6 +113,8 @@
         </div>
     </div>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
+    <script type="text/javascript" src="js/estados_financieros.js"></script>
     <script type="text/javascript" src="js/components.js"></script>
     <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
 </body>
