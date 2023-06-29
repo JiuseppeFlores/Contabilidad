@@ -25,8 +25,10 @@ $sql = "SELECT * FROM tblCuentas tcu LEFT JOIN tblAsientos tas ON tcu.idCuenta =
 echo $sql;
 $query = sqlsrv_query($con, $sql);
 $listaAsientos = array();
+$nombreCuenta = '';
 while ($row = sqlsrv_fetch_array($query)) {
     $listaAsientos[] = $row;
+    $nombreCuenta = $row['descripcion'];
 }
 
 class MYPDF extends TCPDF
@@ -43,8 +45,8 @@ class MYPDF extends TCPDF
         // }
         $this->SetFont('helvetica', '', 10);
         $this->MultiCell(50, 10, "N° DE PAG.: " . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "\nFECHA DE IMP. 31/05/2023\nGESTION    2020", 0, 'L', 0, 1, '150', '8', true);
-        $this->MultiCell(23, 10, "EMPRESA\nDIRECCION\nNIT", 0, 'L', 0, 1, '10', '8', true);
-        $this->MultiCell(100, 10, "SABOR ANDINO\nURB. VIRGEN DEL CARMEN CALLE ARICA No.777\n181252025", 0, 'L', 0, 1, '33', '8', true);
+        $this->MultiCell(23, 10, "EMPRESA\nDIRECCION\nNIT", 0, 'L', 0, 1, '20', '8', true);
+        $this->MultiCell(100, 10, "SABOR ANDINO\nURB. VIRGEN DEL CARMEN CALLE ARICA No.777\n181252025", 0, 'L', 0, 1, '43', '8', true);
     }
     public function Footer()
     {
@@ -60,7 +62,7 @@ $pdf->SetSubject('LIBRO MAYOR');
 // Establecer las dimensiones y la orientación del papel
 $pdf->setPrintHeader(true);
 $pdf->setPrintFooter(true);
-$pdf->SetMargins(10, 25, 10, true);
+$pdf->SetMargins(20, 25, 10, true);
 $pdf->SetAutoPageBreak(true, 10);
 
 // Agregar una página
@@ -84,27 +86,27 @@ $tabla .= '
 <tr style="font-size: 7px;">
 <td></td>
 </tr>
-<tr style="font-size: 12px;">
+<tr style="font-size: 10px;">
 <td>CUENTA ' . $codigoCuenta . '</td>
-<td colspan="2">NOMBRE</td>
+<td colspan="2">NOMBRE ' . $nombreCuenta . '</td>
 </tr>
 <tr style="font-size: 7px;">
 <td></td>
 </tr>
-<tr style="font-size: 11px;">
+<tr style="font-size: 10px;">
 <td></td>
 <td>SALDO ANTERIOR</td>
-<td>MOVIMIENTO</td>
+<td></td>
 </tr>
 </table>
 ';
 $pdf->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);
-$pdf->SetFont('helvetica', '', 9);
+$pdf->SetFont('helvetica', '', 8);
 $tabla = '
 <table border="1" cellpadding="2">
 <tr align="center">
 <th colspan="2">FECHA</th>
-<th>T</th>
+<th colspan="2">T</th>
 <th>N°</th>
 <th>T./C.</th>
 <th colspan="6">DESCRIPCION</th>
@@ -116,6 +118,7 @@ $tabla = '
 ';
 if (count($listaAsientos) > 0) {
     $saldo = 0;
+    $saldo2 = 0;
     $debeTotal = 0;
     $haberTotal = 0;
     foreach ($listaAsientos as $key => $value) {
@@ -134,8 +137,8 @@ if (count($listaAsientos) > 0) {
         $tabla .= '
         <tr align="center">
         <td colspan="2">' . $fecha . '</td>
-        <td></td>
-        <td></td>
+        <td colspan="2">' . $value['tipo'] . '</td>
+        <td>' . $value['numero'] . '</td>
         <td>' . $value['tipoCambio'] . '</td>
         <td colspan="6" align="left">' . $value['referencia'] . '</td>
         <td colspan="2" align="left">' . $value['cheque'] . '</td>
@@ -163,12 +166,18 @@ $tabla .= '
 </tr>
 <tr align="center">';
 if ($saldo2 < 0){
+    // $tabla .= '
+    // <td align="rigth" colspan="13">SALDO ACREEDOR</td>
+    // <td colspan="4">' . number_format((-1)*$saldo2, 2) . '</td>';
     $tabla .= '
-    <td align="rigth" colspan="13">SALDO ACREEDOR</td>
-    <td colspan="4">' . number_format((-1)*$saldo2, 2) . '</td>';
+    <td align="rigth" colspan="13">SALDO</td>
+    <td colspan="4">' . number_format($saldo2, 2) . '</td>';
 } else {
+    // $tabla .= '
+    // <td align="rigth" colspan="13">SALDO DEUDOR</td>
+    // <td colspan="4">' . number_format($saldo2, 2) . '</td>';
     $tabla .= '
-    <td align="rigth" colspan="13">SALDO DEUDOR</td>
+    <td align="rigth" colspan="13">SALDO</td>
     <td colspan="4">' . number_format($saldo2, 2) . '</td>';
 }
 $tabla .= '
