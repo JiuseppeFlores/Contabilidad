@@ -42,9 +42,9 @@ class MYPDF extends TCPDF
         //     $this->Image($image_file, 8, 8, 50, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // }
         $this->SetFont('helvetica', '', 10);
-        $this->MultiCell(30, 10, "NIT   181252025\nGESTION    2020", 0, 'L', 0, 1, '170', '8', true);
-        $this->MultiCell(23, 10, "EMPRESA\nDIRECCION", 0, 'L', 0, 1, '10', '8', true);
-        $this->MultiCell(100, 10, "SABOR ANDINO\nURB. VIRGEN DEL CARMEN CALLE ARICA No.777", 0, 'L', 0, 1, '33', '8', true);
+        $this->MultiCell(50, 10, "NIT   181252025\nGESTION    2020", 0, 'L', 0, 1, '170', '8', true);
+        $this->MultiCell(23, 10, "EMPRESA\nDIRECCION", 0, 'L', 0, 1, '20', '8', true);
+        $this->MultiCell(100, 10, "SABOR ANDINO\nURB. VIRGEN DEL CARMEN CALLE ARICA No.777", 0, 'L', 0, 1, '43', '8', true);
     }
     public function Footer()
     {
@@ -60,7 +60,7 @@ $pdf->SetSubject('BALANCE DE SUMAS Y SALDOS');
 // Establecer las dimensiones y la orientación del papel
 $pdf->setPrintHeader(true);
 $pdf->setPrintFooter(true);
-$pdf->SetMargins(10, 25, 10, true);
+$pdf->SetMargins(20, 25, 10, true);
 $pdf->SetAutoPageBreak(true, 10);
 
 // Agregar una página
