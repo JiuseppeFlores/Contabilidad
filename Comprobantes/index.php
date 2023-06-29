@@ -31,7 +31,7 @@
                     <h3>Comprobantes</h3>
                 </div>
                 <div class="col-6 text-end">
-                    <a class="btn btn-warning" data-bs-toggle="modal" href="#modal_lista_cuentas"><i class="bi bi-plus me-2"></i>Test</a>
+                    <!--<a class="btn btn-warning" data-bs-toggle="modal" href="#modal_lista_cuentas"><i class="bi bi-plus me-2"></i>Test</a>-->
                     <button class="btn btn-success" onclick="adicionar_comprobante()"><i class="bi bi-plus me-2"></i>Adicionar</button>
                 </div>
             </div>
