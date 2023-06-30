@@ -77,8 +77,11 @@
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-4">
+                            <div class="col-3">
                                 <button type="button" class="btn btn-primary text-center" onclick="adicionar_asiento()"><i class="bi bi-plus me-2"></i>Añadir Asiento</button>
+                            </div>
+                            <div class="col-5">
+                                <input type="file" class="form-control" id="pdfFile" accept=".pdf" name="pdfFile"/>
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -118,7 +121,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x me-2"></i>CANCELAR</button>
+                    <button type="button" onclick="limpiarModal()" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x me-2"></i>CANCELAR</button>
                     <button type="submit" class="btn btn-success"><i class="bi bi-check me-2"></i>REGISTRAR</button>
                 </div>
             </div>

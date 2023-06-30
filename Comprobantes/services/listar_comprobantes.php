@@ -22,6 +22,7 @@
                 $response['data'] = array('comprobantes' => array(),'total' => 0);
                 while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC ) ) {
                     $row['fecha'] = $row['fecha']->format("d-m-Y");
+                    // array_push()
                     array_push($response['data']['comprobantes'], $row);
                 }
                 // OBTENIENDO EL NÚMERO TOTAL DE REGISTROS

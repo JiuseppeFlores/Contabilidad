@@ -33,14 +33,32 @@ $('#tbl_comprobantes').bootstrapTable({
         clickToSelect: false,
         events: window.operateEvents,
         formatter: operateFormatter
+    },{
+        field: 'archivo',
+        title: 'ARCHIVO',
+        align: 'center',
+        formatter: function(value, row, index){
+            let color = 'var(--bs-danger)';
+            let habil = '';
+            let direccion = '#';
+            if(row.filepdf == 'no'){
+                color = 'var(--bs-gray)';
+                habil = 'disabled';
+            }else{
+                let index = window.location.href.split('/').pop();
+                direccion = window.location.href.replace(index, '')+'Files/'+row.filepdf;
+            }
+            return '<a href="'+direccion+'" class="btn btn-light '+habil+'" target="_blank"><i style="font-size:21px;color:'+color+'" class="bi bi-file-earmark-pdf-fill"></i></a>';
+        }
     }],
     data: []
 });
 
-//listar_comprobantes();
+// facturas 
+var FACTURAS = [
+]
 
-
-$('#modal_registrar_comprobante').on('hide.bs.modal', () => {
+const limpiarModal = () => {
     $('#form_registro_comprobante').trigger("reset");
     $('#asientos').html("");
     $('#total_debe').text("");
@@ -48,7 +66,8 @@ $('#modal_registrar_comprobante').on('hide.bs.modal', () => {
     $('#total_debe_s').text("");
     $('#total_haber_s').text("");
     ASIENTOS = [];
-});
+    FACTURAS = [];
+};
 
 function adicionar_comprobante(){
     $('#modal_registrar_comprobante').modal('show');
@@ -116,7 +135,7 @@ $('#form_registro_comprobante').on('submit', function(e){
         var haber = parseFloat($('#total_haber').text());
         var debe_s = parseFloat($('#total_debe_s').text());
         var haber_s = parseFloat($('#total_haber_s').text());
-
+        
         console.log(debe,haber);
 
         if(debe != haber && debe_s != haber_s){
@@ -127,30 +146,71 @@ $('#form_registro_comprobante').on('submit', function(e){
         const ACCION = "REGISTRAR COMPROBANTE";
         let datos = $('#form_registro_comprobante').serialize();
         datos = datos+"&total_asientos="+ASIENTOS.length;
-        $.ajax({
-            data: datos,
-            url: 'services/registrar_comprobante.php',
-            type: 'POST',
-            dataType: 'JSON',
-            beforeSend: function(){
-                console.log("["+ACCION+"] Enviando datos...");
-            },
-            success:function(response){
-                $('#modal_registrar_comprobante').modal('hide');
-                listar_comprobantes()
-                show_toast(
-                    ACCION,
-                    response.message,
-                    response.success ? 'text-bg-success' : 'text-bg-danger'
-                );
-                console.log("["+ACCION+"] "+response.message);
-            },
-            error: function(error){
-                $('#modal_registrar_comprobante').modal('hide');
-                show_toast(ACCION,error.statusText,'text-bg-danger');
-                console.log("["+ACCION+"] ",error);
+
+
+        var pdfFile = document.getElementById("pdfFile").files[0];
+        if(pdfFile != null && pdfFile != undefined){
+            console.log("Existe archivo")
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                var base64Data = btoa(reader.result);
+                datos += '&pdfFile=' + encodeURIComponent(base64Data);
+                // console.log(datos)
+                $.ajax({
+                    data: datos,
+                    url: 'services/registrar_comprobante.php',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    beforeSend: function(){
+                        console.log("["+ACCION+"] Enviando datos...");
+                    },
+                    success:function(response){
+                        $('#modal_registrar_comprobante').modal('hide');
+                        listar_comprobantes()
+                        show_toast(
+                            ACCION,
+                            response.message,
+                            response.success ? 'text-bg-success' : 'text-bg-danger'
+                        );
+                        console.log("["+ACCION+"] "+response.message);
+                        console.log("Mensaje PDF", response.pdf);
+                    },
+                    error: function(error){
+                        $('#modal_registrar_comprobante').modal('hide');
+                        show_toast(ACCION,error.statusText,'text-bg-danger');
+                        console.log("["+ACCION+"] ",error);
+                    }
+                });
             }
-        });
+            reader.readAsBinaryString(pdfFile);
+        }else{
+            $.ajax({
+                data: datos,
+                // data: {datos:datos, },
+                url: 'services/registrar_comprobante.php',
+                type: 'POST',
+                dataType: 'JSON',
+                beforeSend: function(){
+                    console.log("["+ACCION+"] Enviando datos...");
+                },
+                success:function(response){
+                    $('#modal_registrar_comprobante').modal('hide');
+                    listar_comprobantes()
+                    show_toast(
+                        ACCION,
+                        response.message,
+                        response.success ? 'text-bg-success' : 'text-bg-danger'
+                    );
+                    console.log("["+ACCION+"] "+response.message);
+                },
+                error: function(error){
+                    $('#modal_registrar_comprobante').modal('hide');
+                    show_toast(ACCION,error.statusText,'text-bg-danger');
+                    console.log("["+ACCION+"] ",error);
+                }
+            });
+        }
+
     }else{
         console.log("Debe asignar asientos contables");
         alert("Debe asignar asientos contables");
@@ -283,4 +343,18 @@ function listar_cuentas(){
 
 function test(e){
     console.log(e);
+}
+function modalAgregarFactura(){
+    $('#modal_registrar_factura').modal('show');
+}
+
+function obtenerValorParametro(url, parametro){
+    parametro = parametro.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    let regex = new RegExp("[\\?&]" + parametro + "=([^&#]*)");
+    let results = regex.exec(url);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function getFacturas(){
+    return FACTURAS;
 }

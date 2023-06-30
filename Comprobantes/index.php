@@ -35,7 +35,7 @@
                     <button class="btn btn-success" onclick="adicionar_comprobante()"><i class="bi bi-plus me-2"></i>Adicionar</button>
                 </div>
             </div>
-            <div class="row mt-2">
+            <div class="row mt-2" id="content" style="height:100vh">
                 <div class="table-responsive">
                     <table class="table table-hover align-middle"
                             id="tbl_comprobantes">

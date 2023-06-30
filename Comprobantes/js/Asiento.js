@@ -46,9 +46,11 @@ function adicionar_asiento(){
     const iva = document.createElement('td');
     const a = document.createElement('a');
     a.dataset.bsToggle = "modal";
-    a.href = "modal_registrar_facturas";
+    a.href = "#modal_registrar_factura";
+    a.setAttribute('role', 'button');
     a.title = "IVA";
-
+    a.setAttribute("data-bs-target","#modal_registrar_factura");
+    a.setAttribute('data-id', id-1);
     const i = document.createElement('i');
     i.classList = "bi bi-file-earmark-post-fill text-primary";
     a.appendChild(i);
@@ -57,7 +59,7 @@ function adicionar_asiento(){
     row.appendChild(codigo);
     row.appendChild(cuenta);
     row.appendChild(referencia);
-    //row.appendChild(cc);
+
     row.appendChild(debe);
     row.appendChild(haber);
     row.appendChild(debe_s);
@@ -66,6 +68,7 @@ function adicionar_asiento(){
     row.appendChild(cheque);
     row.appendChild(iva);
     document.getElementById('asientos').appendChild(row);
+
 
     $('#sl-'+id).on('change',function(e){
         console.log(CUENTAS);
@@ -77,6 +80,7 @@ function adicionar_asiento(){
     });
 
     ASIENTOS.push(new Asiento());
+    console.log(ASIENTOS)
     calcular_totales();
 }
 
@@ -109,3 +113,47 @@ function calcular_totales(e){
 
 }
 
+function cerrarModal(){
+    console.log("cerrar el modal")
+    $("#modal_registrar_factura").modal("hide");
+}
+
+$("#modal_registrar_factura").on('shown.bs.modal', function (e) {
+    let nit = '';
+    let nroFact = '';
+    let codAutorizacion = '';
+    $("#enviarFactura").click(() => {
+        const nueva = $("#fact_nueva");
+        const data = $("#fact_data").val();
+        nit = '';
+        nroFact = '';
+        codAutorizacion = '';
+        if(nueva.is(":checked")){//nueva
+            nit = obtenerValorParametro(data, 'nit');
+            nroFact = obtenerValorParametro(data, 'numero');
+            codAutorizacion = obtenerValorParametro(data, 'cuf');          
+        }else{
+            const vectFact = data.split('|');
+            nit = vectFact[0];
+            nroFact = vectFact[1];
+            codAutorizacion = vectFact[2];
+        }
+        console.log(nit,nroFact,codAutorizacion)
+        var button = $(e.relatedTarget)
+        var recipient = button.data('id')
+        FACTURAS.push({
+            id: recipient,
+            nit: nit,
+            nroFact: nroFact,
+            codAuto: codAutorizacion
+        })
+    })
+
+    
+
+})
+
+$("#modal_registrar_factura").on("hidden.bs.modal", function () {
+    $("#fact_nueva").prop("checked", false);
+    $('#fact_data').val("");
+});
