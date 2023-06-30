@@ -31,7 +31,7 @@ $listaAuxiliarLista = array();
 while ($row = sqlsrv_fetch_array($queryLista)) {
     switch ($row['nivel']) {
         case 'G':
-            if ($row['descripcion'] == 'ACTIVO' || $row['descripcion'] == 'PASIVO' || $row['descripcion'] == 'PATRIMONIO') {
+            if ($row['descripcion'] == 'INGRESOS' || $row['descripcion'] == 'COSTOS' || $row['descripcion'] == 'GASTOS') {
                 $row['children'] = array();
                 $listaGrupoLista[] = $row;
             }
@@ -76,7 +76,7 @@ $listaAuxiliar = array();
 while ($row = sqlsrv_fetch_array($query)) {
     switch ($row['nivel']) {
         case 'G':
-            if ($row['descripcion'] == 'ACTIVO' || $row['descripcion'] == 'PASIVO' || $row['descripcion'] == 'PATRIMONIO') {
+            if ($row['descripcion'] == 'INGRESOS' || $row['descripcion'] == 'COSTOS' || $row['descripcion'] == 'GASTOS') {
                 $listaGrupo[] = $row;
             }
             break;
@@ -212,8 +212,8 @@ $pdf = new MYPDF('P', 'mm', 'A4', true, 'UTF-8', false);
 // Configurar las propiedades del documento
 $pdf->SetCreator('STIS');
 $pdf->SetAuthor('STIS');
-$pdf->SetTitle('BALANCE GENERAL');
-$pdf->SetSubject('BALANCE GENERAL');
+$pdf->SetTitle('ESTADO DE RESULTADOS');
+$pdf->SetSubject('ESTADO DE RESULTADOS');
 
 // Establecer las dimensiones y la orientación del papel
 $pdf->setPrintHeader(true);
@@ -231,7 +231,7 @@ $tabla = '';
 $tabla .= '
 <table border="0" cellpaddind="2">
 <tr align="center">
-<td colspan="3"><b>BALANCE GENERAL</b></td>
+<td colspan="3"><b>ESTADO DE RESULTADOS</b></td>
 </tr>
 <tr align="center" style="font-size: 10px;">
 <td colspan="3">Experesado en Bs.</td>
@@ -247,21 +247,6 @@ $tabla = '
 <table border="0" cellpadding="2">';
 if (count($listaGrupo) != 0 && (count($listaCompuestaLista) != 0 || count($listaSubcuentaLista) != 0 || count($listaAuxiliarLista) != 0)) {
     foreach ($listaGrupo as $key => $value) {
-        // switch ($value['descripcion']) {
-        //     case 'ACTIVO':
-        //         $operacion = 'ACTIVO';
-        //         break;
-        //     case 'PASIVO':
-        //         $operacion = 'PASIVO';
-        //         break;
-        //     case 'PATRIMONIO':
-        //         $operacion = 'PATRIMONIO';
-        //         break;
-        //     default:
-        //         $operacion = '';
-        //         break;
-        // }
-
         // $tabla .= '
         // <tr>
         // <td border="1" colspan="10">1000</td>
@@ -276,44 +261,24 @@ if (count($listaGrupo) != 0 && (count($listaCompuestaLista) != 0 || count($lista
         <td colspan="48"><u><b>' . $value['descripcion'] . '</b></u></td>
         </tr>';
             foreach ($value['children'] as $keyRubro => $valueRubro) {
-                // $tabla .= '
-                // <tr>
-                // <td border="1" colspan="10">1000</td>
-                // <td border="1" colspan="28">10000</td>
-                // <td align="rigth" border="1" colspan="10">100000</td>
-                // </tr>';
+
                 if (count($valueRubro['children']) != 0) {
-                    // $tabla .= '
-                    // <tr>
-                    // <td></td>
-                    // <td colspan="47"><u><b>' . $valueRubro['descripcion'] . '</b></u></td>
-                    // </tr>';
+                    $tabla .= '
+                    <tr>
+                    <td></td>
+                    <td colspan="47"><u><b>' . $valueRubro['descripcion'] . '</b></u></td>
+                    </tr>';
+
                     foreach ($valueRubro['children'] as $key => $valueTitulo) {
-                        // $tabla .= '
-                        // <tr>
-                        // <td border="1" colspan="10">2000</td>
-                        // <td border="1" colspan="28">20000</td>
-                        // <td align="rigth" border="1" colspan="10">200000</td>
-                        // </tr>';
+
                         if (count($valueTitulo['children']) != 0) {
-                            // $tabla .= '
-                            // <tr>
-                            // <td border="1" colspan="10">1000</td>
-                            // <td border="1" colspan="28">10000</td>
-                            // <td align="rigth" border="1" colspan="10">100000</td>
-                            // </tr>';
 
-                            // echo '<br><br>============<br><br>';
-                            // echo '<br>' . $valueTitulo['descripcion'] . '<br>';
-                            // print("<pre>" . print_r($valueTitulo['children'], true) . "</pre>");
-
-                            // print_r($valueTitulo['children']);
                             $subtotal = 0;
-                            $tabla .= '
-                        <tr>
-                        <td></td>
-                        <td colspan="47"><u><b>' . $valueTitulo['descripcion'] . '</b></u></td>
-                        </tr>';
+                        //     $tabla .= '
+                        // <tr>
+                        // <td></td>
+                        // <td colspan="47"><u><b>' . $valueTitulo['descripcion'] . '</b></u></td>
+                        // </tr>';
                             foreach ($valueTitulo['children'] as $key => $valueCompuesta) {
 
                                 if (count($valueCompuesta['children']) != 0) {
@@ -329,14 +294,14 @@ if (count($listaGrupo) != 0 && (count($listaCompuestaLista) != 0 || count($lista
                                                 // </tr>';
                                                 if (($valueAuxiliar['totalDebe'] > 0 || $valueAuxiliar['totalHaber'] > 0) && $valueAuxiliar['movimiento'] == true) {
                                                     switch ($value['descripcion']) {
-                                                        case 'ACTIVO':
+                                                        case 'INGRESOS':
+                                                            $valueResultado = $valueAuxiliar['totalHaber'] - $valueAuxiliar['totalDebe'];
+                                                            break;
+                                                        case 'GASTOS':
                                                             $valueResultado = $valueAuxiliar['totalDebe'] - $valueAuxiliar['totalHaber'];
                                                             break;
-                                                        case 'PASIVO':
-                                                            $valueResultado = $valueAuxiliar['totalHaber'] - $valueAuxiliar['totalDebe'];
-                                                            break;
-                                                        case 'PATRIMONIO':
-                                                            $valueResultado = $valueAuxiliar['totalHaber'] - $valueAuxiliar['totalDebe'];
+                                                        case 'COSTOS':
+                                                            $valueResultado = $valueAuxiliar['totalDebe'] - $valueAuxiliar['totalHaber'];
                                                             break;
                                                         default:
                                                             $valueResultado = 0;
@@ -358,14 +323,14 @@ if (count($listaGrupo) != 0 && (count($listaCompuestaLista) != 0 || count($lista
                                             // } else if ($valueSubcuenta['totalDebe'] > 0) {
                                         } else if (($valueSubcuenta['totalDebe'] > 0 || $valueSubcuenta['totalHaber'] > 0) && $valueSubcuenta['movimiento'] == true) {
                                             switch ($value['descripcion']) {
-                                                case 'ACTIVO':
+                                                case 'INGRESOS':
+                                                    $valueResultado = $valueSubcuenta['totalHaber'] - $valueSubcuenta['totalDebe'];
+                                                    break;
+                                                case 'GASTOS':
                                                     $valueResultado = $valueSubcuenta['totalDebe'] - $valueSubcuenta['totalHaber'];
                                                     break;
-                                                case 'PASIVO':
-                                                    $valueResultado = $valueSubcuenta['totalHaber'] - $valueSubcuenta['totalDebe'];
-                                                    break;
-                                                case 'PATRIMONIO':
-                                                    $valueResultado = $valueSubcuenta['totalHaber'] - $valueSubcuenta['totalDebe'];
+                                                case 'COSTOS':
+                                                    $valueResultado = $valueSubcuenta['totalDebe'] - $valueSubcuenta['totalHaber'];
                                                     break;
                                                 default:
                                                     $valueResultado = 0;
@@ -387,14 +352,14 @@ if (count($listaGrupo) != 0 && (count($listaCompuestaLista) != 0 || count($lista
                                     // echo 'haber: ' . gettype($valueCompuesta['totalHaber']) . ' - ' . $valueCompuesta['totalHaber'] . '<br>';
                                     // echo 'movimiento: ' . gettype($valueCompuesta['movimiento']) . ' - ' . $valueCompuesta['movimiento'] . '<br>';
                                     switch ($value['descripcion']) {
-                                        case 'ACTIVO':
+                                        case 'INGRESOS':
+                                            $valueResultado = $valueCompuesta['totalHaber'] - $valueCompuesta['totalDebe'];
+                                            break;
+                                        case 'GASTOS':
                                             $valueResultado = $valueCompuesta['totalDebe'] - $valueCompuesta['totalHaber'];
                                             break;
-                                        case 'PASIVO':
-                                            $valueResultado = $valueCompuesta['totalHaber'] - $valueCompuesta['totalDebe'];
-                                            break;
-                                        case 'PATRIMONIO':
-                                            $valueResultado = $valueCompuesta['totalHaber'] - $valueCompuesta['totalDebe'];
+                                        case 'COSTOS':
+                                            $valueResultado = $valueCompuesta['totalDebe'] - $valueCompuesta['totalHaber'];
                                             break;
                                         default:
                                             $valueResultado = 0;
@@ -413,19 +378,19 @@ if (count($listaGrupo) != 0 && (count($listaCompuestaLista) != 0 || count($lista
                             }
                             $tabla .= '
                         <tr>
-                        <td align="rigth" colspan="38"><b>SUBTOTAL ' . $valueTitulo['descripcion'] . '</b></td>
+                        <td align="rigth" colspan="38"><b>SUBTOTAL ' . $valueRubro['descripcion'] . '</b></td>
                         <td align="rigth" border="1" colspan="10">' . number_format($subtotal, 2) . '</td>
                         </tr>';
                         }
                         $totalGrupo = $totalGrupo + $subtotal;
                         switch ($value['descripcion']) {
-                            case 'ACTIVO':
+                            case 'INGRESOS':
                                 $totalActivo = $totalGrupo;
                                 break;
-                            case 'PASIVO':
+                            case 'GASTOS':
                                 $totalPasivo = $totalGrupo;
                                 break;
-                            case 'PATRIMONIO':
+                            case 'COSTOS':
                                 $totalPatrimonio = $totalGrupo;
                                 break;
                             default:
@@ -442,12 +407,12 @@ if (count($listaGrupo) != 0 && (count($listaCompuestaLista) != 0 || count($lista
         </tr>';
         }
     }
-    $tabla .= '
-    <tr>
-    <td align="rigth" colspan="38"><b>TOTAL PASIVO Y PATRIMONIO</b></td>
-    <td align="rigth" border="1" colspan="10">' . number_format($totalPasivo + $totalPatrimonio, 2) . '</td>
-    </tr>
-    ';
+    // $tabla .= '
+    // <tr>
+    // <td align="rigth" colspan="38"><b>TOTAL PASIVO Y PATRIMONIO</b></td>
+    // <td align="rigth" border="1" colspan="10">' . number_format($totalPasivo + $totalPatrimonio, 2) . '</td>
+    // </tr>
+    // ';
 } else {
     $tabla .= '
     <tr>
@@ -456,72 +421,6 @@ if (count($listaGrupo) != 0 && (count($listaCompuestaLista) != 0 || count($lista
 }
 $tabla .= '
 </table>';
-// $tabla = '
-// <table border="1" cellpadding="2">
-// <tr align="center">
-// <th colspan="2">FECHA</th>
-// <th>T</th>
-// <th>N°</th>
-// <th>T./C.</th>
-// <th colspan="6">DESCRIPCION</th>
-// <th colspan="2">CHEQUE</th>
-// <th colspan="2">DEBE</th>
-// <th colspan="2">HABER</th>
-// <th colspan="2">SALDOS</th>
-// </tr>
-// ';
-// if (count($listaAsientos) > 0) {
-//     $saldo = 0;
-//     $debeTotal = 0;
-//     $haberTotal = 0;
-//     foreach ($listaAsientos as $key => $value) {
-//         $fecha = $value['fecha']->format('d/m/Y');
-
-//         $debe = floatval($value['debe']);
-//         $haber = floatval($value['haber']);
-//         $saldo = number_format($saldo + $debe - $haber, 2);
-
-//         $debeTotal = number_format($debeTotal + $debe, 2);
-//         $haberTotal = number_format($haberTotal + $haber, 2);
-
-//         $tabla .= '
-//         <tr align="center">
-//         <td colspan="2">' . $fecha . '</td>
-//         <td></td>
-//         <td></td>
-//         <td>' . $value['tipoCambio'] . '</td>
-//         <td colspan="6" align="left">' . $value['referencia'] . '</td>
-//         <td colspan="2">' . $value['cheque'] . '</td>
-//         <td colspan="2">' . $value['debe'] . '</td>
-//         <td colspan="2">' . $value['haber'] . '</td>
-//         <td colspan="2">' . $saldo . '</td>
-//         </tr>
-//         ';
-//     }
-// } else {
-//     $tabla .= '
-//     <tr align="center">
-//     <td colspan="19">No hay registros en este periodo de fechas.</td>
-//     </tr>
-//     ';
-// }
-// $tabla .= '</table>';
-// $tabla .= '
-// <table border="0" cellpadding="3">
-// <tr align="center">
-// <td align="right" colspan="13"></td>
-// <td colspan="2">' . $debeTotal . '</td>
-// <td colspan="2">' . $haberTotal . '</td>
-// <td colspan="2"></td>
-// </tr>
-// <tr align="center">
-// <td align="right" colspan="13">SALDO DEUDOR</td>
-// <td colspan="4">' . $saldo . '</td>
-// <td colspan="2"></td>
-// </tr>
-// </table>
-// ';
-// =======================================
 
 $pdf->WriteHTMLCell(0, 0, '', '45', $tabla, 0, 0);
 ob_end_clean();
