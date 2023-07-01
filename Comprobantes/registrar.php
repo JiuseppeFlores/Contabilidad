@@ -16,6 +16,8 @@
         <script src="../js/jquery.min.js"></script>
         <link rel="stylesheet" href="../css/bootstrap-table.min.css">
         <script src="../js/bootstrap-table.min.js"></script>
+        <!-- Tabulator -->
+        <link href="../js/tabulator/dist/css/tabulator_semanticui.min.css" rel="stylesheet">
     </head>
     <body>
         <?php
@@ -24,7 +26,7 @@
             //include('modal_registrar_comprobante.php');
             include('modal_cuentas.php');
         ?>
-        <div class="container mt-4 mb-4">
+        <div class="container-fluid mt-4 mb-4">
             <div class="row">
                 <div class="col-md-6">
                     <h3>Registrar Comprobante</h3>
@@ -119,6 +121,9 @@
                         </table>
                     </div>
                 </div>
+                <div class="row mt-2">
+                    <button class="btn btn-sm btn-success me-2" type="submit"><i class="bi bi-plus me-2"></i>Registrar</button>
+                </div>
             </form>
         </div>
     </body>
@@ -127,11 +132,12 @@
     ?>
     <script type="text/javascript" src="../js/environment.js"></script>
     <script type="text/javascript" src="../js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="../js/select2.min.js"></script>
     <script type="text/javascript" src="../js/components.js"></script>
     <script type="text/javascript" src="../js/functions.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/registrar.js"></script>
+    
     <script type="text/javascript" src="js/Asiento.js"></script>
     <script type="text/javascript" src="js/components.js"></script>
+
+    <script type="text/javascript" src="../js/tabulator/dist/js/tabulator.min.js"></script>
+    <script type="text/javascript" src="js/registrar.js"></script>
 </html>
