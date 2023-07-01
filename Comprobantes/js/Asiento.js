@@ -122,16 +122,19 @@ $("#modal_registrar_factura").on('shown.bs.modal', function (e) {
     let nit = '';
     let nroFact = '';
     let codAutorizacion = '';
-    $("#enviarFactura").click(() => {
+    $("#enviarFactura").off('click').on('click',() => {
+      // desvincula el anterior evento click anterior
         const nueva = $("#fact_nueva");
         const data = $("#fact_data").val();
         nit = '';
         nroFact = '';
         codAutorizacion = '';
+        let nuevoFact = 'no';
         if(nueva.is(":checked")){//nueva
             nit = obtenerValorParametro(data, 'nit');
             nroFact = obtenerValorParametro(data, 'numero');
             codAutorizacion = obtenerValorParametro(data, 'cuf');          
+            nuevoFact = data;
         }else{
             const vectFact = data.split('|');
             nit = vectFact[0];
@@ -141,16 +144,14 @@ $("#modal_registrar_factura").on('shown.bs.modal', function (e) {
         console.log(nit,nroFact,codAutorizacion)
         var button = $(e.relatedTarget)
         var recipient = button.data('id')
-        FACTURAS.push({
-            id: recipient,
+        FACTURAS[recipient] = {
             nit: nit,
             nroFact: nroFact,
-            codAuto: codAutorizacion
-        })
+            codAuto: codAutorizacion,
+            nueva: nuevoFact
+        }
+        
     })
-
-    
-
 })
 
 $("#modal_registrar_factura").on("hidden.bs.modal", function () {
