@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-6 text-end">
                     <!--<a class="btn btn-warning" data-bs-toggle="modal" href="#modal_lista_cuentas"><i class="bi bi-plus me-2"></i>Test</a>-->
-                    <button class="btn btn-success" onclick="adicionar_comprobante()"><i class="bi bi-plus me-2"></i>Adicionar</button>
+                    <button class="btn btn-success"  data-bs-toggle="modal" data-bs-target="#modal_registrar_comprobante"><i class="bi bi-plus me-2"></i>Adicionar</button>
                 </div>
             </div>
             <div class="row mt-2" id="content" style="height:100vh">

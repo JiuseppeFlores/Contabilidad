@@ -15,14 +15,63 @@ let ASIENTOS = [];
 let CUENTAS = [];
 get_counts();
 
+const seleccionarCuenta = () => {
+    const ACCION = "LISTAR CUENTAS";
+    var datos = {  };
+    $.ajax({
+        data: datos,
+        url: '../Cuentas/services/listar_cuentas.php',
+        type: 'GET',
+        dataType: 'JSON',
+        beforeSend: function(){
+            console.log("["+ACCION+"] Enviando datos...");
+        },
+        success:function(response){
+            if(response.success){
+                response.data.forEach( (cuenta) => {
+                    var sp = "&nbsp;";
+                    switch(cuenta.nivel){
+                        case 'G':sp = '';break;
+                        case 'R':sp = sp.repeat(4);break;
+                        case 'T':sp = sp.repeat(8);break;
+                        case 'C':sp = sp.repeat(12);break;
+                        case 'S':sp = sp.repeat(16);break;
+                        case 'A':sp = sp.repeat(20);break;
+                    };
+                    cuenta.descripcion = sp + cuenta.descripcion;
+                });
+                $('#t_cuentas').bootstrapTable('load', response.data);
+                console.log(response);
+            }else{
+                show_toast(ACCION,response.message,'text-bg-danger');
+            }
+            console.log("["+ACCION+"] "+response.message);
+        },
+        error: function(error){
+            show_toast(ACCION,error.statusText,'text-bg-danger');
+            console.log("["+ACCION+"] "+error.statusText);
+        }
+    });
+};
+
 function adicionar_asiento(){
     // Creacion de filas para la tabla
     var id = ASIENTOS.length + 1;
     const row = document.createElement('tr');
     const codigo = document.createElement('td');
-    codigo.appendChild(create_select('cuenta[]',id));
+    //codigo.appendChild(create_select('cuenta[]',id));
+    codigo.appendChild(create_input("codigo-"+id,"form-control","","text","referencia[]",true));
+    const idCuenta = document.createElement("input");
+    idCuenta.type="hidden";
+    idCuenta.name="cuenta[]";
+    idCuenta.id="id-cuenta-"+id;
+    //codigo.appendChild(create_input("codigo-"+id,"form-control","","text","referencia[]",true));
+    codigo.appendChild(idCuenta);
+    //codigo.onclick = seleccionarCuenta;
+
     const cuenta = document.createElement('td');
     cuenta.appendChild(create_span(id));
+
     const referencia = document.createElement('td');
     var ref = document.getElementById('comprobante_glosa').value;
     referencia.appendChild(create_input("referencia-"+id,"form-control",ref,"text","referencia[]"));
@@ -68,7 +117,7 @@ function adicionar_asiento(){
     row.appendChild(cheque);
     row.appendChild(iva);
     document.getElementById('asientos').appendChild(row);
-
+    
 
     $('#sl-'+id).on('change',function(e){
         console.log(CUENTAS);
@@ -82,6 +131,8 @@ function adicionar_asiento(){
     ASIENTOS.push(new Asiento());
     console.log(ASIENTOS)
     calcular_totales();
+
+    //$("sl-"+id).select2();
 }
 
 function calcular_totales(e){

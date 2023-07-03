@@ -16,7 +16,7 @@
                             </div>
                             <div class="col-2">
                                 <div class="form-floating">
-                                    <select class="form-select my-select" name="tipo" required id="comprobante_tipo">
+                                    <select class="form-select my-select" name="tipo" required id="comprobante_tipo" onchange="obtenerNroComprobante()">
                                         <option value="" disabled selected> - Tipo - </option>
                                         <option value="INGRESO">INGRESO</option>
                                         <option value="EGRESO">EGRESO</option>
@@ -77,10 +77,13 @@
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-3">
+                            <div class="col-md-2">
                                 <button type="button" class="btn btn-primary text-center" onclick="adicionar_asiento()"><i class="bi bi-plus me-2"></i>Añadir Asiento</button>
                             </div>
-                            <div class="col-5">
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-danger text-center" onclick="removerAsiento()"><i class="bi bi-dash me-2"></i>Remover Asiento</button>
+                            </div>
+                            <div class="col-md-5">
                                 <input type="file" class="form-control" id="pdfFile" accept=".pdf" name="pdfFile"/>
                             </div>
                         </div>
@@ -99,7 +102,7 @@
                                             <th scope="col">HABER ($us)</th>
                                             <th scope="col">BCO.</th>
                                             <th scope="col">CHEQUE</th>
-                                            <th scope="col">IVA</th>
+                                            <th scope="col"> - </th>
                                         </tr>
                                     </thead>
                                     <tbody id="asientos">
