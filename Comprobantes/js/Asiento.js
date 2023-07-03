@@ -175,49 +175,75 @@ $("#modal_registrar_factura").on('shown.bs.modal', function (e) {
     let codAutorizacion = '';
     $("#enviarFactura").off('click').on('click',() => {
       // desvincula el anterior evento click anterior
-        const nueva = $("#fact_nueva");
-        const data = $("#fact_data").val();
-        nit = '';
-        nroFact = '';
-        codAutorizacion = '';
-        let nuevoFact = 'no';
-        // if(nueva.is(":checked")){//nueva
-        //     nit = obtenerValorParametro(data, 'nit');
-        //     nroFact = obtenerValorParametro(data, 'numero');
-        //     codAutorizacion = obtenerValorParametro(data, 'cuf');          
-        //     nuevoFact = encodeURIComponent(data);
-        // }else{
-        //     const vectFact = data.split('|');
-        //     nit = vectFact[0];
-        //     nroFact = vectFact[1];
-        //     codAutorizacion = vectFact[2];
-        // }
-        console.log(nit,nroFact,codAutorizacion)
         var button = $(e.relatedTarget)
         var recipient = button.data('id')
+        let nuevaFact = '';
+        if($("#fact_data").val().startsWith('https://')){
+            nit = $("#nit").val();
+            nroFact = $("#nroFactura").val();
+            codAutorizacion = $("#codAuto").val();
+            nuevaFact = $("#fact_data").val();
+        }else{
+            nit = $("#nit").val();
+            nroFact = $("#nroFactura").val();
+            codAutorizacion = $("#codAuto").val();
+            nuevaFact = 'no';
+        }
         FACTURAS[recipient] = {
             nit: nit,
             nroFact: nroFact,
             codAuto: codAutorizacion,
-            nueva: nuevoFact
+            nueva: nuevaFact
         }
-        
     })
 })
 
 $("#modal_registrar_factura").on("hidden.bs.modal", function () {
     $("#fact_nueva").prop("checked", false);
     $('#fact_data').val("");
+    $('#nit').val('');
+    $('#nroFactura').val('');
+    $('#codAuto').val('');
 });
 
 $("#manual").change(()=>{
-    if($(this).is(":checked")){
-
+    if($("#manual").is(":checked")){
+        $('#nit').attr('disabled',false);
+        $('#nroFactura').attr('disabled',false);
+        $('#codAuto').attr('disabled',false);
+        $("#fact_data").attr('disabled',true);
     }else{
-        $('#').attr('disabled',false);
-        $('#').attr('disabled',true);
-        $('#').attr('disabled',false);
-    
+        $('#nit').attr('disabled',true);
+        $('#nroFactura').attr('disabled',true);
+        $('#codAuto').attr('disabled',true); 
+        $("#fact_data").attr('disabled',false);
     }
-    console.log("cambiado")
 })
+
+$("#fact_data").change(()=>{
+    $("#help").html("Escanee el código QR");
+    $("#help").css("color","black");
+    const data = $("#fact_data").val();
+    if(data.startsWith('https://')){//nueva
+        $('#nit').val(obtenerValorParametro(data, 'nit'));
+        $('#nroFactura').val(obtenerValorParametro(data, 'numero'));
+        $('#codAuto').val(obtenerValorParametro(data, 'cuf'));     
+        nuevoFact = encodeURIComponent(data);
+    }else if(data.startsWith('httpsÑ')){
+        $("#help").html("Cambie configuración de teclado");
+        $("#help").css("color","red");
+    }else{
+        const vectFact = data.split('|');
+        if(vectFact.length >= 3){
+            $('#nit').val(vectFact[0])
+            $('#nroFactura').val(vectFact[1])
+            $('#codAuto').val(vectFact[2])
+        }else{
+            if(data.length > 15){
+                $("#help").html("Cambie configuración de teclado");
+                $("#help").css("color","red");
+            }
+        }
+    }
+})
+
