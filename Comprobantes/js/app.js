@@ -162,7 +162,7 @@ $("#form_registro_comprobante").on("submit", function (e) {
     let datos = $("#form_registro_comprobante").serialize();
     datos = datos + "&total_asientos=" + ASIENTOS.length;
     if (Object.keys(FACTURAS).length > 0) {
-      datos = datos + "&facts=" + JSON.stringify(FACTURAS);
+      datos = datos + "&facts=" + encodeURIComponent(JSON.stringify(FACTURAS));
       console.log("FACTURAS", JSON.stringify(FACTURAS))
     }
 
@@ -390,4 +390,31 @@ function obtenerValorParametro(url, parametro) {
 
 function getFacturas() {
   return FACTURAS;
+}
+
+function peticionPrueba(objeto){
+  // const objeto = {
+  //   0:{
+  //     nit: "12345678",
+  //     nroFactura: "23333",
+  //     nuevo: "https://dafdsfasdf/afdfasdfasdfd&nuevo=090988&otro=oud"
+  //   },
+  //   2:{
+  //     nit: "12345678",
+  //     nroFactura: "32423",
+  //     nuevo:"no"
+  //   }
+  // }
+  const valores = "nro=1"+"&facts=" + JSON.stringify(FACTURAS);
+  $.ajax({
+    data: {datos:valores},
+    url: "services/prueba.php",
+    type: "POST",
+    success: function (response) {
+      console.log(response)
+    },
+    error: function (error) {
+      console.log("ERROR----", error)
+    },
+  });
 }

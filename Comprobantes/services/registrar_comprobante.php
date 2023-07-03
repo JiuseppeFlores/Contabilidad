@@ -26,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       // Genera un nombre único para el archivo PDF
       $filename = 'pdf-' . time() . '.pdf';
       $uploadPath = '../Files/' . $filename;
-
       // Guarda el archivo PDF en el servidor
       if (file_put_contents($uploadPath, $pdfData)) {
         $msgPdf = 'OK';
@@ -34,8 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $msgPdf = 'NO OK';
       }
     }
-
-
+    if (isset($_POST['facts'])) {
+      $msgPdf .= ' - FACTURA ENCONTRADA  ';
+      $arrFacts = json_decode($_POST['facts'], true);
+    }else{
+      $arrFacts = array();
+    }
     // Consulta para insertar los nuevos registros ala tabla
     $sql = "INSERT INTO tblComprobantes (numero,tipo,fecha,tipoCambio,moneda,idProyecto,cancelado,nitCi,nroRecibo,glosa,filepdf) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?) ;";
     $params = array($nro_comprobante, $tipo, $fecha, $tipo_cambio, $moneda, $id_proyecto, $detalle, $nit_ci, $nro_recibo, $glosa, $filename);
@@ -54,12 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       if ($stmt) {
         $id_comprobante = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)['id'];
         $nro_asientos = isset($_POST['total_asientos']) ? intval($_POST['total_asientos']) : 0;
-        if (isset($_POST['facts'])) {
-          $msgPdf .= ' - FACTURA ENCONTRADA  '.$_POST['facts'];
-          $arrFacts = json_decode($_POST['facts'], true);
-        }else{
-          $arrFacts = array();
-        }
+        
         // el mismo de asientos, la misma 
         for ($i = 0; $i < $nro_asientos; $i++) {
           $cuenta = $_POST['cuenta'][$i];
@@ -70,19 +68,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           $cheque = $_POST['cheque'][$i];
           $idFactura = 0;
           // Verificamos que existe una factura asociada a este asiento
-
           if(isset($arrFacts[$i])){
             // El asiento i tiene factura, entonces agregamos
             $sql = "INSERT INTO tblFacturaCompra (nitProveedor, nroFactura, codAutorizacion, facturaNueva, url) VALUES ( ? , ? , ? , ? , ? ) ;";
             if($arrFacts[$i]['nueva'] == 'no'){
               $params = array($arrFacts[$i]['nit'], $arrFacts[$i]['nroFact'], $arrFacts[$i]['codAuto'], $arrFacts[$i]['nueva'], '');
             }else{
-              $params = array($arrFacts[$i]['nit'], $arrFacts[$i]['nroFact'], $arrFacts[$i]['codAuto'], 'si', $arrFacts[$i]['nueva']);
+              $params = array($arrFacts[$i]['nit'], $arrFacts[$i]['nroFact'], $arrFacts[$i]['codAuto'], 'si', urldecode($arrFacts[$i]['nueva']));
             }
             $stmt = sqlsrv_query($con, $sql, $params);
             if ($stmt) {
-              $sql_id = "SELECT SCOPE_IDENTITY() AS id";
-              $stmt_id = sqlsrv_query($con, $sql);
+              $sql_id = "SELECT IDENT_CURRENT('tblFacturaCompra') as id;";
+              $stmt_id = sqlsrv_query($con, $sql_id);
               if($stmt_id){
                 $row = sqlsrv_fetch_array($stmt_id, SQLSRV_FETCH_ASSOC);
                 $idFactura = $row['id'];

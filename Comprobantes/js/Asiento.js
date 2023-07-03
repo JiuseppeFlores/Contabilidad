@@ -130,17 +130,17 @@ $("#modal_registrar_factura").on('shown.bs.modal', function (e) {
         nroFact = '';
         codAutorizacion = '';
         let nuevoFact = 'no';
-        if(nueva.is(":checked")){//nueva
-            nit = obtenerValorParametro(data, 'nit');
-            nroFact = obtenerValorParametro(data, 'numero');
-            codAutorizacion = obtenerValorParametro(data, 'cuf');          
-            nuevoFact = data;
-        }else{
-            const vectFact = data.split('|');
-            nit = vectFact[0];
-            nroFact = vectFact[1];
-            codAutorizacion = vectFact[2];
-        }
+        // if(nueva.is(":checked")){//nueva
+        //     nit = obtenerValorParametro(data, 'nit');
+        //     nroFact = obtenerValorParametro(data, 'numero');
+        //     codAutorizacion = obtenerValorParametro(data, 'cuf');          
+        //     nuevoFact = encodeURIComponent(data);
+        // }else{
+        //     const vectFact = data.split('|');
+        //     nit = vectFact[0];
+        //     nroFact = vectFact[1];
+        //     codAutorizacion = vectFact[2];
+        // }
         console.log(nit,nroFact,codAutorizacion)
         var button = $(e.relatedTarget)
         var recipient = button.data('id')
@@ -158,3 +158,15 @@ $("#modal_registrar_factura").on("hidden.bs.modal", function () {
     $("#fact_nueva").prop("checked", false);
     $('#fact_data').val("");
 });
+
+$("#manual").change(()=>{
+    if($(this).is(":checked")){
+
+    }else{
+        $('#').attr('disabled',false);
+        $('#').attr('disabled',true);
+        $('#').attr('disabled',false);
+    
+    }
+    console.log("cambiado")
+})

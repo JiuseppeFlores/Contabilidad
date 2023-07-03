@@ -23,14 +23,28 @@
       </div>
       <div class="modal-body m-0 row justify-content-center">
         <div class="col-auto form-check form-switch">
-          <label class="form-check-label" for="fact_nueva">Factura nueva</label>
-          <input class="form-check-input" type="checkbox" role="switch" id="fact_nueva">
+          <label class="form-check-label" for="manual"> Llenar manualmente </label>
+          <input class="form-check-input" type="checkbox" role="switch" id="manual">
         </div>
         <div class="mb-3">
-          <label for="fact_data" class="form-label"><i class="bi bi-qr-code"></i>&nbsp; Datos de la factura  </label>
+          <label for="fact_data" class="form-label"><i class="bi bi-qr-code"></i>&nbsp; Datos de la factura QR </label>
           <input type="text" class="form-control" id="fact_data">
           <div id="help" class="form-text">Escanee el código QR </div>
+          <br>
+          <div class="input-group flex-nowrap">
+            <span class="input-group-text">NIT</span>
+            <input type="text" class="form-control" aria-describedby="addon-wrapping" disabled>
+          </div>
+          <div class="input-group flex-nowrap">
+            <span class="input-group-text">Nº Factura</span>
+            <input type="text" class="form-control" aria-describedby="addon-wrapping" disabled>
+          </div>
+          <div class="input-group flex-nowrap">
+            <span class="input-group-text">Cod. Autorización</span>
+            <input type="text" class="form-control" aria-describedby="addon-wrapping" value="1649F29C084DDBD5F3082DCA0697074A04DFAECBA10AE1688F327FD74" disabled>
+          </div>
         </div>
+        
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" data-bs-target="#modal_registrar_comprobante" data-bs-toggle="modal"><i class="bi bi-x me-2"></i> Cancelar</button>
