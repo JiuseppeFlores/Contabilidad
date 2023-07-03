@@ -1,16 +1,71 @@
+const listarAsiento = (index,row,$detail) => {
+  console.log($detail);
+  const ACCION = "OBTENER DATOS COMPROBANTE";
+  var datos = { idComprobante: row.idComprobante };
+  $.ajax({
+    data: datos,
+    url: "services/obtener_comprobante.php",
+    type: "GET",
+    dataType: "JSON",
+    beforeSend: function () {
+      console.log("[" + ACCION + "] Enviando datos...");
+    },
+    success: function (response) {
+      console.log(response);
+      if (response.success) {
+        buildTable($detail.html('<table></table>').find('table'), 3, 1,response.data.asientos, response.data.tipoCambio);
+      }
+      console.log("[" + ACCION + "] " + response.message);
+    },
+    error: function (error) {
+      console.log("[" + ACCION + "] ", error);
+    },
+  });
+}
+
+function buildTable($el, cells, rows, asientos, tc) {
+  var i; var j; var row
+  var columns = [
+    {field: "codigo",title: "CODIGO"},
+    {field: "descripcion",title: "CUENTA"},
+    {field: "referencia",title: "REFERENCIA"},
+    {field: "debe",title: "DEBE"},
+    {field: "haber",title: "HABER"},
+    {field: "debe_s",title: "DEBE (SU$)"},
+    {field: "haber_s",title: "HABER (SU$)"},
+    {field: "banco",title: "BANCO"},
+    {field: "cheque",title: "CHEQUE"},
+  ]
+  var data = []
+  console.log(asientos);
+  asientos.forEach((asiento) => {
+    row = {
+      codigo: asiento.codigo,
+      descripcion: asiento.descripcion,
+      referencia: asiento.referencia,
+      debe: asiento.debe,
+      haber: asiento.haber,
+      debe_s: Math.round(parseFloat(asiento.debe) * parseFloat(tc), 2),
+      haber_s: Math.round(parseFloat(asiento.haber) * parseFloat(tc), 2),
+      banco: asiento.bco,
+      cheque: asiento.cheque
+    };
+    
+    data.push(row)
+  });
+  $el.bootstrapTable({
+    columns: columns,
+    data: data,
+  })
+}
+
 $("#tbl_comprobantes").bootstrapTable({
   search: true,
   searchAlign: "left",
   showPagination: "true",
   editable: "true",
   detailView: 1,
-  onExpandRow: function (index, row, $detail) {
-    /* eslint no-use-before-define: ["error", { "functions": false }]*/
-    //expandTable($detail, cells - 1)
-    console.log(index, row, $detail);
-    console.log("detalle:", row);
-    //listarAsientos($detail);
-  },
+  onExpandRow: listarAsiento,
   columns: [
     {
       field: "numero",
@@ -35,9 +90,9 @@ $("#tbl_comprobantes").bootstrapTable({
       field: "actions",
       title: "ACCIONES",
       align: "center",
-      clickToSelect: false,
+      clickToSelect: false,/*
       events: window.operateEvents,
-      formatter: operateFormatter,
+      formatter: operateFormatter,*/
     },
     {
       field: "archivo",
@@ -84,11 +139,16 @@ const limpiarModal = () => {
   FACTURAS = {};
 };
 
-function adicionar_comprobante() {
-  $("#modal_registrar_comprobante").modal("show");
+$("#modal_registrar_comprobante").on('show.bs.modal',()=>{
   $("#comprobante_fecha").val(obtenerFecha());
+});
+
+function obtenerNroComprobante(){
   const ACCION = "OBTENER NRO. COMPROBANTE";
-  var datos = { id_proyecto: 1 };
+  var datos = { 
+    fecha: obtenerFecha(),
+    tipo: $('#comprobante_tipo').val()
+  };
   $.ajax({
     data: datos,
     url: "services/obtener_numero_comprobante.php",
@@ -98,16 +158,13 @@ function adicionar_comprobante() {
       console.log("[" + ACCION + "] Enviando datos...");
     },
     success: function (response) {
+      console.log(response);
       if (response.success) {
         $("#nro_comprobante").val(response.data);
-      } else {
-        $("#modal_registrar_comprobante").modal("hide");
-        show_toast(ACCION, response.message, "text-bg-danger");
       }
       console.log("[" + ACCION + "] " + response.message);
     },
     error: function (error) {
-      $("#modal_registrar_comprobante").modal("hide");
       show_toast(ACCION, error.statusText, "text-bg-danger");
       console.log("[" + ACCION + "] ", error);
     },
@@ -307,10 +364,6 @@ window.operateEvents = {
   },
 };
 
-$("#modal_lista_cuentas").on("show.bs.modal", () => {
-  console.log("asd");
-});
-
 function listar_cuentas() {
   const ACCION = "LISTAR CUENTAS";
   var datos = {};
@@ -346,7 +399,7 @@ function listar_cuentas() {
           }
           cuenta.descripcion = sp + cuenta.descripcion;
         });
-        $("#t_cuentas").bootstrapTable({
+        /*$("#t_cuentas").bootstrapTable({
           columns: [
             {
               field: "codigo",
@@ -359,7 +412,7 @@ function listar_cuentas() {
           ],
           data: response.data,
           onDblClickRow: test,
-        });
+        });*/
       } else {
         show_toast(ACCION, response.message, "text-bg-danger");
       }

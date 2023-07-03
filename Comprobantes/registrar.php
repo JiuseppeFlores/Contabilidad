@@ -26,17 +26,17 @@
             //include('modal_registrar_comprobante.php');
             include('modal_cuentas.php');
         ?>
-        <div class="container-fluid mt-4 mb-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>Registrar Comprobante</h3>
+        <form id="form_registro_comprobante">
+            <div class="container mt-4 mb-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Registrar Comprobante</h3>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal_lista_cuentas"><i class="bi bi-plus me-2"></i>Test</button>
+                        <button class="btn btn-success" type="button" onclick="adicionar_comprobante()"><i class="bi bi-plus me-2"></i>Adicionar</button>
+                    </div>
                 </div>
-                <div class="col-md-6 text-end">
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal_lista_cuentas"><i class="bi bi-plus me-2"></i>Test</button>
-                    <button class="btn btn-success" onclick="adicionar_comprobante()"><i class="bi bi-plus me-2"></i>Adicionar</button>
-                </div>
-            </div>
-            <form id="form_registro_comprobante">
                 <div class="row mt-2">
                     <div class="col-md-2 mb-2">
                         <div class="form-floating">
@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-md-2 mb-2">
                         <div class="form-floating">
-                            <input type="decimal" name="tipo_cambio" id="comprobante_tipo_cambio" class="form-control form-control-sm" minlength="1" maxlength="100" required autocomplete="off"/>
+                            <input type="decimal" name="tipo_cambio" id="comprobante_tipo_cambio" class="form-control form-control-sm" minlength="1" maxlength="100" required autocomplete="off" value="6.96"/>
                             <label for="comprobante_tipo_cambio">Tipo de Cambio</label>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                         <div class="form-floating">
                             <select class="form-control form-select form-select-sm" name="moneda" required id="comprobante_moneda">
                                 <option value="BS" selected>Bs.</option>
-                                <option value="SUS">SU$</option>
+                                <!--<option value="US$">US$</option>-->
                             </select>
                             <label for="comprobante_moneda">Moneda</label>
                         </div>
@@ -113,6 +113,8 @@
                         <a class="edit" href="javascript:void(0)" title="Editar" id="btn_adicionar_asiento"><i class="bi bi-plus-circle-fill text-success fs-5"></i></a>
                     </div>
                 </div>
+            </div>
+            <div class="container-fluid">
                 <div class="row mt-2">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle table-sm"
@@ -124,8 +126,8 @@
                 <div class="row mt-2">
                     <button class="btn btn-sm btn-success me-2" type="submit"><i class="bi bi-plus me-2"></i>Registrar</button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </body>
     <?php
         include('../Components/footer.php');

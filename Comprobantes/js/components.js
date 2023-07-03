@@ -1,4 +1,13 @@
-function create_input(id,clss,val,tp,name){
+const listarCuentas = (e) => {
+    var id = e.target.id.split('-')[1];
+    console.log(id);
+    $('#t_cuentas').bootstrapTable('removeAll');
+    //$('#modal_lista_cuentas').attr('id-asiento',id);
+    $('#modal_lista_cuentas').attr('data-id-asiento', id);
+    $('#modal_lista_cuentas').modal('show');
+    seleccionarCuenta();
+};
+function create_input(id,clss,val,tp,name,sw){
     const div = document.createElement('div');
     div.classList = "form-outline";
     const input = document.createElement('input');
@@ -7,13 +16,19 @@ function create_input(id,clss,val,tp,name){
     input.name = name;
     input.classList = "form-control";
     input.value = val;
-    input.onblur = calcular_totales;
+    if(sw == undefined){
+        input.onblur = calcular_totales;
+    }else{
+        input.placeholder = "Seleccione Cuenta";
+        input.autocomplete = "off";
+        input.onclick = listarCuentas;
+    }
     /*const label = document.createElement('label');
     label.classList = "form-label";
     label.innerText = name;
     label.htmlFor = id;*/
 
-    const div2 = document.createElement('div');
+    /*const div2 = document.createElement('div');
     div2.classList = "form-notch";
 
     const div3 = document.createElement('div');
@@ -27,9 +42,9 @@ function create_input(id,clss,val,tp,name){
     div2.appendChild(div4);
     div2.appendChild(div5);
 
-    div.appendChild(input);
+    div.appendChild(input);*/
     //div.appendChild(label);
-    div.appendChild(div2);
+    div.appendChild(input);
 
     return div;
 }
@@ -39,6 +54,7 @@ function create_select(name,id){
     select.classList = "form-select";
     select.id = "sl-"+id;
     select.name = name;
+    //select.dataset.dropdownParent = "#modal_registrar_comprobante";
 
     let options = CUENTAS;
     

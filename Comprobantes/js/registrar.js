@@ -1,3 +1,6 @@
+$(document).ready(function(){
+    $("#comprobante_fecha").val(obtenerFecha());
+});
 //$(document).ready(function(){
     var printIcon = function(cell, formatterParams){ //plain text value
         var id = cell._cell.row.data.id;
@@ -40,7 +43,7 @@
                     }}
                 ]
             },{
-                title:"Dolares ($us)",
+                title:"Dolares (US$)",
                 columns:[
                     {title:"Debe", field:"debe_s", validator:"required", hozAlign:"right", headerSort:false, formatter:"money", formatterParams:{
                         decimal:".",
@@ -99,7 +102,11 @@ $('#btn_adicionar_asiento').on('click', () => {
     });
     var data = {
         id : parseInt(max) + 1,
-        referencia: $('#comprobante_glosa').val()
+        referencia: $('#comprobante_glosa').val(),
+        debe_b: 0.00,
+        haber_b: 0.00,
+        debe_s: 0.00,
+        haber_s: 0.00
     }
     table.addRow(data);
     console.log(max);

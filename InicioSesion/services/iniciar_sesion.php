@@ -34,10 +34,20 @@
                     if(isset($_COOKIE['server'])){
                         unset($_COOKIE['server']);
                     }
+                    if(isset($_COOKIE['subdomain'])){
+                        unset($_COOKIE['subdomain']);
+                    }
+                    if(isset($_COOKIE['id_company'])){
+                        unset($_COOKIE['id_company']);
+                    }
                     setcookie('base',$company['base'], time()+64800,'/',false);
                     setcookie('server',$company['server'], time()+64800,'/',false);
+                    setcookie('subdomain',$company['subdomain'], time()+64800,'/',false);
+                    setcookie('id_company',$company['idCompany'], time()+64800,'/',false);
                     $_SESSION['base'] = $company['base'];
 	                $_SESSION['server'] = $company['server'];
+                    $_SESSION['subdomain'] = $company['subdomain'];
+                    $_SESSION['id_company'] = $company['idCompany'];
                     // Incluyendo archivo de conexion a la empresa
                     include("../../conexion.php");
                     // Obteniendo el usuario y contraseña
