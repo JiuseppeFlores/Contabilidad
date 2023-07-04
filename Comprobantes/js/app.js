@@ -45,8 +45,10 @@ function buildTable($el, cells, rows, asientos, tc) {
       referencia: asiento.referencia,
       debe: asiento.debe,
       haber: asiento.haber,
-      debe_s: Math.round(parseFloat(asiento.debe) * parseFloat(tc), 2),
-      haber_s: Math.round(parseFloat(asiento.haber) * parseFloat(tc), 2),
+      /*debe_s: Math.round((parseFloat(asiento.debe) * parseFloat(tc)),2),
+      haber_s: Math.round((parseFloat(asiento.haber) * parseFloat(tc)),2),*/
+      debe_s: (parseFloat(asiento.debe) * parseFloat(tc)),
+      haber_s: (parseFloat(asiento.haber) * parseFloat(tc)),
       banco: asiento.bco,
       cheque: asiento.cheque
     };

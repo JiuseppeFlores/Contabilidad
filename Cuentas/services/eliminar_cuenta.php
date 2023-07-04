@@ -8,29 +8,48 @@
         if(isset($_POST['id'])){
             // Datos a registrar en la BD
             $idCuenta = $_POST['id'];
-            // Seleccion de informacion del dato a eliminar
-            $sql = "SELECT * FROM tblCuentas WHERE idCuenta = ? ;";
+            // Consulta para verificar el uso de la cuenta en registros
+            $sql = "SELECT * 
+                    FROM tblAsientos 
+                    WHERE idCuenta = ? ;";
             $params = array($idCuenta);
             $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
             $stmt = sqlsrv_query( $con, $sql , $params, $options );
             if( $stmt ){
-                $data = $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC );
-                $codigo = $row['codigo'];
-                // Consulta para eliminar registros de la BD
-                $sql = "DELETE
-                        FROM tblCuentas 
-                        WHERE codigo LIKE '".$codigo."%' ;";
-                $params = array();
-                $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
-                $stmt = sqlsrv_query( $con, $sql , $params, $options );
-                if( $stmt ){
-                    $response['success'] = true;
-                    $response['message'] = 'Cuenta eliminada con éxito.';
-                }else{
-                    $errors = sqlsrv_errors();
-                    foreach( $errors as $error ) {
-                        $response['message'] .= $error[ 'message']." , ";
+                $count = sqlsrv_num_rows( $stmt );
+                if($count == 0){
+                    // Seleccion de informacion del dato a eliminar
+                    $sql = "SELECT * FROM tblCuentas WHERE idCuenta = ? ;";
+                    $params = array($idCuenta);
+                    $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
+                    $stmt = sqlsrv_query( $con, $sql , $params, $options );
+                    if( $stmt ){
+                        $data = $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC );
+                        $codigo = $row['codigo'];
+                        // Consulta para eliminar registros de la BD
+                        $sql = "DELETE
+                                FROM tblCuentas 
+                                WHERE codigo LIKE '".$codigo."%' ;";
+                        $params = array();
+                        $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
+                        $stmt = sqlsrv_query( $con, $sql , $params, $options );
+                        if( $stmt ){
+                            $response['success'] = true;
+                            $response['message'] = 'Cuenta eliminada con éxito.';
+                        }else{
+                            $errors = sqlsrv_errors();
+                            foreach( $errors as $error ) {
+                                $response['message'] .= $error[ 'message']." , ";
+                            }
+                        }
+                    }else{
+                        $errors = sqlsrv_errors();
+                        foreach( $errors as $error ) {
+                            $response['message'] .= $error[ 'message']." , ";
+                        }
                     }
+                }else{
+                    $response['message'] = "La cuenta que desea eliminar esta en uso.";
                 }
             }else{
                 $errors = sqlsrv_errors();
