@@ -29,9 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Insertamos asientos
         $res_asientos = insertar_asientos($con, $monto, $id_comprobante, $forma_pago, $fact_reten, $cod_inventario);
         if($res_asientos != -1){
-
+          $response['code'] = 1;
+          $response['message'] = '[OK]: Comprobante y '.$res_asientos.' asientos insertados facturas retencion '.$fact_reten;
         }else{
-
+          $response['code'] = 0;
+          $response['message'] = '[ERROR]: Error al Insertar asientos ';
         }
       }else{
         $response['code'] = 0;
@@ -77,18 +79,19 @@ function peticion_nro_comprobante($fecha){
 }
 
 function insertar_asientos($con, $monto, $id_comprobante, $forma_pago, $fact_reten, $cod_inventario){
+  include './cuentas_id.php';
   if($fact_reten == 'si'){ // Con factura
-    $cuenta_efect = $forma_pago == 'caja' ? 6 : 10; // caja -> caja central | banco -> bisa
+    $cuenta_efect = $forma_pago == 'caja' ? $CTA_CAJA : $CTA_BANCO; // caja -> caja central | banco -> bisa
     $cuenta_inventario = getIdCuentaInventario($cod_inventario);
     if($cuenta_inventario != -1){
-      $cuenta_iva = 356;
+      $cuenta_iva = $CTA_IVA;
       $iva = round($monto * 0.13, 2);
       $iva_inventario = round($monto - $iva, 2);
       $sql = "INSERT INTO tblAsientos (idComprobante, idCuenta, referencia, haber, debe, bco, cheque) VALUES (?, ?, '', ?, 0, '', ''), (?, ?, '', 0, ?, '', ''), (?, ?, '', 0, ?, '', '');";
       $params = array($id_comprobante, $cuenta_efect, $monto, $id_comprobante, $cuenta_inventario, $iva_inventario, $id_comprobante, $cuenta_iva, $iva);
       $stmt = sqlsrv_query($con, $sql, $params);
       if($stmt){
-        return 1;
+        return 3;
       }else{
         return -1;
       }
@@ -96,12 +99,11 @@ function insertar_asientos($con, $monto, $id_comprobante, $forma_pago, $fact_ret
       return -1;
     }
   }else{ // sin factura
-    $cuenta_efect = $forma_pago == 'caja' ? 6 : 10; // caja -> caja central | banco -> bisa
+    $cuenta_efect = $forma_pago == 'caja' ? $CTA_CAJA : $CTA_BANCO; // caja -> caja central | banco -> bisa
     $cuenta_inventario = getIdCuentaInventario($cod_inventario);
     if($cuenta_inventario != -1){
-      $cuenta_iva = 356;
-      $cuenta_reten = 574; // retencion it 3%
-      $cuentaiue = 576; // retencion bienes
+      $cuenta_reten = $CTA_RETENCION_IT_3; // retencion it 3%
+      $cuentaiue = $CTA_RETENCION_UIE_BIENES_5; // retencion UIE bienes
       $reten5 = round($monto - ($monto * 0.05), 2);
       $reten3 = round($monto - ($monto * 0.03), 2);
       $reten8 = round($monto - ($monto * 0.08), 2);
@@ -109,7 +111,7 @@ function insertar_asientos($con, $monto, $id_comprobante, $forma_pago, $fact_ret
       $params = array($id_comprobante, $cuenta_efect, $reten8, $id_comprobante, $cuenta_inventario, $monto, $id_comprobante, $cuentaiue, $reten5, $id_comprobante, $cuenta_reten, $reten3);
       $stmt = sqlsrv_query($con, $sql, $params);
       if($stmt){
-        return 1;
+        return 4;
       }else{
         return -1;
       }
@@ -120,8 +122,14 @@ function insertar_asientos($con, $monto, $id_comprobante, $forma_pago, $fact_ret
 }
 
 function getIdCuentaInventario($cod_inventario){
-  // cuentas rango-> idCuenta <materia prima, pre-elaborados-prod-terminado-envases>
-  $cta_inventario = array('1000'=>362, '2000'=>374, '3000'=>368, '4000'=>372);
+  include './cuentas_id.php';
+  // cuentas rango -> idCuenta <materia prima, pre-elaborados, prod-terminado, envases>
+  $cta_inventario = array(
+    '1000'=>$CTAS_INVENTARIO['materiaPrima'], 
+    '2000'=>$CTAS_INVENTARIO['preElaborados'], 
+    '3000'=>$CTAS_INVENTARIO['prodTerminados'], 
+    '4000'=>$CTAS_INVENTARIO['envases']
+  );
   $cod_inventario = (int)$cod_inventario;
   $idInv = -1;
   if($cod_inventario >= 1000 && $cod_inventario < 2000){

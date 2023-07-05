@@ -92,36 +92,15 @@ $("#tbl_comprobantes").bootstrapTable({
       field: "actions",
       title: "ACCIONES",
       align: "center",
-      clickToSelect: false,/*
+      clickToSelect: false,
       events: window.operateEvents,
-      formatter: operateFormatter,*/
+      formatter: operateFormatter,
     },
     {
       field: "archivo",
       title: "ARCHIVO",
       align: "center",
-      formatter: function (value, row, index) {
-        let color = "var(--bs-danger)";
-        let habil = "";
-        let direccion = "#";
-        if (row.filepdf == "no") {
-          color = "var(--bs-gray)";
-          habil = "disabled";
-        } else {
-          let index = window.location.href.split("/").pop();
-          direccion =
-            window.location.href.replace(index, "") + "Files/" + row.filepdf;
-        }
-        return (
-          '<a href="' +
-          direccion +
-          '" class="btn btn-light ' +
-          habil +
-          '" target="_blank"><i style="font-size:21px;color:' +
-          color +
-          '" class="bi bi-file-earmark-pdf-fill"></i></a>'
-        );
-      },
+      formatter: operatorFile,
     },
   ],
   data: [],
@@ -174,7 +153,7 @@ function obtenerNroComprobante(){
   });
 }
 
-async function get_counts() {
+function get_counts() {
   const ACCION = "OBTENER CUENTAS";
   var datos = { movimiento: 1 };
   $.ajax({
@@ -342,15 +321,37 @@ function operateFormatter(value, row, index) {
   if (row.nivel == "G") {
     return [""].join("");
   } else {
+    let url = window.location.origin + '/Contabilidad/Reportes/factura.pdf';
     return [
-      '<a class="edit" href="javascript:void(0)" title="Editar">',
-      '<i class="bi bi-pencil-fill text-primary"></i>',
-      "</a>  ",
-      '<a class="remove" href="javascript:void(0)" title="Eliminar">',
-      '<i class="bi bi-trash-fill text-danger"></i>',
-      "</a>",
+      '<div style="text-align: center;display: flex;flex-direction: row;justify-content: space-evenly;">',
+      '<a href="./edit.php?id=' + row.idComprobante +'" title="EDITAR" class="btn btn-info"><i style="font-size:17px;" class="bi bi-pen"></i></a>',
+      '<button data-bs-toggle="modal" data-bs-target="#modal_anular_comprobante" data-id="' + row.idComprobante +'" title="ANULAR" class="btn btn-danger"><i style="font-size:17px;" class="bi bi-x-octagon"></i></button>',
+      '<a href="'+url+'" target="_blank" title="IMPRIMIR" class="btn btn-dark"><i class="bi bi-printer" style="font-size:17px;"></i></a>',
+      '</div>'
     ].join("");
   }
+}
+function operatorFile (value, row, index) {
+  let color = "var(--bs-danger)";
+  let habil = "";
+  let direccion = "#";
+  if (row.filepdf == "no" || row.filepdf == null) {
+    color = "var(--bs-gray)";
+    habil = "disabled";
+  } else {
+    let index = window.location.href.split("/").pop();
+    direccion =
+      window.location.href.replace(index, "") + "Files/" + row.filepdf;
+  }
+  return (
+    '<a href="' +
+    direccion +
+    '" class="btn btn-light ' +
+    habil +
+    '" target="_blank"><i style="font-size:21px;color:' +
+    color +
+    '" class="bi bi-file-earmark-pdf-fill"></i></a>'
+  );
 }
 
 window.operateEvents = {
@@ -377,8 +378,13 @@ function listar_cuentas() {
     dataType: "JSON",
     beforeSend: function () {
       console.log("[" + ACCION + "] Enviando datos...");
+      $("#spinner_table").html(`
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>`);
     },
     success: function (response) {
+      $("#spinner_table").html('').hide();
       if (response.success) {
         console.log(response);
         response.data.forEach((cuenta) => {
@@ -471,6 +477,36 @@ function peticionPrueba(objeto){
     },
     error: function (error) {
       console.log("ERROR----", error)
+    },
+  });
+}
+
+$("#modal_anular_comprobante").on("show.bs.modal", function (e) {
+  var id = $(e.relatedTarget).data().id;
+  $("#id_comprobante").val(id);
+});
+
+function anularComprobante(){
+  const id_comprobante = $("#id_comprobante").val();
+  // console.log(id_comprobante)
+  $.ajax({
+    data: {id:id_comprobante},
+    url: "services/anular_comprobante.php",
+    type: "POST",
+    dataType: "JSON",
+    beforeSend: function () {
+    },
+    success: function (response) {
+      // console.log(response)
+      if(response.code){
+        show_toast(`ANULAR COMPROBANTE`, response.message, "text-bg-info")
+      }else{
+        show_toast(`ANULAR COMPROBANTE`, response.message, "text-bg-danger")
+      }
+    },
+    error: function (error) {
+      show_toast('OCURRIO UN ERROR', 'No se anuló el comprobante', "text-bg-danger");
+      console.log('ERROR anular comprobante ',error);
     },
   });
 }

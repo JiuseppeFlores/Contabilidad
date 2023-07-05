@@ -27,7 +27,7 @@ $(document).ready(function(){
           field: 'tipoCambio',
           title: "T/C"
         }, {
-            field: 'referencia',
+            field: 'glosa',
             title: "DESCRIPCION"
         }, {
             field: 'cheque',
@@ -56,6 +56,7 @@ $('#lm_descripcion').on('click', () => {
         dataType: 'JSON',
         beforeSend: function(){
             console.log("["+ACCION+"] Enviando datos...");
+            $('#modal_lista_cuentas').modal('show');
         },
         success:function(response){
             if(response.success){
@@ -74,7 +75,7 @@ $('#lm_descripcion').on('click', () => {
                 });
                 $('#t_cuentas').bootstrapTable('removeAll');
                 $('#t_cuentas').bootstrapTable('load', response.data);
-                $('#modal_lista_cuentas').modal('show');
+                
             }else{
                 show_toast(ACCION,response.message,'text-bg-danger');
             }

@@ -12,7 +12,7 @@
                                     id="t_cuentas"
                                     data-search="true"
                                     >
-
+                                <div style="display:flex;flex-direction:row;justify-content: center;" id="spinner_table"></div>
                             </table>
                         </div>
                     </div>

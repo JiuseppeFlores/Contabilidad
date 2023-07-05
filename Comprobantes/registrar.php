@@ -137,8 +137,6 @@
     <script type="text/javascript" src="../js/components.js"></script>
     <script type="text/javascript" src="../js/functions.js"></script>
     
-    <script type="text/javascript" src="js/Asiento.js"></script>
-    <script type="text/javascript" src="js/components.js"></script>
 
     <script type="text/javascript" src="../js/tabulator/dist/js/tabulator.min.js"></script>
     <script type="text/javascript" src="js/registrar.js"></script>

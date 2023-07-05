@@ -1,7 +1,7 @@
 <?php
 
     include("../../conexion.php");
-    //include_once '../../conexion_.php';
+    // include_once '../../conexion_.php';
     $response = array('success' => false, 'message' => '');
 
     if($_SERVER['REQUEST_METHOD'] == 'GET'){

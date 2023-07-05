@@ -24,6 +24,7 @@
             include('modal_registrar_comprobante.php');
             include('modal_registrar_factura.php');
             include('modal_cuentas.php');
+            include('modal_anular_comprobante.php');
         ?>
         <div class="container mt-4">
             <div class="row">
