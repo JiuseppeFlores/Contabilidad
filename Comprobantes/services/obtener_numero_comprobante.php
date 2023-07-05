@@ -1,11 +1,11 @@
 <?php
 
     include("../../conexion.php");
-
+    //include_once '../../conexion_.php';
     $response = array('success' => false, 'message' => '');
 
     if($_SERVER['REQUEST_METHOD'] == 'GET'){
-        if(isset($_GET['fecha']) && isset($_GET['tipo'])){
+        if(isset($_GET['fecha']) && isset($_GET['tipo']) && $_GET['fecha'] != '' && $_GET['tipo'] != ''){
             // Datos a registrar en la BD
             $fecha = new DateTime($_GET['fecha']);
             $mes = $fecha->format("Y-m");

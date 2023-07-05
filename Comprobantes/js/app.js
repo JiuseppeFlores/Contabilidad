@@ -146,7 +146,8 @@ $("#modal_registrar_comprobante").on('show.bs.modal',()=>{
 function obtenerNroComprobante(){
   const ACCION = "OBTENER NRO. COMPROBANTE";
   var datos = { 
-    fecha: obtenerFecha(),
+    // fecha: obtenerFecha(),
+    fecha: $("#comprobante_fecha").val(),
     tipo: $('#comprobante_tipo').val()
   };
   $.ajax({

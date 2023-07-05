@@ -27,7 +27,7 @@
                             </div>
                             <div class="col-2">
                                 <div class="form-floating">
-                                    <input type="date" class="form-control" name="fecha" id="comprobante_fecha">
+                                    <input type="date" class="form-control" name="fecha" id="comprobante_fecha" onchange="obtenerNroComprobante()">
                                     <label for="comprobante_fecha">Fecha</label>
                                 </div>
                             </div>
