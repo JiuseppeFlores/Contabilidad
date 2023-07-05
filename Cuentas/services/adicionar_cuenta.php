@@ -33,8 +33,8 @@
                     );
                     $cuenta[$nivel] = $codigo_cuenta;
                     // Consulta para insertar los nuevos registros ala tabla
-                    $sql = "INSERT INTO tblCuentas (idCuenta,codigo,descripcion,grupo,rubro,titulo,compuesta,subcuenta,auxiliar,nivel,movimiento) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ) ;";
-                    $params = array(183,$codigo,$descripcion,$cuenta['G'],$cuenta['R'],$cuenta['T'],$cuenta['C'],$cuenta['S'],$cuenta['A'],$nivel,$movimiento);
+                    $sql = "INSERT INTO tblCuentas (codigo,descripcion,grupo,rubro,titulo,compuesta,subcuenta,auxiliar,nivel,movimiento) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ) ;";
+                    $params = array($codigo,$descripcion,$cuenta['G'],$cuenta['R'],$cuenta['T'],$cuenta['C'],$cuenta['S'],$cuenta['A'],$nivel,$movimiento);
                     $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
                     $stmt = sqlsrv_query( $con, $sql , $params, $options );
                     if( $stmt ){
@@ -45,7 +45,7 @@
                         foreach( $errors as $error ) {
                             $response['message'] .= $error[ 'message']." , ";
                         }
-                        $response['message'] .= $sql;
+                        //$response['message'] .= $sql;
                     }
                 }else{
                     $response['message'] = "Código de cuenta ya registrada.";

@@ -26,10 +26,10 @@
         <div class="row">
             <div class="col-6">
                 <h3>Libro Mayor</h3>
-                <div class="form-check form-switch">
+                <!--<div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" disabled>
                     <label class="form-check-label" for="flexSwitchCheckDefault">Varias Cuentas</label>
-                </div>
+                </div>-->
             </div>
         </div>
         <div class="row mt-2 align-items-center">

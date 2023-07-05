@@ -22,6 +22,7 @@ function removerAsiento(){
 }
 
 $("#t_cuentas").bootstrapTable({
+    rowStyle: rowStyle,
     columns: [
       {
         field: "codigo",
@@ -35,5 +36,22 @@ $("#t_cuentas").bootstrapTable({
     data: [],
     onDblClickRow: cuentaSeleccionada,
 });
+
+function rowStyle(row, index) {
+    var classes = [
+      'fw-semibold text-muted',
+      'text-primary'
+    ];
+
+    if( row.movimiento == 1 ){
+        return {
+            classes: classes[1]
+        };
+    }else{
+        return {
+            classes: classes[0]
+        };
+    }
+}
 
 listar_cuentas();

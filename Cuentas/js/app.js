@@ -43,7 +43,9 @@ $(document).ready(function(){
     listar_cuentas(); 
 });
 
-$('#modal_lista_cuentas').on('show.bs.modal', () => {
+$('#modal_lista_cuentas').on('show.bs.modal', (e) => {
+    var tipo = $(e.relatedTarget).data().bsTipo;
+    $('#modal_lista_cuentas').attr('tipo',tipo);
     const ACCION = "LISTAR CUENTAS";
     var datos = {
         movimiento: 0
@@ -101,25 +103,37 @@ function rowStyle(row, index) {
 }
 
 function seleccionarCuenta(e){
-    document.getElementById('ca_descripcion').value = e.descripcion.replaceAll("&nbsp;", '');
-    document.getElementById('ca_codigo_base').textContent = e.codigo;
-    $("#ca_movimiento").prop('checked', e.nivel == 'S' ? true : false);
-    $("#ca_movimiento").prop('readonly', e.nivel == 'S' ? true : false);
+    var tipo = $('#modal_lista_cuentas').attr('tipo');
+    document.getElementById(tipo+'_descripcion').value = e.descripcion.replaceAll("&nbsp;", '');
+    document.getElementById(tipo+'_codigo_base').textContent = e.codigo;
+    $("#"+tipo+"_movimiento").prop('checked', e.nivel == 'S' ? true : false);
+    $("#"+tipo+"_movimiento").prop('readonly', e.nivel == 'S' ? true : false);
     $('#modal_lista_cuentas').modal('hide');
-    $('#modal_adicionar').modal('show');
-    $('#ca_grupo').val(e.grupo);
-    $('#ca_rubro').val(e.rubro);
-    $('#ca_titulo').val(e.titulo);
-    $('#ca_compuesta').val(e.compuesta);
-    $('#ca_subcuenta').val(e.subcuenta);
+
+    $('#modal_'+(tipo == 'ca' ? 'adicionar' : 'actualizar')).modal('show');
+    let max = {
+        'G': 1,
+        'R': 2,
+        'T': 2,
+        'C': 2,
+        'S': 3,
+    };
+    document.getElementById(tipo+'_codigo_cuenta').maxLength = max[e.nivel];
+    document.getElementById(tipo+'_codigo_cuenta').value = "";
+
+    $('#'+tipo+'_grupo').val(e.grupo);
+    $('#'+tipo+'_rubro').val(e.rubro);
+    $('#'+tipo+'_titulo').val(e.titulo);
+    $('#'+tipo+'_compuesta').val(e.compuesta);
+    $('#'+tipo+'_subcuenta').val(e.subcuenta);
     let niveles = ['G','R','T','C','S','A'];
-    $('#ca_nivel').val(niveles[niveles.indexOf(e.nivel) + 1]);
+    $('#'+tipo+'_nivel').val(niveles[niveles.indexOf(e.nivel) + 1]);
 }
 
-function actualizarCodigo(){
-    var codigo = $("#ca_codigo_cuenta").val();
-    $("#ca_codigo_cuenta").val(parseInt(codigo) < 10 ? "0"+codigo : parseInt(codigo) >= 10 ? codigo : "00");
-    $('#ca_codigo').val($('#ca_codigo_base').text() + $('#ca_codigo_cuenta').val());
+function actualizarCodigo(tipo){
+    var codigo = $("#"+tipo+"_codigo_cuenta").val();
+    $("#"+tipo+"_codigo_cuenta").val(parseInt(codigo) < 10 ? "0"+parseInt(codigo) : parseInt(codigo) >= 10 ? codigo : "00");
+    $('#'+tipo+'_codigo').val($('#'+tipo+'_codigo_base').text() + $('#'+tipo+'_codigo_cuenta').val());
 }
 // ADICIONAR CUENTA NUEVA
 $('#form_adicionar_cuenta').on('submit', function(e){
@@ -158,14 +172,10 @@ $('#modal_adicionar').on('hide.bs.modal', () => {
     $('#ca_codigo_base').html("");
 });
 
-$('#modal_actualizar').on('show.bs.modal', () => {
-    cambio_nivel('ce');
-});
-
 $('#modal_actualizar').on('hide.bs.modal', () => {
-    $('#id_cuenta').text("");
+    /*$('#id_cuenta').text("");
     $('#cuenta_id').val("");
-    $('#form_actualizar_cuenta').trigger("reset");
+    $('#form_actualizar_cuenta').trigger("reset");*/
 });
 
 $('#modal_eliminar').on('hide.bs.modal', () => {
@@ -213,7 +223,7 @@ function listar_cuentas(){
 }
 
 function operateFormatter(value, row, index) {
-    if(row.nivel == 'G'){
+    if(row.nivel == 'G' || row.nivel == 'R' || row.nivel == 'T' || row.nivel == 'C' || row.nivel == 'S'){
         return [
             ''
         ].join('');
@@ -274,56 +284,51 @@ function editar_cuenta(id_cuenta){
         success:function(response){
             if(response.success){
                 cuenta = response.data;
+                console.log(cuenta);
+                var nivel = cuenta.nivel;
+                var codigo = "";
+                switch(nivel){
+                    case 'G':codigo=cuenta.grupo;break;
+                    case 'R':codigo=cuenta.rubro;break;
+                    case 'T':codigo=cuenta.titulo;break;
+                    case 'C':codigo=cuenta.compuesta;break;
+                    case 'S':codigo=cuenta.subcuenta;break;
+                    case 'A':codigo=cuenta.auxiliar;break;
+                }
                 $('#modal_actualizar').modal('show');
-                document.querySelectorAll(`input[name="ce_nivel"]`).forEach(element => {
-                    if(element.value === cuenta.nivel) {
-                        element.checked = true;
+                $('#ce_id').val(cuenta.idCuenta);
+                $('#ce_nivel').val(cuenta.nivel);
+                $('#ce_grupo').val(cuenta.grupo);
+                $('#ce_rubro').val(cuenta.rubro);
+                $('#ce_titulo').val(cuenta.titulo);
+                $('#ce_compuesta').val(cuenta.compuesta);
+                $('#ce_subcuenta').val(cuenta.subcuenta);
+                $('#ce_codigo_base').text(cuenta.codigo.substring(0,(cuenta.codigo.length - codigo.length)));
+                $('#ce_codigo_cuenta').val(codigo);
+                $('#ce_codigo').val(cuenta.codigo);
+                $('#ce_movimiento').prop("checked", cuenta.movimiento == 1 ? true : false );
+                $('#ce_nombre_cuenta').val(cuenta.descripcion);
+                let datos = {
+                    codigo: cuenta.codigo.substring(0,(cuenta.codigo.length - codigo.length))
+                }
+                $.ajax({
+                    data: datos,
+                    url: 'services/obtener_codigo.php',
+                    type: 'GET',
+                    dataType: 'JSON',
+                    beforeSend: function(){
+                        console.log("["+ACCION+"] Enviando datos...");
+                    },
+                    success:function(response){
+                        $('#ce_descripcion').val(response.data.descripcion);
+                        let max = {'G': 1,'R': 2,'T': 2,'C': 2,'S': 3};
+                        console.log(response.data);
+                        document.getElementById('ce_codigo_cuenta').maxLength = max[response.data.nivel];
+                    },
+                    error: function(error){
+                        console.log("["+ACCION+"] "+error.statusText);
                     }
                 });
-                cambio_nivel('ce');
-                $('#id_cuenta').text(response.data.codigo);
-                $('#ce_id').val(response.data.idCuenta);
-                $('#ce_codigo_cuenta').val(response.data.codigo);
-                var codigo = "";
-                var modo = 'ce';
-                switch(cuenta.nivel){
-                    case 'G':
-                        codigo = cuenta.grupo;
-                        break;
-                    case 'R':
-                        codigo = cuenta.rubro;
-                        break;
-                    case 'T':
-                        codigo = cuenta.titulo;
-                        break;
-                    case 'C':
-                        codigo = cuenta.compuesta;
-                        break;
-                    case 'S':
-                        codigo = cuenta.subcuenta;
-                        break;
-                }
-                setTimeout(()=>{
-                    $('#ce_grupos').val(cuenta.grupo);
-                    $('#ce_grupos').trigger('change');
-                    setTimeout(()=>{
-                        $('#ce_rubros').val(cuenta.rubro);
-                        $('#ce_rubros').trigger('change');
-                        setTimeout(()=>{
-                            $('#ce_titulos').val(cuenta.titulo);
-                            $('#ce_titulos').trigger('change');
-                            setTimeout(()=>{
-                                $('#ce_compuestas').val(cuenta.compuesta);
-                                $('#ce_compuestas').trigger('change');
-                                setTimeout(()=>{
-                                    $('#ce_codigo').val(codigo);
-                                    generar_codigo('ce');
-                                },200);
-                            },200);
-                        },200);
-                    },200);
-                },200);
-                $('#ce_descripcion').val(response.data.descripcion);
             }else{
                 show_toast(ACCION,response.message,'text-bg-warning');
             }

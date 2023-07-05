@@ -12,7 +12,7 @@
                                 <label for="" class="form-label text-muted"><b>Nivel de Cuenta:</b></label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="ca_descripcion_span"><i class="bi-list-columns-reverse text-secondary"></i></span>
-                                    <input type="text" class="form-control" id="ca_descripcion" aria-describedby="ca_descripcion_span" placeholder="Seleccione cuenta" readonly data-bs-target="#modal_lista_cuentas" data-bs-toggle="modal" required>
+                                    <input type="text" class="form-control" id="ca_descripcion" aria-describedby="ca_descripcion_span" placeholder="Seleccione cuenta" readonly data-bs-target="#modal_lista_cuentas" data-bs-toggle="modal" data-bs-tipo="ca" required>
                                     <input type="hidden" id="ca_nivel" name="nivel"/>
                                     <input type="hidden" id="ca_grupo" name="grupo"/>
                                     <input type="hidden" id="ca_rubro" name="rubro"/>
@@ -26,13 +26,13 @@
                                 <label for="ca_codigo" class="form-label">Código Cuenta</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="ca_codigo_base"></span>
-                                    <input type="text" class="form-control" name="codigo_cuenta" id="ca_codigo_cuenta" aria-describedby="ca_codigo_base" minlength="1" maxlength="2" required autocomplete="off" onblur="actualizarCodigo()"/>
+                                    <input type="text" class="form-control" name="codigo_cuenta" id="ca_codigo_cuenta" aria-describedby="ca_codigo_base" minlength="1" maxlength="3" required autocomplete="off" onblur="actualizarCodigo('ca')"/>
                                     <input type="hidden" id="ca_codigo" name="codigo"/>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating mb-3">
-                                    <input id="ca_descripcion" type="text" name="descripcion" class="form-control" minlength="3" maxlength="100" required autocomplete="off"/>
+                                    <input id="ca_nombre_cuenta" type="text" name="descripcion" class="form-control" minlength="3" maxlength="100" required autocomplete="off"/>
                                     <label for="ca_descripcion">Nombre</label>
                                 </div>
                             </div>
@@ -43,9 +43,6 @@
                                         Movimiento
                                     </label>
                                 </div>
-                            </div>
-                            <div class="col-12">
-                                
                             </div>
                         </div>
                     </div>

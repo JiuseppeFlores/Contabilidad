@@ -7,17 +7,19 @@
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if(isset($_POST['id']) && isset($_POST['codigo']) && isset($_POST['descripcion'])){
             // Datos a registrar en la BD
+            //print_r($_POST);
             $id_cuenta = $_POST['id'];
             $codigo = $_POST['codigo'];
             $codigo_cuenta = $_POST['codigo_cuenta'];
             $descripcion = $_POST['descripcion'];
-            $nivel = $_POST['ce_nivel'];
+            $nivel = $_POST['nivel'];
+            $movimiento =  isset($_POST['movimiento']) ? 1 : 0;
             // Consulta para verificar la existencia de una cuenta
             $sql = "SELECT * 
                     FROM tblCuentas tc
                     WHERE tc.codigo = ?
                         AND tc.idCuenta <> ? ;";
-            $params = array($codigo_cuenta,$id_cuenta);
+            $params = array($codigo,$id_cuenta);
             $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
             $stmt = sqlsrv_query( $con, $sql , $params, $options );
             if( $stmt ){
@@ -29,21 +31,24 @@
                         'R' => isset($_POST['rubro']) ? $_POST['rubro'] : NULL,
                         'T' => isset($_POST['titulo']) ? $_POST['titulo'] : NULL,
                         'C' => isset($_POST['compuesta']) ? $_POST['compuesta'] : NULL,
-                        'S' => isset($_POST['subcuenta']) ? $_POST['subcuenta'] : NULL
+                        'S' => isset($_POST['subcuenta']) ? $_POST['subcuenta'] : NULL,
+                        'A' => isset($_POST['auxiliar']) ? $_POST['auxiliar'] : NULL
                     );
-                    $cuenta[$nivel] = $codigo;
+                    $cuenta[$nivel] = $codigo_cuenta;
                     // Consulta para insertar los nuevos registros ala tabla
                     $sql = "UPDATE tblCuentas 
-                    SET codigo = ? ,
-                        descripcion = ? ,
-                        grupo = ? ,
-                        rubro = ? ,
-                        titulo = ? ,
-                        compuesta = ? ,
-                        subcuenta = ? ,
-                        nivel = ?
-                    WHERE idCuenta = ? ;";
-                    $params = array($codigo_cuenta,$descripcion,$cuenta['G'],$cuenta['R'],$cuenta['T'],$cuenta['C'],$cuenta['S'],$nivel,$id_cuenta);
+                            SET codigo = ? ,
+                                descripcion = ? ,
+                                grupo = ? ,
+                                rubro = ? ,
+                                titulo = ? ,
+                                compuesta = ? ,
+                                subcuenta = ? ,
+                                auxiliar = ? ,
+                                nivel = ? ,
+                                movimiento = ? 
+                            WHERE idCuenta = ? ;";
+                    $params = array($codigo,$descripcion,$cuenta['G'],$cuenta['R'],$cuenta['T'],$cuenta['C'],$cuenta['S'],$cuenta['A'],$nivel,$movimiento,$id_cuenta);
                     $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
                     $stmt = sqlsrv_query( $con, $sql , $params, $options );
                     if( $stmt ){
