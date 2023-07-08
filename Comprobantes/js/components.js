@@ -1,4 +1,5 @@
 const listarCuentas = (e) => {
+    console.log(e)
     var id = e.target.id.split('-')[1];
     console.log(id);
     $('#t_cuentas').bootstrapTable('removeAll');

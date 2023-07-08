@@ -182,6 +182,8 @@ function get_counts() {
   });
 }
 
+
+
 $("#form_registro_comprobante").on("submit", function (e) {
   e.preventDefault();
   if (ASIENTOS.length > 0) {
@@ -324,7 +326,7 @@ function operateFormatter(value, row, index) {
     let url = window.location.origin + '/Contabilidad/Reportes/factura.pdf';
     return [
       '<div style="text-align: center;display: flex;flex-direction: row;justify-content: space-evenly;">',
-      '<a href="./edit.php?id=' + row.idComprobante +'" title="EDITAR" class="btn btn-info"><i style="font-size:17px;" class="bi bi-pen"></i></a>',
+      '<a href="./edit.php?id=' + row.idComprobante +'" title="EDITAR" class="btn btn-primary"><i style="font-size:17px;" class="bi bi-pen"></i></a>',
       '<button data-bs-toggle="modal" data-bs-target="#modal_anular_comprobante" data-id="' + row.idComprobante +'" title="ANULAR" class="btn btn-danger"><i style="font-size:17px;" class="bi bi-x-octagon"></i></button>',
       '<a href="'+url+'" target="_blank" title="IMPRIMIR" class="btn btn-dark"><i class="bi bi-printer" style="font-size:17px;"></i></a>',
       '</div>'

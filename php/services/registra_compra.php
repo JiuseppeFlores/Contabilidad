@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   // hacemos la peticion para obtener nro comprobante
   $resultado = peticion_nro_comprobante($fecha);
   if($resultado === false){
-    $response['message'] = '[FAIL]: Fallido: PETICION Comprobante '.curl_error($curl);
+    $response['message'] = '[FAIL]: Fallido: PETICION Comprobante ERROR';
   }else{
     $resultado = json_decode($resultado);
     if($resultado->success){
@@ -45,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
   }
 } else {
-  $response['code'] = 400;
-  $response['message'] = '[Bad Request]: Error en el tipo de petición (Requerido POST)';
+  $response['code'] = -1;
+  $response['message'] = '[Bad Request 400]: Error en el tipo de petición (Requerido POST)';
 }
 echo json_encode($response);
 ?>
@@ -71,10 +71,14 @@ function insertar_comprobante($con, $nro, $fecha, $glosa, $tipo_cambio, $moneda)
 }
 
 function peticion_nro_comprobante($fecha){
-  $url = 'http://'.$_SERVER['SERVER_NAME'].'/contabilidad/Comprobantes/services/obtener_numero_comprobante.php?fecha='.urlencode($fecha).'&tipo=EGRESO';
-  $curl = curl_init($url);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  $resultado = curl_exec($curl);
+  try {
+    $url = 'http://'.$_SERVER['SERVER_NAME'].'/contabilidad/Comprobantes/services/obtener_numero_comprobante.php?fecha='.urlencode($fecha).'&tipo=EGRESO';
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $resultado = curl_exec($curl);
+  } catch (\Throwable $th) {
+    $resultado = false;
+  }
   return $resultado;
 }
 
