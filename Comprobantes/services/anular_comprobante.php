@@ -3,7 +3,7 @@ include_once('../../conexion.php');
 $response = array();
 if($_SERVER['REQUEST_METHOD']=='POST'){
   if(isset($_POST['id'])){
-    $sql = "UPDATE tblComprobantes SET estado = 'anulado' WHERE idComprobante = ?";
+    $sql = "UPDATE tblComprobantes SET estado = 'ANULADO' WHERE idComprobante = ?";
     $stmt = sqlsrv_query($con, $sql, array($_POST['id']));
     if($stmt){
       $response['code'] = 1;

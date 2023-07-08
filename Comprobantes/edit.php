@@ -33,6 +33,7 @@
         $tipoCambio = $row['tipoCambio'];
         $moneda = $row['moneda'];
         $nit = $row['nitCi'];
+        $detalle = $row['cancelado'];
         $nroRecibo = $row['nroRecibo'];
         $glosa = $row['glosa'];
         $filePdf = $row['filepdf'];
@@ -127,7 +128,7 @@
                       <div class="row mt-2">
                         <div class="col-2">
                           <div class="form-floating">
-                            <input type="text" name="detalle" id="comprobante_detalle" class="form-control" minlength="3" maxlength="100" required autocomplete="off" />
+                            <input type="text" name="detalle" id="comprobante_detalle" class="form-control" minlength="3" maxlength="100" required autocomplete="off" value="<?php echo $detalle; ?>" />
                             <label for="comprobante_detalle">Detalle</label>
                           </div>
                         </div>

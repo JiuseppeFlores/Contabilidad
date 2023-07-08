@@ -60,7 +60,7 @@ function adicionar_asiento(){
     const row = document.createElement('tr');
     const codigo = document.createElement('td');
     //codigo.appendChild(create_select('cuenta[]',id));
-    codigo.appendChild(create_input("codigo-"+id,"form-control","","text","referencia[]",true));
+    codigo.appendChild(create_input("codigo-"+id,"form-control","","text","codigo[]",true));
     const idCuenta = document.createElement("input");
     idCuenta.type="hidden";
     idCuenta.name="cuenta[]";

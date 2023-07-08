@@ -43,12 +43,12 @@ function buildTable($el, cells, rows, asientos, tc) {
       codigo: asiento.codigo,
       descripcion: asiento.descripcion,
       referencia: asiento.referencia,
-      debe: asiento.debe,
-      haber: asiento.haber,
+      debe: asiento.debe.toFixed(2),
+      haber: asiento.haber.toFixed(2),
       /*debe_s: Math.round((parseFloat(asiento.debe) * parseFloat(tc)),2),
       haber_s: Math.round((parseFloat(asiento.haber) * parseFloat(tc)),2),*/
-      debe_s: (parseFloat(asiento.debe) * parseFloat(tc)),
-      haber_s: (parseFloat(asiento.haber) * parseFloat(tc)),
+      debe_s: (parseFloat(asiento.debe) * parseFloat(tc)).toFixed(2),
+      haber_s: (parseFloat(asiento.haber) * parseFloat(tc)).toFixed(2),
       banco: asiento.bco,
       cheque: asiento.cheque
     };
@@ -87,6 +87,10 @@ $("#tbl_comprobantes").bootstrapTable({
     {
       field: "glosa",
       title: "GLOSA",
+    },
+    {
+      field: "estado",
+      title: "ESTADO",
     },
     {
       field: "actions",
@@ -324,6 +328,7 @@ function operateFormatter(value, row, index) {
     return [""].join("");
   } else {
     let url = window.location.origin + '/Contabilidad/Reportes/factura.pdf';
+    url = "#";
     return [
       '<div style="text-align: center;display: flex;flex-direction: row;justify-content: space-evenly;">',
       '<a href="./edit.php?id=' + row.idComprobante +'" title="EDITAR" class="btn btn-primary"><i style="font-size:17px;" class="bi bi-pen"></i></a>',
