@@ -6,6 +6,7 @@ $(document).ready(function(){
         search: true,
         searchAlign: "left",
         rowStyle: rowStyle,
+        formatLoadingMessage: function(){return "Cargando"},
         columns: [{
           field: 'codigo',
           title: 'Codigo'
@@ -48,6 +49,8 @@ $(document).ready(function(){
 
 $('#lm_descripcion').on('click', () => {
     $('#modal_lista_cuentas').modal('show');
+    $('#t_cuentas').bootstrapTable('removeAll');
+    $('#t_cuentas').bootstrapTable('showLoading');
     const ACCION = "LISTAR CUENTAS";
     var datos = { };
     $.ajax({
@@ -73,7 +76,7 @@ $('#lm_descripcion').on('click', () => {
                     };
                     cuenta.descripcion = sp + cuenta.descripcion;
                 });
-                $('#t_cuentas').bootstrapTable('removeAll');
+                $('#t_cuentas').bootstrapTable('hideLoading');
                 $('#t_cuentas').bootstrapTable('load', response.data);
                 
             }else{
