@@ -171,7 +171,7 @@ function str_starts_with($haystack, $needle) {
 
 function cuenta_vendedor($rol_usuario, $nom_usuario){
   include './cuentas_id.php';
-  if($nom_usuario == 'ALMACEN' && $rol_usuario == 'ADMIN'){
+  if(($nom_usuario == 'ALMACEN' || $nom_usuario == 'ADMIN') && $rol_usuario == 'ADMIN'){
     $cta = $CTA_ALMACEN;
   }else if($rol_usuario == 'VENDEDOR 1' || $nom_usuario == 'MOVIL1'){
     $cta = $CTA_MOVIL1;
