@@ -47,6 +47,7 @@ $(document).ready(function(){
 });
 
 $('#lm_descripcion').on('click', () => {
+    $('#modal_lista_cuentas').modal('show');
     const ACCION = "LISTAR CUENTAS";
     var datos = { };
     $.ajax({
@@ -56,7 +57,6 @@ $('#lm_descripcion').on('click', () => {
         dataType: 'JSON',
         beforeSend: function(){
             console.log("["+ACCION+"] Enviando datos...");
-            $('#modal_lista_cuentas').modal('show');
         },
         success:function(response){
             if(response.success){
