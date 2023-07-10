@@ -66,7 +66,8 @@ echo json_encode($response);
 // // Funciones 
 function peticion_nro_comprobante_venta($fecha, $pin){
   try {
-    $url = 'http://'.$_SERVER['SERVER_NAME'].'/contabilidad/php/services/obtener_num_comprobante.php?fecha='.urlencode($fecha).'&tipo=INGRESO&pin='.urlencode($pin);
+    //$url = 'http://'.$_SERVER['SERVER_NAME'].'/contabilidad/php/services/obtener_num_comprobante.php?fecha='.urlencode($fecha).'&tipo=INGRESO&pin='.urlencode($pin);
+    $url = 'http://177.222.51.52:86/contabilidad/php/services/obtener_num_comprobante.php?fecha='.urlencode($fecha).'&tipo=INGRESO&pin='.urlencode($pin);
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     $resultado = curl_exec($curl);
