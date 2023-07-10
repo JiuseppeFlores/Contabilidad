@@ -107,7 +107,7 @@ function insertar_asientos($con, $monto, $id_comprobante, $forma_pago, $fact_ret
     $cuenta_inventario = getIdCuentaInventario($cod_inventario);
     if($cuenta_inventario != -1){
       $cuenta_reten = $CTA_RETENCION_IT_3; // retencion it 3%
-      $cuentaiue = $CTA_RETENCION_UIE_BIENES_5; // retencion UIE bienes
+      $cuentaiue = $CTA_RETENCION_IUE_BIENES_5; // retencion IUE bienes
       $reten5 = round($monto - ($monto * 0.05), 2);
       $reten3 = round($monto - ($monto * 0.03), 2);
       $reten8 = round($monto - ($monto * 0.08), 2);
