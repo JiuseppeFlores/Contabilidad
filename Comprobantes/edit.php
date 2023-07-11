@@ -118,8 +118,8 @@
                           <div class="form-floating">
                             <select class="form-control form-select" name="moneda" required id="comprobante_moneda">
                               <option value="" disabled> - Moneda - </option>
-                              <option value="Boliviano" <?php echo $moneda == 'Boliviano' || $moneda == 'BS' ? 'selected' : ''; ?>>Boliviano</option> 'selected'; ?>>Bs.</option>
-                              <option value="SUS" <?php echo $moneda == 'SUS' ? 'selected' : ''; ?>>SU$</option>
+                              <option value="BOLIVIANO" <?php echo $moneda == 'BOLIVIANO' || $moneda == 'BS' ? 'selected' : ''; ?>>Boliviano</option> 'selected'; ?>>Bs.</option>
+                              <option value="DOLAR" <?php echo $moneda == 'DOLAR' ? 'selected' : ''; ?>>SU$</option>
                             </select>
                             <label for="comprobante_moneda">Moneda</label>
                           </div>
@@ -129,7 +129,7 @@
                         <div class="col-2">
                           <div class="form-floating">
                             <input type="text" name="detalle" id="comprobante_detalle" class="form-control" minlength="3" maxlength="100" required autocomplete="off" value="<?php echo $detalle; ?>" />
-                            <label for="comprobante_detalle">Detalle</label>
+                            <label for="comprobante_detalle">Corresponde</label>
                           </div>
                         </div>
                         <div class="col-2">
@@ -231,7 +231,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th scope="col" colspan="3"></th>
+                                    <th scope="col" colspan="3" style="text-align:center;">TOTALES: </th>
                                     <th class="text-center" scope="col" id="total_debe"></th>
                                     <th class="text-center" scope="col" id="total_haber"></th>
                                     <th scope="col" id="total_debe_s"></th>

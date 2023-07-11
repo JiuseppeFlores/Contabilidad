@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fecha = date('Y-m-d');
     $tipo_cambio = isset($_POST['tipo_cambio']) ? $_POST['tipo_cambio'] : 0;
     $moneda = isset($_POST['moneda']) ? $_POST['moneda'] : 'Bolivianos';
-    $glosa = isset($_POST['observacion']) ? $_POST['observacion'] : '---';
+    $glosa = isset($_POST['glosa']) ? $_POST['glosa'] : '-- S/G --';
     $factura = isset($_POST['factura']) ? $_POST['factura'] : ''; // proforma o factura *
     $forma_pago = isset($_POST['forma_pago']) ? $_POST['forma_pago'] : '1';
     $monto = isset($_POST['monto']) ? $_POST['monto'] : 0;
@@ -99,14 +99,8 @@ function insertar_asientos_venta($con, $monto, $id_comprobante, $forma_pago, $ti
   $Cuenta_ingreso = -1;
   if($tipo_pago != 'CREDITO'){//CONTADO
     $Cuenta_ingreso = $forma_pago == 'EFECTIVO' ? $CTA_CAJA : $CTA_BANCO;
-  }else{
-    if($rol_usuario == 'ADMIN' || $nom_usuario == 'ALMACEN'){
-      $Cuenta_ingreso = $CTA_ALMACEN_CRED;
-    }else if(($rol_usuario == 'VENDEDOR 1' || $rol_usuario == 'VENDEDOR 2') && str_starts_with($nom_usuario, 'MOVIL')){
-      $Cuenta_ingreso = $CTA_MOVIL_CRED;
-    }else if(($rol_usuario == 'PREVENTISTA 1' || $rol_usuario == 'PREVENTISTA 2') && str_starts_with($nom_usuario, 'PREV')){
-      $Cuenta_ingreso = $CTA_PREVEN_CRED;
-    }
+  } else {
+    $Cuenta_ingreso = cuenta_vendedor_credito($rol_usuario, $nom_usuario);
   }
   $Cuenta_Asiento_3 = cuenta_vendedor($rol_usuario, $nom_usuario);
   if($descuento > 0){ // Con Descuento
@@ -188,5 +182,21 @@ function cuenta_vendedor($rol_usuario, $nom_usuario){
   return $cta;
 }
 
-
+function cuenta_vendedor_credito($rol_usuario, $nom_usuario){
+  include './cuentas_id.php';
+  if(($nom_usuario == 'ALMACEN' || $nom_usuario == 'ADMIN') && $rol_usuario == 'ADMIN'){
+    $cta = $CTA_ALMACEN_CRED;
+  }else if($rol_usuario == 'VENDEDOR 1' || $nom_usuario == 'MOVIL1'){
+    $cta = $CTA_MOVIL_CRED_1;
+  }else if($rol_usuario == 'VENDEDOR 2' || $nom_usuario == 'MOVIL2'){
+    $cta = $CTA_MOVIL_CRED_2;
+  }else if($rol_usuario == 'PREV1' || $nom_usuario == 'PREVENTISTA 1'){
+    $cta = $CTA_PREVEN_CRED_1;
+  }else if($rol_usuario == 'PREV2' || $nom_usuario == 'PREVENTISTA 2'){
+    $cta = $CTA_PREVEN_CRED_2;
+  }else{
+    $cta = -1;
+  }
+  return $cta;
+}
 ?>

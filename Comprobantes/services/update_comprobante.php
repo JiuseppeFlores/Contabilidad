@@ -43,8 +43,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 <?php
 function updateComprobante($con, $idComprobante, $tipo, $numero, $fecha,$tipoCambio, $moneda, $nroRecibo, $detalle, $nit, $glosa){
-  $sql = "UPDATE tblComprobantes SET numero = ?, tipo = ?, fecha = ?, tipoCambio = ?, moneda = ?, nitCi = ?, nroRecibo = ?, glosa = ? WHERE idComprobante = ?";
-  $params = array($numero, $tipo, $fecha, $tipoCambio, $moneda, $nit, $nroRecibo, $glosa, $idComprobante);
+  $sql = "UPDATE tblComprobantes SET numero = ?, tipo = ?, fecha = ?, tipoCambio = ?, moneda = ?, nitCi = ?, nroRecibo = ?, glosa = ?, cancelado = ? WHERE idComprobante = ?";
+  $params = array($numero, $tipo, $fecha, $tipoCambio, $moneda, $nit, $nroRecibo, $glosa,$detalle, $idComprobante);
   $stmt = sqlsrv_query($con, $sql, $params);
   if($stmt){
     return 1;
@@ -60,8 +60,8 @@ function updateComprobanteFile($con, $idComprobante, $tipo, $numero, $fecha,$tip
     $filename = $_COOKIE['subdomain'].'-' . time() . '.pdf';
     $uploadPath = '../Files/' . $filename;
     if (file_put_contents($uploadPath, $pdfData)) {
-      $sql = "UPDATE tblComprobantes SET numero = ?, tipo = ?, fecha = ?, tipoCambio = ?, moneda = ?, nitCi = ?, nroRecibo = ?, glosa = ?, filepdf = ? WHERE idComprobante = ?";
-      $params = array($numero, $tipo, $fecha, $tipoCambio, $moneda, $nit, $nroRecibo, $glosa, $filename, $idComprobante);
+      $sql = "UPDATE tblComprobantes SET numero = ?, tipo = ?, fecha = ?, tipoCambio = ?, moneda = ?, nitCi = ?, nroRecibo = ?, glosa = ?, filepdf = ?, cancelado = ? WHERE idComprobante = ?";
+      $params = array($numero, $tipo, $fecha, $tipoCambio, $moneda, $nit, $nroRecibo, $glosa, $filename, $detalle, $idComprobante);
       $stmt = sqlsrv_query($con, $sql, $params);
       if($stmt){
         $respuesta = 1;
@@ -94,8 +94,8 @@ function updateComprobanteFile($con, $idComprobante, $tipo, $numero, $fecha,$tip
 function updateAsientos($con, $asientos){
   $res = 1;
   foreach($asientos as $asiento){
-    $sql = "UPDATE tblAsientos SET idCuenta = ?, referencia = ?, debe = ?, haber = ?, bco = ?, cheque = ? WHERE idAsiento = ?";
-    $params = array($asiento['idCuenta'], $asiento['referencia'], $asiento['debe'], $asiento['haber'], $asiento['bco'], $asiento['cheque'], $asiento['idAsiento']);
+    $sql = "UPDATE tblAsientos SET idCuenta = ?, referencia = ?, debe = ?, haber = ?, bco = ?, cheque = ?, debeDolar = ?, haberDolar = ? WHERE idAsiento = ?";
+    $params = array($asiento['idCuenta'], $asiento['referencia'], $asiento['debe'], $asiento['haber'], $asiento['bco'], $asiento['cheque'], $asiento['debeDolar'], $asiento['haberDolar'], $asiento['idAsiento']);
     $stmt = sqlsrv_query($con, $sql, $params);
     if($stmt && $res > 0){
       $res = 1;

@@ -2,7 +2,7 @@ const listarCuentas = (e) => {
     console.log(e)
     var id = e.target.id.split('-')[1];
     console.log(id);
-    $('#t_cuentas').bootstrapTable('removeAll');
+    // $('#t_cuentas').bootstrapTable('removeAll');
     //$('#modal_lista_cuentas').attr('id-asiento',id);
     $('#modal_lista_cuentas').attr('data-id-asiento', id);
     $('#modal_lista_cuentas').modal('show');
