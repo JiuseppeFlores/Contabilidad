@@ -1,13 +1,14 @@
 <?php
 require_once('../conexion.php');
 require_once('../Tcpdf/tcpdf.php');
+require_once('convertidorTexto.php');
 
 ob_start();
 error_reporting(E_ALL & ~E_NOTICE);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
-$idComprobante = isset($GET['idComprobante']) ? $GET['idComprobante'] : '1';
+$idComprobante = isset($_POST['idComprobante']) ? $_POST['idComprobante'] : '1';
 
 // para la consulta a la base datos
 $sql = "SELECT tcu.codigo, tcu.descripcion, tas.referencia, tco.fecha, tco.tipo, tco.tipoCambio, tco.numero, tco.cancelado, tco.glosa, tco.moneda, SUM(tas.debe) totalDebe, SUM(tas.haber) totalHaber, SUM(tas.debeDolar) totalDebeDolar, SUM(tas.haberDolar) totalHaberDolar FROM tblComprobantes tco LEFT JOIN tblAsientos tas ON tco.idComprobante = tas.idComprobante LEFT JOIN tblCuentas tcu ON tcu.idCuenta = tas.idCuenta WHERE tco.estado = 'ACTIVO'AND tcu.movimiento = 1 AND tco.idComprobante = $idComprobante GROUP BY tcu.codigo, tcu.descripcion, tas.referencia, tco.fecha, tco.tipo, tco.tipoCambio, tco.numero, tco.cancelado, tco.glosa, tco.moneda ORDER BY tcu.codigo ASC;";
@@ -106,17 +107,22 @@ $tabla .= '
 <tr align="center" style="font-size: 10px;">
 <td colspan="4">Fecha: ' . $fechaFormato . '&nbsp;&nbsp;&nbsp;TC: ' . $tipoCambio . '</td>
 </tr>
+<tr>
+<td></td>
+</tr>
 <tr align="left" style="font-size: 10px;">
 <td colspan="4">' . $subtitulo1 . '&nbsp;&nbsp;' . $cancelado . '</td>
 </tr>
 <tr align="left" style="font-size: 10px;">
 <td colspan="4">Por concepto de:&nbsp;&nbsp;' . $glosa . '</td>
-</tr>
-<tr align="left" style="font-size: 10px;">
-<td colspan="1">Efectivo:&nbsp;&nbsp;' . $moneda . '</td>
-<td colspan="1">Cheque:&nbsp;&nbsp;</td>
-<td colspan="2">Bancos:&nbsp;&nbsp;</td>
-</tr>
+</tr>';
+// $tabla .= '
+// <tr align="left" style="font-size: 10px;">
+// <td colspan="1">Efectivo:&nbsp;&nbsp;' . $moneda . '</td>
+// <td colspan="1">Cheque:&nbsp;&nbsp;</td>
+// <td colspan="2">Bancos:&nbsp;&nbsp;</td>
+// </tr>';
+$tabla .='
 </table>
 ';
 $pdf->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);
@@ -175,6 +181,9 @@ $tabla .= '
 <table border="0" cellpadding="0">
 <tr>
 <td colspan="10"></td>
+</tr>
+<tr>
+<td colspan="10"><b>Son: </b>' . numtoletras($totalDebe) . '</td>
 </tr>
 <tr>
 <td colspan="10"></td>
