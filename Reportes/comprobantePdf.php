@@ -107,17 +107,22 @@ $tabla .= '
 <tr align="center" style="font-size: 10px;">
 <td colspan="4">Fecha: ' . $fechaFormato . '&nbsp;&nbsp;&nbsp;TC: ' . $tipoCambio . '</td>
 </tr>
+<tr>
+<td></td>
+</tr>
 <tr align="left" style="font-size: 10px;">
 <td colspan="4">' . $subtitulo1 . '&nbsp;&nbsp;' . $cancelado . '</td>
 </tr>
 <tr align="left" style="font-size: 10px;">
 <td colspan="4">Por concepto de:&nbsp;&nbsp;' . $glosa . '</td>
-</tr>
-<tr align="left" style="font-size: 10px;">
-<td colspan="1">Efectivo:&nbsp;&nbsp;' . $moneda . '</td>
-<td colspan="1">Cheque:&nbsp;&nbsp;</td>
-<td colspan="2">Bancos:&nbsp;&nbsp;</td>
-</tr>
+</tr>';
+// $tabla .= '
+// <tr align="left" style="font-size: 10px;">
+// <td colspan="1">Efectivo:&nbsp;&nbsp;' . $moneda . '</td>
+// <td colspan="1">Cheque:&nbsp;&nbsp;</td>
+// <td colspan="2">Bancos:&nbsp;&nbsp;</td>
+// </tr>';
+$tabla .='
 </table>
 ';
 $pdf->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);

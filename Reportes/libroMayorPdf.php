@@ -22,7 +22,7 @@ if ($fechaInicial != '' && $fechaFinal != '') {
 
 // para la consulta a la base datos
 $sql = "SELECT * FROM tblCuentas tcu LEFT JOIN tblAsientos tas ON tcu.idCuenta = tas.idCuenta LEFT JOIN tblComprobantes tco ON tas.idComprobante = tco.idComprobante WHERE tcu.codigo = $codigoCuenta $filtro;";
-// echo $sql;
+echo $sql;
 $query = sqlsrv_query($con, $sql);
 $listaAsientos = array();
 $nombreCuenta = '';
@@ -144,7 +144,7 @@ if (count($listaAsientos) > 0) {
         <td colspan="2">' . $value['tipo'] . '</td>
         <td>' . $value['numero'] . '</td>
         <td>' . $value['tipoCambio'] . '</td>
-        <td colspan="6" align="left">' . $value['referencia'] . '</td>
+        <td colspan="6" align="left">' . $value['glosa'] . '</td>
         <td colspan="2" align="left">' . $value['cheque'] . '</td>
         <td colspan="2" align="rigth">' . number_format($value['debe'], 2) . '</td>
         <td colspan="2" align="rigth">' . number_format($value['haber'], 2) . '</td>
