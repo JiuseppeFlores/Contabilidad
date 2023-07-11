@@ -253,7 +253,7 @@
           </form>
           <div class="row mt-2">
             <?php
-                include('../Components/pagination.php');
+                //include('../Components/pagination.php');
             ?>
           </div>
         </div>

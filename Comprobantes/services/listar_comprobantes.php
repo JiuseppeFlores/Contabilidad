@@ -9,9 +9,11 @@
             // Datos a registrar en la BD
             $pagina = intval($_GET['pagina']) - 1;
             $total = $_GET['total'];
+            $filtro = isset($_GET['estado']) ? " WHERE tc.estado = '".$_GET['estado']."' " : "" ;
             // Consulta para insertar los nuevos registros ala tabla
             $sql = "SELECT * 
                     FROM tblComprobantes tc
+                    ".$filtro."
                     ORDER BY tc.idComprobante DESC
                     OFFSET ($pagina * $total) ROWS
                     FETCH NEXT $total ROWS ONLY; ";
@@ -27,7 +29,7 @@
                 }
                 // OBTENIENDO EL NÚMERO TOTAL DE REGISTROS
                 $sql = "SELECT COUNT(*) as total
-                        FROM tblComprobantes tc;";
+                        FROM tblComprobantes tc ".$filtro." ;";
                 $params = array();
                 $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
                 $stmt = sqlsrv_query( $con, $sql , $params, $options );

@@ -113,7 +113,7 @@ async function updateComprobante(c){
     })
     console.log(data)
   }else{
-    show_toast('NO SE PUEDE ACTUALIZAR', 'Totales NO iguales', 'text-bg-warning')
+    show_toast('NO SE PUEDE ACTUALIZAR', 'Comprobante desbalanceado', 'text-bg-warning')
   }
   
 }

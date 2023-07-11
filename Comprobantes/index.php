@@ -33,8 +33,18 @@
                 </div>
                 <div class="col-6 text-end">
                     <!--<a class="btn btn-warning" data-bs-toggle="modal" href="#modal_lista_cuentas"><i class="bi bi-plus me-2"></i>Test</a>-->
+                    <input type="checkbox" class="btn-check" id="btn_ver_comprobantes" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btn_ver_comprobantes" id="lbl_ver_comprobantes">Ver Anulados</label>
                     <button class="btn btn-success"  data-bs-toggle="modal" data-bs-target="#modal_registrar_comprobante"><i class="bi bi-plus me-2"></i>Adicionar</button>
                 </div>
+            </div>
+            <div class="row mt-2">
+                <?php
+                    include('../Components/pagination.php');
+                ?>
+            </div>
+            <div class="row mt-2">
+
             </div>
             <div class="row mt-2" id="content" style="height:100vh">
                 <div class="table-responsive">
@@ -43,11 +53,6 @@
 
                     </table>
                 </div>
-            </div>
-            <div class="row mt-2">
-                <?php
-                    include('../Components/pagination.php');
-                ?>
             </div>
         </div>
     </body>

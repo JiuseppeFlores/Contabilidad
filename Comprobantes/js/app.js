@@ -197,7 +197,8 @@ $("#form_registro_comprobante").on("submit", function (e) {
     console.log(debe, haber, debe_s, haber_s);
 
     if (debe != haber || debe_s != haber_s) {
-      alert("Existe diferencia en las sumas de DEBE y HABER");
+      //alert("Comprobante desbalanceado");
+      show_toast('NO SE PUEDE ADICIONAR', 'Comprobante desbalanceado', 'text-bg-warning');
       return;
     }
 
@@ -281,7 +282,7 @@ $("#form_registro_comprobante").on("submit", function (e) {
   limpiarModal();
 });
 
-function listar_comprobantes() {
+function listar_comprobantes(estado) {
   let params = new URLSearchParams(location.search);
   var pagina =
     params.get("page") == null
@@ -290,7 +291,11 @@ function listar_comprobantes() {
       ? parseInt(params.get("page"))
       : 1;
   const ACCION = "LISTAR COMPROBANTES";
-  var datos = { pagina: pagina, total: CANTIDAD_REGISTROS };
+  var datos = { 
+    pagina: pagina,
+    total: CANTIDAD_REGISTROS,
+    estado: (estado == undefined) ? 'ACTIVO' : estado
+  };
   $.ajax({
     data: datos,
     url: "services/listar_comprobantes.php",
@@ -307,7 +312,7 @@ function listar_comprobantes() {
           "load",
           response.data.comprobantes
         );
-        //start_pagination( pagina , response.data.total );
+        start_pagination( pagina , response.data.total );
       } else {
         show_toast(ACCION, response.message, "text-bg-danger");
       }
@@ -505,6 +510,7 @@ function anularComprobante(){
       // console.log(response)
       if(response.code){
         show_toast(`ANULAR COMPROBANTE`, response.message, "text-bg-info")
+        listar_comprobantes();
       }else{
         show_toast(`ANULAR COMPROBANTE`, response.message, "text-bg-danger")
       }
@@ -515,3 +521,14 @@ function anularComprobante(){
     },
   });
 }
+
+$('#btn_ver_comprobantes').on('change',(e)=>{
+  var estado = $('#btn_ver_comprobantes').prop('checked'); 
+  if(estado){
+    $('#lbl_ver_comprobantes').text('Ver Activos');
+    listar_comprobantes('ANULADO');
+  }else{
+    $('#lbl_ver_comprobantes').text('Ver Anulados');
+    listar_comprobantes('ACTIVO');
+  }
+});

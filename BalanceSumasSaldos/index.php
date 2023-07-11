@@ -56,7 +56,7 @@
         </div>
     </div>
     <?php
-        include('../Components/footer.php');
+        //include('../Components/footer.php');
     ?>
 </body>
     <script type="text/javascript" src="../js/bootstrap.bundle.min.js"></script>
