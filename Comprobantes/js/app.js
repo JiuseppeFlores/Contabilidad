@@ -327,8 +327,8 @@ function operateFormatter(value, row, index) {
   if (row.nivel == "G") {
     return [""].join("");
   } else {
-    let url = window.location.origin + '/Contabilidad/Reportes/factura.pdf';
-    url = "#";
+    let url = window.location.origin + '/Contabilidad/Reportes/comprobantePdf.php?idComprobante='+row.idComprobante;
+    console.log(url);
     return [
       '<div style="text-align: center;display: flex;flex-direction: row;justify-content: space-evenly;">',
       '<a href="./edit.php?id=' + row.idComprobante +'" title="EDITAR" class="btn btn-primary"><i style="font-size:17px;" class="bi bi-pen"></i></a>',

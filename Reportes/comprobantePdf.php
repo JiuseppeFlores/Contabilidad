@@ -7,7 +7,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
-$idComprobante = isset($GET['idComprobante']) ? $GET['idComprobante'] : '1';
+$idComprobante = isset($_POST['idComprobante']) ? $_POST['idComprobante'] : '1';
 
 // para la consulta a la base datos
 $sql = "SELECT tcu.codigo, tcu.descripcion, tas.referencia, tco.fecha, tco.tipo, tco.tipoCambio, tco.numero, tco.cancelado, tco.glosa, tco.moneda, SUM(tas.debe) totalDebe, SUM(tas.haber) totalHaber, SUM(tas.debeDolar) totalDebeDolar, SUM(tas.haberDolar) totalHaberDolar FROM tblComprobantes tco LEFT JOIN tblAsientos tas ON tco.idComprobante = tas.idComprobante LEFT JOIN tblCuentas tcu ON tcu.idCuenta = tas.idCuenta WHERE tco.estado = 'ACTIVO'AND tcu.movimiento = 1 AND tco.idComprobante = $idComprobante GROUP BY tcu.codigo, tcu.descripcion, tas.referencia, tco.fecha, tco.tipo, tco.tipoCambio, tco.numero, tco.cancelado, tco.glosa, tco.moneda ORDER BY tcu.codigo ASC;";
