@@ -22,14 +22,18 @@ if ($fechaInicial != '' && $fechaFinal != '') {
 
 // para la consulta a la base datos
 $sql = "SELECT * FROM tblCuentas tcu LEFT JOIN tblAsientos tas ON tcu.idCuenta = tas.idCuenta LEFT JOIN tblComprobantes tco ON tas.idComprobante = tco.idComprobante WHERE tcu.codigo = $codigoCuenta $filtro;";
-echo $sql;
+// echo $sql;
 $query = sqlsrv_query($con, $sql);
 $listaAsientos = array();
 $nombreCuenta = '';
 while ($row = sqlsrv_fetch_array($query)) {
     $listaAsientos[] = $row;
-    $nombreCuenta = $row['descripcion'];
+    // $nombreCuenta = $row['descripcion'];
 }
+$sqlCuenta = "SELECT * FROM tblCuentas tcu WHERE tcu.codigo = $codigoCuenta;";
+$queryCuenta = sqlsrv_query($con, $sqlCuenta);
+$rowCuenta = sqlsrv_fetch_array($queryCuenta);
+$nombreCuenta = $rowCuenta['descripcion'];
 
 class MYPDF extends TCPDF
 {
@@ -37,16 +41,16 @@ class MYPDF extends TCPDF
     {
         // if ($_COOKIE['base_subdominio'] == 'sindan') {
         //     // Logo
-        //     $image_file = '../images/excelKardex/logo_sindan.png';
-        //     $this->Image($image_file, 8, 8, 50, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        $image_file = '../Images/logo_sabor_andino.jpg';
+        $this->Image($image_file, 163, 5, 35, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // } else if ($_COOKIE['base_subdominio'] == 'saborandino') {
         //     $image_file = '../images/excelKardex/logo_sabor_andino.jpg';
         //     $this->Image($image_file, 8, 8, 50, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // }
-        $this->SetFont('helvetica', '', 10);
-        $this->MultiCell(50, 10, "N° DE PAG.: " . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "\nFECHA DE IMP. 31/05/2023\nGESTION    2020", 0, 'L', 0, 1, '150', '8', true);
-        $this->MultiCell(23, 10, "EMPRESA\nDIRECCION\nNIT", 0, 'L', 0, 1, '20', '8', true);
-        $this->MultiCell(100, 10, "SABOR ANDINO\nURB. VIRGEN DEL CARMEN CALLE ARICA No.777\n181252025", 0, 'L', 0, 1, '43', '8', true);
+        $this->SetFont('helvetica', '', 9);
+        // $this->MultiCell(50, 10, "N° DE PAG.: " . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "\nFECHA DE IMP. 31/05/2023\nGESTION    2023", 0, 'L', 0, 1, '150', '8', true);
+        $this->MultiCell(23, 10, "EMPRESA\nDIRECCION\nNIT\nN° DE PAG.", 0, 'L', 0, 1, '20', '8', true);
+        $this->MultiCell(100, 10, "Sindan Organic S.R.L. (Planta 2 Sabor Andino)\nAv. 12 de diciembre N° 2216 Zona Senkata\n181252025\n" . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '43', '8', true);
     }
     public function Footer()
     {
@@ -148,43 +152,44 @@ if (count($listaAsientos) > 0) {
         </tr>
         ';
     }
+    $tabla .= '</table>';
+    $tabla .= '
+    <table border="0" cellpadding="2">
+    <tr align="center">
+    <td align="right" colspan="13"></td>
+    <td colspan="2" align="rigth">' . number_format($debeTotal, 2) . '</td>
+    <td colspan="2" align="rigth">' . number_format($haberTotal, 2) . '</td>
+    <td colspan="2"></td>
+    </tr>
+    <tr align="center">';
+    if ($saldo2 < 0) {
+        // $tabla .= '
+        // <td align="rigth" colspan="13">SALDO ACREEDOR</td>
+        // <td colspan="4">' . number_format((-1)*$saldo2, 2) . '</td>';
+        $tabla .= '
+        <td align="rigth" colspan="13">SALDO</td>
+        <td colspan="4">' . number_format($saldo2, 2) . '</td>';
+    } else {
+        // $tabla .= '
+        // <td align="rigth" colspan="13">SALDO DEUDOR</td>
+        // <td colspan="4">' . number_format($saldo2, 2) . '</td>';
+        $tabla .= '
+        <td align="rigth" colspan="13">SALDO</td>
+        <td colspan="4">' . number_format($saldo2, 2) . '</td>';
+    }
+    $tabla .= '
+    <td colspan="2"></td>
+    </tr>
+    </table>
+    ';
 } else {
     $tabla .= '
     <tr align="center">
-    <td colspan="19">No hay registros en este periodo de fechas.</td>
+    <td colspan="21">No hay registros en este periodo de fechas.</td>
     </tr>
     ';
+    $tabla .= '</table>';
 }
-$tabla .= '</table>';
-$tabla .= '
-<table border="0" cellpadding="2">
-<tr align="center">
-<td align="right" colspan="13"></td>
-<td colspan="2" align="rigth">' . number_format($debeTotal, 2) . '</td>
-<td colspan="2" align="rigth">' . number_format($haberTotal, 2) . '</td>
-<td colspan="2"></td>
-</tr>
-<tr align="center">';
-if ($saldo2 < 0){
-    // $tabla .= '
-    // <td align="rigth" colspan="13">SALDO ACREEDOR</td>
-    // <td colspan="4">' . number_format((-1)*$saldo2, 2) . '</td>';
-    $tabla .= '
-    <td align="rigth" colspan="13">SALDO</td>
-    <td colspan="4">' . number_format($saldo2, 2) . '</td>';
-} else {
-    // $tabla .= '
-    // <td align="rigth" colspan="13">SALDO DEUDOR</td>
-    // <td colspan="4">' . number_format($saldo2, 2) . '</td>';
-    $tabla .= '
-    <td align="rigth" colspan="13">SALDO</td>
-    <td colspan="4">' . number_format($saldo2, 2) . '</td>';
-}
-$tabla .= '
-<td colspan="2"></td>
-</tr>
-</table>
-';
 
 $pdf->WriteHTMLCell(0, 0, '', '60', $tabla, 0, 0);
 ob_end_clean();

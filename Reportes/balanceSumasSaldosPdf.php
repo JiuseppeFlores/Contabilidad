@@ -35,16 +35,16 @@ class MYPDF extends TCPDF
     {
         // if ($_COOKIE['base_subdominio'] == 'sindan') {
         //     // Logo
-        //     $image_file = '../images/excelKardex/logo_sindan.png';
-        //     $this->Image($image_file, 8, 8, 50, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        $image_file = '../Images/logo_sabor_andino.jpg';
+        $this->Image($image_file, 163, 5, 35, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // } else if ($_COOKIE['base_subdominio'] == 'saborandino') {
         //     $image_file = '../images/excelKardex/logo_sabor_andino.jpg';
         //     $this->Image($image_file, 8, 8, 50, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // }
-        $this->SetFont('helvetica', '', 10);
-        $this->MultiCell(50, 10, "NIT   181252025\nGESTION    2020", 0, 'L', 0, 1, '170', '8', true);
-        $this->MultiCell(23, 10, "EMPRESA\nDIRECCION", 0, 'L', 0, 1, '20', '8', true);
-        $this->MultiCell(100, 10, "SABOR ANDINO\nURB. VIRGEN DEL CARMEN CALLE ARICA No.777", 0, 'L', 0, 1, '43', '8', true);
+        $this->SetFont('helvetica', '', 9);
+        // $this->MultiCell(50, 10, "NIT   181252025\nGESTION    2023", 0, 'L', 0, 1, '170', '8', true);
+        $this->MultiCell(23, 10, "EMPRESA\nDIRECCION\nNIT\nN° DE PAG.", 0, 'L', 0, 1, '20', '8', true);
+        $this->MultiCell(100, 10, "Sindan Organic S.R.L. (Planta 2 Sabor Andino)\nAv. 12 de diciembre N° 2216 Zona Senkata\n181252025\n" . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '43', '8', true);
     }
     public function Footer()
     {

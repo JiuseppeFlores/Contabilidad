@@ -20,7 +20,9 @@ if ($fechaInicial != '' && $fechaFinal != '') {
     $fechaFinalFormato = $fechaFinalFormato->format('d/m/Y');
 }
 
-$sqlLista = "SELECT tbc.*, SUM(tba.debe) totalDebe, SUM(tba.haber) totalHaber FROM tblCuentas tbc LEFT JOIN tblAsientos tba ON tbc.idCuenta = tba.idCuenta LEFT JOIN tblComprobantes tco ON tba.idComprobante = tco.idComprobante $filtro GROUP BY tbc.idCuenta, tbc.codigo, tbc.descripcion, tbc.grupo, tbc.rubro, tbc.titulo, tbc.compuesta, tbc.subcuenta, tbc.auxiliar, tbc.nivel, tbc.movimiento, tbc.moneda ORDER BY tbc.codigo ASC;";
+$sqlLista = "SELECT tbc.*, SUM(tba.debe) totalDebe, SUM(tba.haber) totalHaber FROM tblCuentas tbc LEFT JOIN tblAsientos tba ON tbc.idCuenta = tba.idCuenta LEFT JOIN tblComprobantes tco ON tba.idComprobante = tco.idComprobante $filtro AND tbc.movimiento = 1 GROUP BY tbc.idCuenta, tbc.codigo, tbc.descripcion, tbc.grupo, tbc.rubro, tbc.titulo, tbc.compuesta, tbc.subcuenta, tbc.auxiliar, tbc.nivel, tbc.movimiento, tbc.moneda ORDER BY tbc.codigo ASC;";
+echo $sqlLista;
+echo '<br>';
 $queryLista = sqlsrv_query($con, $sqlLista);
 $listaGrupoLista = array();
 $listaRubroLista = array();
@@ -31,7 +33,7 @@ $listaAuxiliarLista = array();
 while ($row = sqlsrv_fetch_array($queryLista)) {
     switch ($row['nivel']) {
         case 'G':
-            if ($row['descripcion'] == 'INGRESOS' || $row['descripcion'] == 'COSTOS' || $row['descripcion'] == 'GASTOS') {
+            if ($row['descripcion'] == 'INGRESOS' || $row['descripcion'] == 'COSTOS' || $row['descripcion'] == 'EGRESOS') {
                 $row['children'] = array();
                 $listaGrupoLista[] = $row;
             }
@@ -76,7 +78,7 @@ $listaAuxiliar = array();
 while ($row = sqlsrv_fetch_array($query)) {
     switch ($row['nivel']) {
         case 'G':
-            if ($row['descripcion'] == 'INGRESOS' || $row['descripcion'] == 'COSTOS' || $row['descripcion'] == 'GASTOS') {
+            if ($row['descripcion'] == 'INGRESOS' || $row['descripcion'] == 'COSTOS' || $row['descripcion'] == 'EGRESOS') {
                 $listaGrupo[] = $row;
             }
             break;
@@ -193,16 +195,16 @@ class MYPDF extends TCPDF
     {
         // if ($_COOKIE['base_subdominio'] == 'sindan') {
         //     // Logo
-        //     $image_file = '../images/excelKardex/logo_sindan.png';
-        //     $this->Image($image_file, 8, 8, 50, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        $image_file = '../Images/logo_sabor_andino.jpg';
+        $this->Image($image_file, 163, 5, 35, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // } else if ($_COOKIE['base_subdominio'] == 'saborandino') {
         //     $image_file = '../images/excelKardex/logo_sabor_andino.jpg';
         //     $this->Image($image_file, 8, 8, 50, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // }
-        $this->SetFont('helvetica', '', 10);
-        $this->MultiCell(50, 10, "NIT   181252025\nGESTION    2020\nN° DE PAG.: " . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '170', '8', true);
-        $this->MultiCell(23, 10, "EMPRESA\nDIRECCION", 0, 'L', 0, 1, '20', '8', true);
-        $this->MultiCell(100, 10, "SABOR ANDINO\nURB. VIRGEN DEL CARMEN CALLE ARICA No.777", 0, 'L', 0, 1, '43', '8', true);
+        $this->SetFont('helvetica', '', 9);
+        // $this->MultiCell(50, 10, "NIT   181252025\nGESTION    2023\nN° DE PAG.: " . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '170', '8', true);
+        $this->MultiCell(23, 10, "EMPRESA\nDIRECCION\nNIT\nN° DE PAG.", 0, 'L', 0, 1, '20', '8', true);
+        $this->MultiCell(100, 10, "Sindan Organic S.R.L. (Planta 2 Sabor Andino)\nAv. 12 de diciembre N° 2216 Zona Senkata\n181252025\n" . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '43', '8', true);
     }
     public function Footer()
     {
@@ -297,7 +299,7 @@ if (count($listaGrupo) != 0 && (count($listaCompuestaLista) != 0 || count($lista
                                                         case 'INGRESOS':
                                                             $valueResultado = $valueAuxiliar['totalHaber'] - $valueAuxiliar['totalDebe'];
                                                             break;
-                                                        case 'GASTOS':
+                                                        case 'EGRESOS':
                                                             $valueResultado = $valueAuxiliar['totalDebe'] - $valueAuxiliar['totalHaber'];
                                                             break;
                                                         case 'COSTOS':
@@ -326,7 +328,7 @@ if (count($listaGrupo) != 0 && (count($listaCompuestaLista) != 0 || count($lista
                                                 case 'INGRESOS':
                                                     $valueResultado = $valueSubcuenta['totalHaber'] - $valueSubcuenta['totalDebe'];
                                                     break;
-                                                case 'GASTOS':
+                                                case 'EGRESOS':
                                                     $valueResultado = $valueSubcuenta['totalDebe'] - $valueSubcuenta['totalHaber'];
                                                     break;
                                                 case 'COSTOS':
@@ -355,7 +357,7 @@ if (count($listaGrupo) != 0 && (count($listaCompuestaLista) != 0 || count($lista
                                         case 'INGRESOS':
                                             $valueResultado = $valueCompuesta['totalHaber'] - $valueCompuesta['totalDebe'];
                                             break;
-                                        case 'GASTOS':
+                                        case 'EGRESOS':
                                             $valueResultado = $valueCompuesta['totalDebe'] - $valueCompuesta['totalHaber'];
                                             break;
                                         case 'COSTOS':
@@ -387,7 +389,7 @@ if (count($listaGrupo) != 0 && (count($listaCompuestaLista) != 0 || count($lista
                             case 'INGRESOS':
                                 $totalActivo = $totalGrupo;
                                 break;
-                            case 'GASTOS':
+                            case 'EGRESOS':
                                 $totalPasivo = $totalGrupo;
                                 break;
                             case 'COSTOS':
