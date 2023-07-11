@@ -71,7 +71,8 @@ function peticion_nro_comprobante_venta($fecha, $pin){
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     $resultado = curl_exec($curl);
   } catch (\Throwable $th) {
-    $resultado = false;
+    $resultado['success'] = false;
+    $resultado['message'] = $th->getMessage();
   }
   return $resultado;
 }
