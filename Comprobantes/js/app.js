@@ -31,8 +31,8 @@ function buildTable($el, cells, rows, asientos, tc) {
     {field: "referencia",title: "REFERENCIA"},
     {field: "debe",title: "DEBE"},
     {field: "haber",title: "HABER"},
-    {field: "debe_s",title: "DEBE (SU$)"},
-    {field: "haber_s",title: "HABER (SU$)"},
+    {field: "debeDolar",title: "DEBE (SU$)"},
+    {field: "haberDolar",title: "HABER (SU$)"},
     {field: "banco",title: "BANCO"},
     {field: "cheque",title: "CHEQUE"},
   ]
@@ -45,10 +45,8 @@ function buildTable($el, cells, rows, asientos, tc) {
       referencia: asiento.referencia,
       debe: asiento.debe.toFixed(2),
       haber: asiento.haber.toFixed(2),
-      /*debe_s: Math.round((parseFloat(asiento.debe) * parseFloat(tc)),2),
-      haber_s: Math.round((parseFloat(asiento.haber) * parseFloat(tc)),2),*/
-      debe_s: (parseFloat(asiento.debe) * parseFloat(tc)).toFixed(2),
-      haber_s: (parseFloat(asiento.haber) * parseFloat(tc)).toFixed(2),
+      debeDolar: asiento.debeDolar.toFixed(2),
+      haberDolar: asiento.haberDolar.toFixed(2),
       banco: asiento.bco,
       cheque: asiento.cheque
     };
@@ -118,8 +116,8 @@ const limpiarModal = () => {
   $("#asientos").html("");
   $("#total_debe").text("");
   $("#total_haber").text("");
-  $("#total_debe_s").text("");
-  $("#total_haber_s").text("");
+  $("#total_debe_dolar").text("");
+  $("#total_haber_dolar").text("");
   ASIENTOS = [];
   FACTURAS = {};
 };
@@ -191,14 +189,14 @@ function get_counts() {
 $("#form_registro_comprobante").on("submit", function (e) {
   e.preventDefault();
   if (ASIENTOS.length > 0) {
-    var debe = parseFloat($("#total_debe").text());
-    var haber = parseFloat($("#total_haber").text());
-    var debe_s = parseFloat($("#total_debe_s").text());
-    var haber_s = parseFloat($("#total_haber_s").text());
+    var debe = $("#total_debe").text();
+    var haber = $("#total_haber").text();
+    var debe_s = $("#total_debe_dolar").text();
+    var haber_s = $("#total_haber_dolar").text();
 
-    console.log(debe, haber);
+    console.log(debe, haber, debe_s, haber_s);
 
-    if (debe != haber && debe_s != haber_s) {
+    if (debe != haber || debe_s != haber_s) {
       alert("Existe diferencia en las sumas de DEBE y HABER");
       return;
     }
@@ -229,7 +227,7 @@ $("#form_registro_comprobante").on("submit", function (e) {
             console.log("[" + ACCION + "] Enviando datos...");
           },
           success: function (response) {
-            $("#modal_registrar_comprobante").modal("hide");
+            /*$("#modal_registrar_comprobante").modal("hide");
             listar_comprobantes();
             show_toast(
               ACCION,
@@ -237,12 +235,12 @@ $("#form_registro_comprobante").on("submit", function (e) {
               response.success ? "text-bg-success" : "text-bg-danger"
             );
             console.log("[" + ACCION + "] " + response.message);
-            console.log("Mensaje PDF", response.pdf);
+            console.log("Mensaje PDF", response.pdf);*/
           },
           error: function (error) {
-            $("#modal_registrar_comprobante").modal("hide");
+            /*$("#modal_registrar_comprobante").modal("hide");
             show_toast(ACCION, error.statusText, "text-bg-danger");
-            console.log("[" + ACCION + "] ", error);
+            console.log("[" + ACCION + "] ", error);*/
           },
         });
       };

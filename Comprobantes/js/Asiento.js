@@ -77,16 +77,18 @@ function adicionar_asiento(){
     referencia.appendChild(create_input("referencia-"+id,"form-control",ref,"text","referencia[]"));
     /*const cc = document.createElement('td');
     cc.appendChild(create_input("cc-"+id,"form-control","","text","cc[]"));*/
+
     const debe = document.createElement('td');
     debe.appendChild(create_input("debe-"+id,"form-control","0","decimal","debe[]"));
     const haber = document.createElement('td');
     haber.appendChild(create_input("haber-"+id,"form-control","0","decimal","haber[]"));
+
     const debe_s = document.createElement('td');
-    debe_s.id = "debe-"+id+"-s";
-    debe_s.textContent = "0";
+    debe_s.appendChild(create_input("debe-"+id+"-dolar","form-control","0","decimal","debe_dolar[]"));
+
     const haber_s = document.createElement('td');
-    haber_s.id = "haber-"+id+"-s";
-    haber_s.textContent = "0";
+    haber_s.appendChild(create_input("haber-"+id+"-dolar","form-control","0","decimal","haber_dolar[]"));
+
     const banco = document.createElement('td');
     banco.appendChild(create_input("banco-"+id,"form-control","","text","banco[]"));
     const cheque = document.createElement('td');
@@ -139,8 +141,8 @@ function calcular_totales(e){
     if(e != undefined){
         var id = e.srcElement.id;
         var tc = parseFloat($('#comprobante_tipo_cambio').val());
-        var conversion = tc * (parseFloat($('#'+id).val()) ? parseFloat($('#'+id).val()) : 0);
-        $('#'+id+"-s").text(conversion.toFixed(2));
+        var conversion = (parseFloat($('#'+id).val()) ? parseFloat($('#'+id).val()) : 0) / tc;
+        $('#'+id+"-dolar").val(conversion.toFixed(2));
     }
     
     var total_debe = 0;
@@ -153,14 +155,14 @@ function calcular_totales(e){
         total_debe += parseFloat($('#debe-'+i).val());
         total_haber += parseFloat($('#haber-'+i).val());
 
-        total_debe_s += parseFloat($('#debe-'+i+'-s').text()) ? parseFloat($('#debe-'+i+'-s').text()) : 0;
-        total_haber_s += parseFloat($('#haber-'+i+'-s').text()) ? parseFloat($('#haber-'+i+'-s').text()) : 0;
+        total_debe_s += parseFloat($('#debe-'+i+'-dolar').val()) ? parseFloat($('#debe-'+i+'-dolar').val()) : 0;
+        total_haber_s += parseFloat($('#haber-'+i+'-dolar').val()) ? parseFloat($('#haber-'+i+'-dolar').val()) : 0;
     }
     
     $('#total_debe').text(total_debe.toFixed(2));
     $('#total_haber').text(total_haber.toFixed(2));
-    $('#total_debe_s').text(total_debe_s.toFixed(2));
-    $('#total_haber_s').text(total_haber_s.toFixed(2));
+    $('#total_debe_dolar').text(total_debe_s.toFixed(2));
+    $('#total_haber_dolar').text(total_haber_s.toFixed(2));
 
 }
 

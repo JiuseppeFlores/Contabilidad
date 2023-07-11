@@ -64,6 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           $referencia = $_POST['referencia'][$i];
           $debe = $_POST['debe'][$i];
           $haber = $_POST['haber'][$i];
+          $debeDolar = $_POST['debe_dolar'][$i];
+          $haberDolar = $_POST['haber_dolar'][$i];
           $banco = $_POST['banco'][$i];
           $cheque = $_POST['cheque'][$i];
           $idFactura = 0;
@@ -107,11 +109,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           }
           
           if($idFactura != 0){
-            $sql = "INSERT INTO tblAsientos (idComprobante,idCuenta,referencia,debe,haber,bco,cheque,idFactCompra) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? ) ;";
-            $params = array($id_comprobante, $cuenta, $referencia, $debe, $haber, $banco, $cheque, $idFactura);
+            $sql = "INSERT INTO tblAsientos (idComprobante,idCuenta,referencia,debe,haber,debeDolar,haberDolar,bco,cheque,idFactCompra) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ) ;";
+            $params = array($id_comprobante, $cuenta, $referencia, $debe, $haber, $debeDolar, $haberDolar, $banco, $cheque, $idFactura);
           }else{
-            $sql = "INSERT INTO tblAsientos (idComprobante,idCuenta,referencia,debe,haber,bco,cheque) VALUES ( ? , ? , ? , ? , ? , ? , ? ) ;";
-            $params = array($id_comprobante, $cuenta, $referencia, $debe, $haber, $banco, $cheque);
+            $sql = "INSERT INTO tblAsientos (idComprobante,idCuenta,referencia,debe,haber,debeDolar,haberDolar,bco,cheque) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? ) ;";
+            $params = array($id_comprobante, $cuenta, $referencia, $debe, $haber, $debeDolar, $haberDolar, $banco, $cheque);
           }
           $options = array("Scrollable" => SQLSRV_CURSOR_KEYSET);
           $stmt = sqlsrv_query($con, $sql, $params, $options);

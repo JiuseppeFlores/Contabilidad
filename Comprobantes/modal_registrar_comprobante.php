@@ -52,7 +52,7 @@
                             <div class="col-2">
                                 <div class="form-floating">
                                     <input type="text" name="detalle" id="comprobante_detalle" class="form-control" minlength="3" maxlength="100" required autocomplete="off"/>
-                                    <label for="comprobante_detalle">Detalle</label>
+                                    <label for="comprobante_detalle">Corresponde</label>
                                 </div>
                             </div>
                             <div class="col-2">
@@ -113,8 +113,8 @@
                                             <th scope="col" colspan="3"></th>
                                             <th class="text-center" scope="col" id="total_debe"></th>
                                             <th class="text-center" scope="col" id="total_haber"></th>
-                                            <th scope="col" id="total_debe_s"></th>
-                                            <th scope="col" id="total_haber_s"></th>
+                                            <th scope="col" id="total_debe_dolar"></th>
+                                            <th scope="col" id="total_haber_dolar"></th>
                                             <th scope="col" colspan="3"></th>
                                         </tr>
                                     </tfoot>

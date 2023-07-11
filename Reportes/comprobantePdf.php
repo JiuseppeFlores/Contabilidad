@@ -8,10 +8,10 @@ error_reporting(E_ALL & ~E_NOTICE);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
-$idComprobante = isset($_POST['idComprobante']) ? $_POST['idComprobante'] : '1';
+$idComprobante = isset($_GET['idComprobante']) ? $_GET['idComprobante'] : '0';
 
 // para la consulta a la base datos
-$sql = "SELECT tcu.codigo, tcu.descripcion, tas.referencia, tco.fecha, tco.tipo, tco.tipoCambio, tco.numero, tco.cancelado, tco.glosa, tco.moneda, SUM(tas.debe) totalDebe, SUM(tas.haber) totalHaber, SUM(tas.debeDolar) totalDebeDolar, SUM(tas.haberDolar) totalHaberDolar FROM tblComprobantes tco LEFT JOIN tblAsientos tas ON tco.idComprobante = tas.idComprobante LEFT JOIN tblCuentas tcu ON tcu.idCuenta = tas.idCuenta WHERE tco.estado = 'ACTIVO'AND tcu.movimiento = 1 AND tco.idComprobante = $idComprobante GROUP BY tcu.codigo, tcu.descripcion, tas.referencia, tco.fecha, tco.tipo, tco.tipoCambio, tco.numero, tco.cancelado, tco.glosa, tco.moneda ORDER BY tcu.codigo ASC;";
+$sql = "SELECT tcu.codigo, tcu.descripcion, tas.idAsiento, tas.referencia, tco.fecha, tco.tipo, tco.tipoCambio, tco.numero, tco.cancelado, tco.glosa, tco.moneda, SUM(tas.debe) totalDebe, SUM(tas.haber) totalHaber, SUM(tas.debeDolar) totalDebeDolar, SUM(tas.haberDolar) totalHaberDolar FROM tblComprobantes tco LEFT JOIN tblAsientos tas ON tco.idComprobante = tas.idComprobante LEFT JOIN tblCuentas tcu ON tcu.idCuenta = tas.idCuenta WHERE tco.estado = 'ACTIVO'AND tcu.movimiento = 1 AND tco.idComprobante = $idComprobante GROUP BY tcu.codigo, tcu.descripcion, tas.idAsiento, tas.referencia, tco.fecha, tco.tipo, tco.tipoCambio, tco.numero, tco.cancelado, tco.glosa, tco.moneda ORDER BY tas.idAsiento ASC;";
 // echo $sql;
 $query = sqlsrv_query($con, $sql);
 $listaComprobantes = array();
@@ -83,13 +83,13 @@ $pdf->SetFont('helvetica', '', 14);
 // $pdf->Cell(0, 10, '¡Hola, TCPDF!', 0, 1, 'C');
 switch ($tipo) {
     case 'INGRESO':
-        $subtitulo1 = 'Recibido de:';
+        $subtitulo1 = 'RECIBI DE:';
         break;
     case 'EGRESO':
-        $subtitulo1 = 'Cancelado a:';
+        $subtitulo1 = 'PAGADO A:';
         break;
     case 'TRASPASO':
-        $subtitulo1 = 'Detalle:';
+        $subtitulo1 = 'CORRESPONDE:';
         break;
     default:
         $subtitulo1 = '';

@@ -52,7 +52,7 @@
         </div>
     </body>
     <?php
-        include('../Components/footer.php');
+        //include('../Components/footer.php');
     ?>
     <script type="text/javascript" src="../js/environment.js"></script>
     <script type="text/javascript" src="../js/bootstrap.bundle.min.js"></script>
