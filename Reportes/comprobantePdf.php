@@ -1,6 +1,7 @@
 <?php
 require_once('../conexion.php');
 require_once('../Tcpdf/tcpdf.php');
+require_once('convertidorTexto.php');
 
 ob_start();
 error_reporting(E_ALL & ~E_NOTICE);
@@ -175,6 +176,9 @@ $tabla .= '
 <table border="0" cellpadding="0">
 <tr>
 <td colspan="10"></td>
+</tr>
+<tr>
+<td colspan="10"><b>Son: </b>' . numtoletras($totalDebe) . '</td>
 </tr>
 <tr>
 <td colspan="10"></td>
