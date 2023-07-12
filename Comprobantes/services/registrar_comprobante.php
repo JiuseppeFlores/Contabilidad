@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $glosa = $_POST['glosa'];
     $msgPdf = 'SIN ARCHIVO PDF';
     $filename = 'no';
+    $idUsuario = isset($_COOKIE['conta_id_user']) ? $_COOKIE['conta_id_user'] : 0 ;
     if (isset($_POST['pdfFile'])) {
       // Obtén el contenido del PDF en base64 enviado desde el cliente
       $base64Data = $_POST['pdfFile'];
@@ -40,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $arrFacts = array();
     }
     // Consulta para insertar los nuevos registros ala tabla
-    $sql = "INSERT INTO tblComprobantes (numero,tipo,fecha,tipoCambio,moneda,idProyecto,cancelado,nitCi,nroRecibo,glosa,filepdf) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?) ;";
-    $params = array($nro_comprobante, $tipo, $fecha, $tipo_cambio, $moneda, $id_proyecto, $detalle, $nit_ci, $nro_recibo, $glosa, $filename);
+    $sql = "INSERT INTO tblComprobantes (numero,tipo,fecha,tipoCambio,moneda,idProyecto,cancelado,nitCi,nroRecibo,glosa,filepdf,idUsuario) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ) ;";
+    $params = array($nro_comprobante, $tipo, $fecha, $tipo_cambio, $moneda, $id_proyecto, $detalle, $nit_ci, $nro_recibo, $glosa, $filename, $idUsuario);
     $options = array("Scrollable" => SQLSRV_CURSOR_KEYSET);
     $stmt = sqlsrv_query($con, $sql, $params, $options);
     if ($stmt === false) {
