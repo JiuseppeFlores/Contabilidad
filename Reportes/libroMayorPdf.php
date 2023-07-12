@@ -1,11 +1,14 @@
 <?php
 require_once('../conexion.php');
+require_once('../php/functions.php');
 require_once('../Tcpdf/tcpdf.php');
 
 ob_start();
 error_reporting(E_ALL & ~E_NOTICE);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
+
+$datosGestion = obtenerDatosGestion($con);
 
 $codigoCuenta = isset($_POST['codigoCuenta']) ? $_POST['codigoCuenta'] : '11000001';
 $fechaInicial = isset($_POST['fechaInicial']) ? $_POST['fechaInicial'] : '2023-01-01';

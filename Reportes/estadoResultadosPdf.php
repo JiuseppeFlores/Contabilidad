@@ -6,9 +6,12 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
 require_once('../conexion.php');
+require_once('../php/functions.php');
 require_once('../Tcpdf/tcpdf.php');
 
-$fechaInicial = isset($_POST['fechaInicial']) ? $_POST['fechaInicial'] : '2023-01-01';
+$datosGestion = obtenerDatosGestion($con);
+
+$fechaInicial = $datosGestion['fechaInicial'];
 $fechaFinal = isset($_POST['fechaFinal']) ? $_POST['fechaFinal'] : '2023-06-30';
 
 $filtro = '';
@@ -193,6 +196,7 @@ class MYPDF extends TCPDF
 {
     public function Header()
     {
+        $datosEmpresa = obtenerDatosEmpresa();
         // if ($_COOKIE['base_subdominio'] == 'sindan') {
         //     // Logo
         $image_file = '../Images/logo_sabor_andino.jpg';
@@ -204,7 +208,7 @@ class MYPDF extends TCPDF
         $this->SetFont('helvetica', '', 9);
         // $this->MultiCell(50, 10, "NIT   181252025\nGESTION    2023\nN° DE PAG.: " . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '170', '8', true);
         $this->MultiCell(23, 10, "EMPRESA\nDIRECCION\nNIT\nN° DE PAG.", 0, 'L', 0, 1, '20', '8', true);
-        $this->MultiCell(100, 10, "Sindan Organic S.R.L. (Planta 2 Sabor Andino)\nAv. 12 de diciembre N° 2216 Zona Senkata\n181252025\n" . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '43', '8', true);
+        $this->MultiCell(100, 10, $datosEmpresa['nombre']."\n".$datosEmpresa['direccion']."\n".$datosEmpresa['nit']."\n" . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '43', '8', true);
     }
     public function Footer()
     {

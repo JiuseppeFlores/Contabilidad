@@ -28,26 +28,26 @@
                     $lifetime = 60*60*24;
                     session_set_cookie_params($lifetime);
                     // Definiendo cookies de empresa
-                    if(isset($_COOKIE['base'])){
-                        unset($_COOKIE['base']);
+                    if(isset($_COOKIE['conta_base'])){
+                        unset($_COOKIE['conta_base']);
                     }
-                    if(isset($_COOKIE['server'])){
-                        unset($_COOKIE['server']);
+                    if(isset($_COOKIE['conta_server'])){
+                        unset($_COOKIE['conta_server']);
                     }
-                    if(isset($_COOKIE['subdomain'])){
-                        unset($_COOKIE['subdomain']);
+                    if(isset($_COOKIE['conta_subdomain'])){
+                        unset($_COOKIE['conta_subdomain']);
                     }
-                    if(isset($_COOKIE['id_company'])){
-                        unset($_COOKIE['id_company']);
+                    if(isset($_COOKIE['conta_id_company'])){
+                        unset($_COOKIE['conta_id_company']);
                     }
-                    setcookie('base',$company['base'], time()+64800,'/',false);
-                    setcookie('server',$company['server'], time()+64800,'/',false);
-                    setcookie('subdomain',$company['subdomain'], time()+64800,'/',false);
-                    setcookie('id_company',$company['idCompany'], time()+64800,'/',false);
-                    $_SESSION['base'] = $company['base'];
-	                $_SESSION['server'] = $company['server'];
-                    $_SESSION['subdomain'] = $company['subdomain'];
-                    $_SESSION['id_company'] = $company['idCompany'];
+                    setcookie('conta_base',$company['base'], time()+64800,'/',false);
+                    setcookie('conta_server',$company['server'], time()+64800,'/',false);
+                    setcookie('conta_subdomain',$company['subdomain'], time()+64800,'/',false);
+                    setcookie('conta_id_company',$company['idCompany'], time()+64800,'/',false);
+                    $_SESSION['conta_base'] = $company['base'];
+	                $_SESSION['conta_server'] = $company['server'];
+                    $_SESSION['conta_subdomain'] = $company['subdomain'];
+                    $_SESSION['conta_id_company'] = $company['idCompany'];
                     // Incluyendo archivo de conexion a la empresa
                     include("../../conexion.php");
                     // Obteniendo el usuario y contraseña
@@ -66,16 +66,16 @@
                         if( $num > 0 ){
                             $data = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC );
                             // Definiendo cookies de usuario
-                            if(isset($_COOKIE['id_user'])){
-                                unset($_COOKIE['id_user']);
+                            if(isset($_COOKIE['conta_id_user'])){
+                                unset($_COOKIE['conta_id_user']);
                             }
-                            if(isset($_COOKIE['user'])){
-                                unset($_COOKIE['user']);
+                            if(isset($_COOKIE['conta_user'])){
+                                unset($_COOKIE['conta_user']);
                             }
-                            setcookie('id_user',$data['idUsuario'], time()+64800,'/',false);
-                            setcookie('user',$data['nombre'], time()+64800,'/',false);
-                            $_SESSION['id_user'] = $data['idUsuario'];
-                            $_SESSION['user'] = $data['nombre'];
+                            setcookie('conta_id_user',$data['idUsuario'], time()+64800,'/',false);
+                            setcookie('conta_user',$data['nombre'], time()+64800,'/',false);
+                            $_SESSION['conta_id_user'] = $data['idUsuario'];
+                            $_SESSION['conta_user'] = $data['nombre'];
                             
                             $response['success'] = true;
                             $response['message'] = "Inicio de sesión exitosa.";

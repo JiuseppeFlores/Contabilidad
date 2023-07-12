@@ -48,7 +48,7 @@
         <div class="d-flex" role="search">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#" id="nav_cerrar_sesion">Cerrar Sesión</a>
+                    <a class="nav-link" href="#" onclick="cerrarSesion()">Cerrar Sesión</a>
                 </li>
             </ul>
         </div>

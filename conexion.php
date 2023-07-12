@@ -3,12 +3,12 @@
     // VERIFICACIÓN DE CONEXIÓN A LA BASE DE DATOS
     require('php/environments.php');
     // CONEXION CON LA BASE DE DATOS
-    if(isset($_SESSION['base']) && isset($_SESSION['server'])){
-        $server = $_SESSION['server'];
-        $database = $_SESSION['base'];
+    if(isset($_SESSION['conta_base']) && isset($_SESSION['conta_server'])){
+        $server = $_SESSION['conta_server'];
+        $database = $_SESSION['conta_base'];
     }else{
-        $server = $_COOKIE['server'];
-        $database = $_COOKIE['base'];
+        $server = $_COOKIE['conta_server'];
+        $database = $_COOKIE['conta_base'];
     }
     
     $user_db = $USER_DB;

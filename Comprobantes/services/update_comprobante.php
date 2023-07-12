@@ -57,7 +57,7 @@ function updateComprobanteFile($con, $idComprobante, $tipo, $numero, $fecha,$tip
   if($existe == 'x'){
     $base64Data = $file;
     $pdfData = base64_decode($base64Data);
-    $filename = $_COOKIE['subdomain'].'-' . time() . '.pdf';
+    $filename = $_COOKIE['conta_subdomain'].'-' . time() . '.pdf';
     $uploadPath = '../Files/' . $filename;
     if (file_put_contents($uploadPath, $pdfData)) {
       $sql = "UPDATE tblComprobantes SET numero = ?, tipo = ?, fecha = ?, tipoCambio = ?, moneda = ?, nitCi = ?, nroRecibo = ?, glosa = ?, filepdf = ?, cancelado = ? WHERE idComprobante = ?";

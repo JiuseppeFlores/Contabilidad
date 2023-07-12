@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $base64Data = $_POST['pdfFile'];
       $pdfData = base64_decode($base64Data);
       // Genera un nombre único para el archivo PDF
-      $filename = $_COOKIE['subdomain'].'-' . time() . '.pdf';
+      $filename = $_COOKIE['conta_subdomain'].'-' . time() . '.pdf';
       $uploadPath = '../Files/' . $filename;
       // Guarda el archivo PDF en el servidor
       if (file_put_contents($uploadPath, $pdfData)) {
