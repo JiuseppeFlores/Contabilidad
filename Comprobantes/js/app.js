@@ -59,6 +59,16 @@ function buildTable($el, cells, rows, asientos, tc) {
   })
 }
 
+const formatterUser = (value) => {
+  var style = '<span class="badge text-dark">'+(value == null ? "S/N" : value)+'</span>';
+  return style;
+}
+
+const formatterStatus = (value) => {
+  var style = '<span class="badge text-'+(value == "ACTIVO" ? "success" : "danger")+'">'+value+'</span>';
+  return style;
+}
+
 $("#tbl_comprobantes").bootstrapTable({
   search: true,
   searchAlign: "left",
@@ -87,8 +97,15 @@ $("#tbl_comprobantes").bootstrapTable({
       title: "GLOSA",
     },
     {
+      align: "center",
       field: "estado",
       title: "ESTADO",
+      formatter: formatterStatus,
+    },{
+      align: "center",
+      field: "usuario",
+      title: "CREADO",
+      formatter: formatterUser,
     },
     {
       field: "actions",

@@ -96,10 +96,10 @@
 
                     <div class="d-flex justify-content-between align-items-center">
                         <!-- Checkbox -->
-                        <div class="form-check mb-0">
+                        <!--<div class="form-check mb-0">
                             <input class="form-check-input me-2" type="checkbox" value="" id="is_recordarme" />
                             <label class="form-check-label" for="is_recordarme"> Recordarme </label>
-                        </div>
+                        </div>-->
                         <!--<a href="#!" class="text-body">Forgot password?</a>-->
                     </div>
 

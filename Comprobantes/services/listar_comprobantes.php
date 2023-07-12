@@ -11,8 +11,9 @@
             $total = $_GET['total'];
             $filtro = isset($_GET['estado']) ? " WHERE tc.estado = '".$_GET['estado']."' " : "" ;
             // Consulta para insertar los nuevos registros ala tabla
-            $sql = "SELECT * 
+            $sql = "SELECT tc.* , tu.nombre AS usuario
                     FROM tblComprobantes tc
+                    LEFT JOIN tblUsuarios tu ON tc.idUsuario = tu.idUsuario
                     ".$filtro."
                     ORDER BY tc.idComprobante DESC
                     OFFSET ($pagina * $total) ROWS
