@@ -136,10 +136,10 @@ function numtoletras($xcifra)
                         $xcadena = " $xdecimales/100 Bolivianos.";
                     }
                     if ($xcifra >= 1 && $xcifra < 2) {
-                        $xcadena = " $xdecimales/100 Bolivianos. ";
+                        $xcadena .= " $xdecimales/100 Bolivianos. ";
                     }
                     if ($xcifra >= 2) {
-                        $xcadena.= "  $xdecimales/100 Bolivianos. "; //
+                        $xcadena .= "  $xdecimales/100 Bolivianos. "; //
                     }
                     break;
             } // endswitch ($xz)

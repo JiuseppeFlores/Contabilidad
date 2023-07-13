@@ -115,7 +115,7 @@ $tabla .= '
 <td colspan="4">' . $subtitulo1 . '&nbsp;&nbsp;' . $cancelado . '</td>
 </tr>
 <tr align="left" style="font-size: 10px;">
-<td colspan="4">Por concepto de:&nbsp;&nbsp;' . $glosa . '</td>
+<td colspan="4">POR CONCEPTO DE:&nbsp;&nbsp;' . $glosa . '</td>
 </tr>';
 // $tabla .= '
 // <tr align="left" style="font-size: 10px;">
