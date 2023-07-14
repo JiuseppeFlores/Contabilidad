@@ -413,7 +413,6 @@ function listar_cuentas() {
     success: function (response) {
       $("#spinner_table").html('').hide();
       if (response.success) {
-        console.log(response);
         response.data.forEach((cuenta) => {
           var sp = "&nbsp";
           switch (cuenta.nivel) {
@@ -435,20 +434,6 @@ function listar_cuentas() {
           }
           cuenta.descripcion = sp + cuenta.descripcion;
         });
-        /*$("#t_cuentas").bootstrapTable({
-          columns: [
-            {
-              field: "codigo",
-              title: "Codigo",
-            },
-            {
-              field: "descripcion",
-              title: "Descripción",
-            },
-          ],
-          data: response.data,
-          onDblClickRow: test,
-        });*/
       } else {
         show_toast(ACCION, response.message, "text-bg-danger");
       }
