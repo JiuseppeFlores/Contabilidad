@@ -124,7 +124,7 @@ class MYPDF extends TCPDF
     }
 }
 $carta = array(215.9, 279.4);
-$pdf = new MYPDF('P', 'mm', $cata, true, 'UTF-8', false);
+$pdf = new MYPDF('P', 'mm', $carta, true, 'UTF-8', false);
 $nombreComprobante = $tipo != '' ? 'DE ' . $tipo : '';
 // Configurar las propiedades del documento
 $pdf->SetCreator('STIS');
