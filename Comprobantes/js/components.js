@@ -11,39 +11,41 @@ const listarCuentas = (e) => {
 
 const asignarCuenta = (e) => {
     var codigo = e.srcElement.value;
-    var id = e.srcElement.id.split("-")[1];
-    const ACCION = "OBTENER DATOS CUENTA";
-    var datos = { 
-        codigo: codigo,
-        movimiento: 1
-    };
-    $.ajax({
-        data: datos,
-        url: "../Cuentas/services/obtener_codigo.php",
-        type: "GET",
-        dataType: "JSON",
-        beforeSend: function () {
-            console.log("[" + ACCION + "] Enviando datos...");
-        },
-        success: function (response) {
-            console.log(response);
-            if (response.success) {
-                $("#id-cuenta-"+id).val(response.data.idCuenta);
-                $('#codigo-'+id).val(response.data.codigo);
-                $('#sp-'+id).text(response.data.descripcion);
-            }else{
-                show_toast(ACCION, response.message, "text-bg-warning");
-                $("#id-cuenta-"+id).val("");
-                $('#codigo-'+id).val("");
-                $('#sp-'+id).text("");
-            }
-            console.log("[" + ACCION + "] " + response.message);
-        },
-        error: function (error) {
-                show_toast(ACCION, error.statusText, "text-bg-danger");
-                console.log("[" + ACCION + "] ", error);
-        },
-    });
+    if( codigo != "" ){
+        var id = e.srcElement.id.split("-")[1];
+        const ACCION = "OBTENER DATOS CUENTA";
+        var datos = { 
+            codigo: codigo,
+            movimiento: 1
+        };
+        $.ajax({
+            data: datos,
+            url: "../Cuentas/services/obtener_codigo.php",
+            type: "GET",
+            dataType: "JSON",
+            beforeSend: function () {
+                console.log("[" + ACCION + "] Enviando datos...");
+            },
+            success: function (response) {
+                console.log(response);
+                if (response.success) {
+                    $("#id-cuenta-"+id).val(response.data.idCuenta);
+                    $('#codigo-'+id).val(response.data.codigo);
+                    $('#sp-'+id).text(response.data.descripcion);
+                }else{
+                    show_toast(ACCION, response.message, "text-bg-warning");
+                    $("#id-cuenta-"+id).val("");
+                    $('#codigo-'+id).val("");
+                    $('#sp-'+id).text("");
+                }
+                console.log("[" + ACCION + "] " + response.message);
+            },
+            error: function (error) {
+                    show_toast(ACCION, error.statusText, "text-bg-danger");
+                    console.log("[" + ACCION + "] ", error);
+            },
+        });
+    }
 }
 
 function create_input(id,clss,val,tp,name,sw){
