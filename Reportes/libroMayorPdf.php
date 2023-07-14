@@ -38,11 +38,23 @@ $queryCuenta = sqlsrv_query($con, $sqlCuenta);
 $rowCuenta = sqlsrv_fetch_array($queryCuenta);
 $nombreCuenta = $rowCuenta['descripcion'];
 
+$datosEmpresa = obtenerDatosEmpresa();
+$nombreEmpresa = $datosEmpresa['nombre'];
+$direccion = $datosEmpresa['direccion'];
+$nit = $datosEmpresa['nit'];
+
+define('fechaInicialFormato', $fechaInicialFormato);
+define('fechaFinalFormato', $fechaFinalFormato);
+define('codigoCuenta', $codigoCuenta);
+define('nombreCuenta', $nombreCuenta);
+define('nombreEmpresa', $nombreEmpresa);
+define('direccion', $direccion);
+define('nit', $nit);
+
 class MYPDF extends TCPDF
 {
     public function Header()
     {
-        $datosEmpresa = obtenerDatosEmpresa();
         if ($_COOKIE['conta_subdomain'] == 'sabor_andino') {
             $image_file = '../Images/logo_sabor_andino.jpg';
             $this->Image($image_file, 163, 5, 35, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
@@ -53,7 +65,42 @@ class MYPDF extends TCPDF
         $this->SetFont('helvetica', '', 9);
         // $this->MultiCell(50, 10, "N° DE PAG.: " . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "\nFECHA DE IMP. 31/05/2023\nGESTION    2023", 0, 'L', 0, 1, '150', '8', true);
         $this->MultiCell(23, 10, "EMPRESA\nDIRECCION\nNIT\nN° DE PAG.", 0, 'L', 0, 1, '20', '8', true);
-        $this->MultiCell(100, 10, $datosEmpresa['nombre'] . "\n" . $datosEmpresa['direccion'] . "\n" . $datosEmpresa['nit'] . "\n" . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '43', '8', true);
+        $this->MultiCell(100, 10, nombreEmpresa . "\n" . direccion . "\n" . nit . "\n" . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '43', '8', true);
+
+        // Agregar contenido al documento
+        $this->SetFont('helvetica', '', 14);
+        // $pdf->Cell(0, 10, '¡Hola, TCPDF!', 0, 1, 'C');
+        $tabla = '';
+        $tabla .= '
+        <table border="0" cellpaddind="2">
+        <tr align="center">
+        <td colspan="3"><b>LIBRO MAYOR</b></td>
+        </tr>
+        <tr align="center" style="font-size: 10px;">
+        <td colspan="3">Experesado en Bs.</td>
+        </tr>
+        <tr align="center" style="font-size: 11px;">
+        <td colspan="3">Desde ' . fechaInicialFormato . '    Hasta ' . fechaFinalFormato . '</td>
+        </tr>
+        <tr style="font-size: 7px;">
+        <td></td>
+        </tr>
+        <tr style="font-size: 10px;">
+        <td>CUENTA ' . codigoCuenta . '</td>
+        <td colspan="2">NOMBRE ' . nombreCuenta . '</td>
+        </tr>
+        <tr style="font-size: 7px;">
+        <td></td>
+        </tr>
+        <tr style="font-size: 10px;">
+        <td></td>
+        <td>SALDO ANTERIOR</td>
+        <td></td>
+        </tr>
+        </table>
+        ';
+
+        $this->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);
     }
     public function Footer()
     {
@@ -70,45 +117,12 @@ $pdf->SetSubject('LIBRO MAYOR');
 // Establecer las dimensiones y la orientación del papel
 $pdf->setPrintHeader(true);
 $pdf->setPrintFooter(true);
-$pdf->SetMargins(20, 25, 10, true);
-$pdf->SetAutoPageBreak(true, 10);
+$pdf->SetMargins(20, 60, 10, true);
+$pdf->SetAutoPageBreak(true, 13);
 
 // Agregar una página
 $pdf->AddPage();
 
-// Agregar contenido al documento
-$pdf->SetFont('helvetica', '', 14);
-// $pdf->Cell(0, 10, '¡Hola, TCPDF!', 0, 1, 'C');
-$tabla = '';
-$tabla .= '
-<table border="0" cellpaddind="2">
-<tr align="center">
-<td colspan="3"><b>LIBRO MAYOR</b></td>
-</tr>
-<tr align="center" style="font-size: 10px;">
-<td colspan="3">Experesado en Bs.</td>
-</tr>
-<tr align="center" style="font-size: 11px;">
-<td colspan="3">Desde ' . $fechaInicialFormato . '    Hasta ' . $fechaFinalFormato . '</td>
-</tr>
-<tr style="font-size: 7px;">
-<td></td>
-</tr>
-<tr style="font-size: 10px;">
-<td>CUENTA ' . $codigoCuenta . '</td>
-<td colspan="2">NOMBRE ' . $nombreCuenta . '</td>
-</tr>
-<tr style="font-size: 7px;">
-<td></td>
-</tr>
-<tr style="font-size: 10px;">
-<td></td>
-<td>SALDO ANTERIOR</td>
-<td></td>
-</tr>
-</table>
-';
-$pdf->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);
 $pdf->SetFont('helvetica', '', 8);
 $tabla = '
 <table border="0" cellpadding="2">
@@ -160,8 +174,12 @@ if (count($listaAsientos) > 0) {
         } else {
             $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;">' . number_format($value['haber'], 2) . '</td>';
         }
+        if ($saldo2 == 0) {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black; border-right: 0.7px solid black;"> - </td>';
+        } else {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black; border-right: 0.7px solid black;">' . number_format($saldo2, 2) . '</td>';
+        }
         $tabla .= '        
-        <td colspan="2" align="rigth" style="border-left: 0.7px solid black; border-right: 0.7px solid black;">' . number_format($saldo2, 2) . '</td>
         </tr>
         ';
     }

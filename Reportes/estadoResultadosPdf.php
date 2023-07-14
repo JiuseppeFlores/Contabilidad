@@ -143,7 +143,7 @@ foreach ($listaCompuesta as $key => $value) {
 
 foreach ($listaCompuesta as $key => $value) {
     if (count($value['children']) == 0) {
-        if (!in_array($value, $listaCompuestaLista)){
+        if (!in_array($value, $listaCompuestaLista)) {
             // array_splice($listaCompuesta, $key, 1);
             unset($listaCompuesta[$key]);
         } else {
@@ -192,6 +192,17 @@ foreach ($listaGrupo as $key => $value) {
     $listaGrupo[$key] = $value;
 }
 
+$datosEmpresa = obtenerDatosEmpresa();
+$nombreEmpresa = $datosEmpresa['nombre'];
+$direccion = $datosEmpresa['direccion'];
+$nit = $datosEmpresa['nit'];
+
+define('fechaInicialFormato', $fechaInicialFormato);
+define('fechaFinalFormato', $fechaFinalFormato);
+define('nombreEmpresa', $nombreEmpresa);
+define('direccion', $direccion);
+define('nit', $nit);
+
 class MYPDF extends TCPDF
 {
     public function Header()
@@ -200,14 +211,31 @@ class MYPDF extends TCPDF
         if ($_COOKIE['conta_subdomain'] == 'sabor_andino') {
             $image_file = '../Images/logo_sabor_andino.jpg';
             $this->Image($image_file, 163, 5, 35, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-        } else if ($_COOKIE['conta_subdomain'] == 'sindan'){
+        } else if ($_COOKIE['conta_subdomain'] == 'sindan') {
             $image_file = '../Images/logo_sindan.png';
             $this->Image($image_file, 163, 5, 35, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         }
         $this->SetFont('helvetica', '', 9);
         // $this->MultiCell(50, 10, "NIT   181252025\nGESTION    2023\nN° DE PAG.: " . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '170', '8', true);
         $this->MultiCell(23, 10, "EMPRESA\nDIRECCION\nNIT\nN° DE PAG.", 0, 'L', 0, 1, '20', '8', true);
-        $this->MultiCell(100, 10, $datosEmpresa['nombre']."\n".$datosEmpresa['direccion']."\n".$datosEmpresa['nit']."\n" . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '43', '8', true);
+        $this->MultiCell(100, 10, nombreEmpresa . "\n" . direccion . "\n" . nit . "\n" . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '43', '8', true);
+        // Agregar contenido al documento
+        $this->SetFont('helvetica', '', 14);
+        $tabla = '';
+        $tabla .= '
+        <table border="0" cellpaddind="2">
+        <tr align="center">
+        <td colspan="3"><b>ESTADO DE RESULTADOS</b></td>
+        </tr>
+        <tr align="center" style="font-size: 10px;">
+        <td colspan="3">Experesado en Bs.</td>
+        </tr>
+        <tr align="center" style="font-size: 11px;">
+        <td colspan="3">Desde ' . fechaInicialFormato . '    Hasta ' . fechaFinalFormato . '</td>
+        </tr>
+        </table>
+        ';
+        $this->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);
     }
     public function Footer()
     {
@@ -224,30 +252,12 @@ $pdf->SetSubject('ESTADO DE RESULTADOS');
 // Establecer las dimensiones y la orientación del papel
 $pdf->setPrintHeader(true);
 $pdf->setPrintFooter(true);
-$pdf->SetMargins(20, 25, 10, true);
+$pdf->SetMargins(20, 45, 10, true);
 $pdf->SetAutoPageBreak(true, 10);
 
 // Agregar una página
 $pdf->AddPage();
 
-// Agregar contenido al documento
-$pdf->SetFont('helvetica', '', 14);
-// $pdf->Cell(0, 10, '¡Hola, TCPDF!', 0, 1, 'C');
-$tabla = '';
-$tabla .= '
-<table border="0" cellpaddind="2">
-<tr align="center">
-<td colspan="3"><b>ESTADO DE RESULTADOS</b></td>
-</tr>
-<tr align="center" style="font-size: 10px;">
-<td colspan="3">Experesado en Bs.</td>
-</tr>
-<tr align="center" style="font-size: 11px;">
-<td colspan="3">Desde ' . $fechaInicialFormato . '    Hasta ' . $fechaFinalFormato . '</td>
-</tr>
-</table>
-';
-$pdf->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);
 $pdf->SetFont('helvetica', '', 9);
 $tabla = '
 <table border="0" cellpadding="2">';
@@ -280,11 +290,11 @@ if (count($listaGrupo) != 0 && (count($listaCompuestaLista) != 0 || count($lista
                         if (count($valueTitulo['children']) != 0) {
 
                             $subtotal = 0;
-                        //     $tabla .= '
-                        // <tr>
-                        // <td></td>
-                        // <td colspan="47"><u><b>' . $valueTitulo['descripcion'] . '</b></u></td>
-                        // </tr>';
+                            //     $tabla .= '
+                            // <tr>
+                            // <td></td>
+                            // <td colspan="47"><u><b>' . $valueTitulo['descripcion'] . '</b></u></td>
+                            // </tr>';
                             foreach ($valueTitulo['children'] as $key => $valueCompuesta) {
 
                                 if (count($valueCompuesta['children']) != 0) {
