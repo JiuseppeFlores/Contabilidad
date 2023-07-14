@@ -135,7 +135,7 @@ $pdf->SetSubject('COMPROBANTE ' . $nombreComprobante);
 $pdf->setPrintHeader(true);
 $pdf->setPrintFooter(true);
 $pdf->SetMargins(20, 60, 10, true);
-$pdf->SetAutoPageBreak(true, 10);
+$pdf->SetAutoPageBreak(true, 13);
 
 // Agregar una página
 $pdf->AddPage();
