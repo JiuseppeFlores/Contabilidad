@@ -78,10 +78,10 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-primary text-center" onclick="adicionar_asiento()"><i class="bi bi-plus me-2"></i>Añadir Asiento</button>
+                                <button type="button" class="btn btn-primary btn-sm text-center" onclick="adicionar_asiento()"><i class="bi bi-plus me-2"></i>Añadir Asiento</button>
                             </div>
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-danger text-center" onclick="removerAsiento()"><i class="bi bi-dash me-2"></i>Remover Asiento</button>
+                                <button type="button" class="btn btn-danger btn-sm text-center" onclick="removerAsiento()"><i class="bi bi-dash me-2"></i>Remover Asiento</button>
                             </div>
                             <div class="col-md-5">
                                 <input type="file" class="form-control" id="pdfFile" accept=".pdf" name="pdfFile"/>
@@ -124,8 +124,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="limpiarModal()" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x me-2"></i>CANCELAR</button>
-                    <button type="submit" class="btn btn-success"><i class="bi bi-check me-2"></i>REGISTRAR</button>
+                    <a href="../LibroMayor/" class="btn btn-sm btn-info"><i class="bi bi-list-columns-reverse me-2"></i>VER CUENTAS</a>
+                    <a href="../Cuentas/" class="btn btn-sm btn-primary"><i class="bi bi-list-columns-reverse me-2"></i>VER CUENTAS</a>
+                    <button type="button" onclick="limpiarModal()" class="btn btn-sm btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x me-2"></i>CANCELAR</button>
+                    <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-check me-2"></i>REGISTRAR</button>
                 </div>
             </div>
         </div>
