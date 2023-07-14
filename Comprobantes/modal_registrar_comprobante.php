@@ -88,9 +88,9 @@
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-y: scroll; height: 350px;">
                                 <table class="table table-hover table-bordered align-middle">
-                                    <thead>
+                                    <thead class="sticky-top">
                                         <tr class="table-info text-center">
                                             <th scope="col">CÓDIGO</th>
                                             <th scope="col">CUENTA</th>
@@ -124,8 +124,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="../LibroMayor/" class="btn btn-sm btn-info"><i class="bi bi-list-columns-reverse me-2"></i>VER CUENTAS</a>
-                    <a href="../Cuentas/" class="btn btn-sm btn-primary"><i class="bi bi-list-columns-reverse me-2"></i>VER CUENTAS</a>
+                    <a href="../Cuentas/" class="btn btn-sm btn-primary" target="_blank"><i class="bi bi-list-columns-reverse me-2"></i>Ver Cuentas</a>
+                    <a href="../LibroMayor/" class="btn btn-sm btn-info" target="_blank"><i class="bi bi-list-columns-reverse me-2"></i>Ver Libro Mayor</a>
                     <button type="button" onclick="limpiarModal()" class="btn btn-sm btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x me-2"></i>CANCELAR</button>
                     <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-check me-2"></i>REGISTRAR</button>
                 </div>
