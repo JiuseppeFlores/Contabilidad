@@ -46,14 +46,14 @@ class MYPDF extends TCPDF
         if ($_COOKIE['conta_subdomain'] == 'sabor_andino') {
             $image_file = '../Images/logo_sabor_andino.jpg';
             $this->Image($image_file, 163, 5, 35, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-        } else if ($_COOKIE['conta_subdomain'] == 'sindan'){
+        } else if ($_COOKIE['conta_subdomain'] == 'sindan') {
             $image_file = '../Images/logo_sindan.png';
             $this->Image($image_file, 163, 5, 35, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         }
         $this->SetFont('helvetica', '', 9);
         // $this->MultiCell(50, 10, "N° DE PAG.: " . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "\nFECHA DE IMP. 31/05/2023\nGESTION    2023", 0, 'L', 0, 1, '150', '8', true);
         $this->MultiCell(23, 10, "EMPRESA\nDIRECCION\nNIT\nN° DE PAG.", 0, 'L', 0, 1, '20', '8', true);
-        $this->MultiCell(100, 10, $datosEmpresa['nombre']."\n".$datosEmpresa['direccion']."\n".$datosEmpresa['nit']."\n" . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '43', '8', true);
+        $this->MultiCell(100, 10, $datosEmpresa['nombre'] . "\n" . $datosEmpresa['direccion'] . "\n" . $datosEmpresa['nit'] . "\n" . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '43', '8', true);
     }
     public function Footer()
     {
@@ -111,17 +111,17 @@ $tabla .= '
 $pdf->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);
 $pdf->SetFont('helvetica', '', 8);
 $tabla = '
-<table border="1" cellpadding="2">
+<table border="0" cellpadding="2">
 <tr align="center">
-<th colspan="2">FECHA</th>
-<th colspan="2">T</th>
-<th>N°</th>
-<th>T./C.</th>
-<th colspan="6">DESCRIPCION</th>
-<th colspan="2">CHEQUE</th>
-<th colspan="2">DEBE</th>
-<th colspan="2">HABER</th>
-<th colspan="2">SALDOS</th>
+<th colspan="2" border="1">FECHA</th>
+<th colspan="2" border="1">T</th>
+<th border="1">N°</th>
+<th border="1">T./C.</th>
+<th colspan="6" border="1">DESCRIPCION</th>
+<th colspan="2" border="1">CHEQUE</th>
+<th colspan="2" border="1">DEBE</th>
+<th colspan="2" border="1">HABER</th>
+<th colspan="2" border="1">SALDOS</th>
 </tr>
 ';
 if (count($listaAsientos) > 0) {
@@ -144,15 +144,24 @@ if (count($listaAsientos) > 0) {
 
         $tabla .= '
         <tr align="center">
-        <td colspan="2">' . $fecha . '</td>
-        <td colspan="2">' . $value['tipo'] . '</td>
-        <td>' . $value['numero'] . '</td>
-        <td>' . $value['tipoCambio'] . '</td>
-        <td colspan="6" align="left">' . $value['glosa'] . '</td>
-        <td colspan="2" align="left">' . $value['cheque'] . '</td>
-        <td colspan="2" align="rigth">' . number_format($value['debe'], 2) . '</td>
-        <td colspan="2" align="rigth">' . number_format($value['haber'], 2) . '</td>
-        <td colspan="2" align="rigth">' . number_format($saldo2, 2) . '</td>
+        <td colspan="2" style="border-left: 0.7px solid black;">' . $fecha . '</td>
+        <td colspan="2" style="border-left: 0.7px solid black;">' . $value['tipo'] . '</td>
+        <td style="border-left: 0.7px solid black;">' . $value['numero'] . '</td>
+        <td style="border-left: 0.7px solid black;">' . $value['tipoCambio'] . '</td>
+        <td colspan="6" align="left" style="border-left: 0.7px solid black;">' . $value['glosa'] . '</td>
+        <td colspan="2" align="left" style="border-left: 0.7px solid black;">' . $value['cheque'] . '</td>';
+        if ($value['debe'] == 0) {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;"> - </td>';
+        } else {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;">' . number_format($value['debe'], 2) . '</td>';
+        }
+        if ($value['haber'] == 0) {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;"> - </td>';
+        } else {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;">' . number_format($value['haber'], 2) . '</td>';
+        }
+        $tabla .= '        
+        <td colspan="2" align="rigth" style="border-left: 0.7px solid black; border-right: 0.7px solid black;">' . number_format($saldo2, 2) . '</td>
         </tr>
         ';
     }
@@ -160,10 +169,10 @@ if (count($listaAsientos) > 0) {
     $tabla .= '
     <table border="0" cellpadding="2">
     <tr align="center">
-    <td align="right" colspan="13"></td>
-    <td colspan="2" align="rigth">' . number_format($debeTotal, 2) . '</td>
-    <td colspan="2" align="rigth">' . number_format($haberTotal, 2) . '</td>
-    <td colspan="2"></td>
+    <td align="right" colspan="13" style="border-top: 0.7px solid black;"></td>
+    <td colspan="2" align="rigth" style="border-top: 0.7px solid black;">' . number_format($debeTotal, 2) . '</td>
+    <td colspan="2" align="rigth" style="border-top: 0.7px solid black;">' . number_format($haberTotal, 2) . '</td>
+    <td colspan="2" style="border-top: 0.7px solid black;"></td>
     </tr>
     <tr align="center">';
     if ($saldo2 < 0) {
