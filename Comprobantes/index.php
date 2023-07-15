@@ -15,6 +15,7 @@
         <link href="../css/select2.min.css" rel="stylesheet" />
         <script src="../js/jquery.min.js"></script>
         <link rel="stylesheet" href="../css/bootstrap-table.min.css">
+        <link rel="stylesheet" href="../css/ajustes.css">
         <script src="../js/bootstrap-table.min.js"></script>
     </head>
     <body>

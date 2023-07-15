@@ -1,40 +1,52 @@
+let posicion = 0;
+let rows = []; // contiene los indices de las filas
+let rowsEliminar = []; // ids asiento que han sido eliminados y esta
+let rowsInsert = []; // asientos a insertar
 $(document).ready(function(){
   let c = Number($('#cantidad').val());
-  dolares(c);
-  totales(c);
+  posicion = c;
+  rows = new Array(posicion);
+  rows.fill().forEach((_,i) => rows[i] = i+1);
+
+  totales();
   
   $("#form_editar_comprobante").on('submit', (e) => {
     e.preventDefault();
-    updateComprobante(c);
+    updateComprobante();
+    deleteAsientos();
+    insertAsientos();
   })
 })
 
-$('input[name="debe[]"]').on('change', () => {
-  let c = Number($('#cantidad').val());
-  dolares(c);
-  totales(c);
-})
+$(document).on('change', 'input[name="debe[]"]', () => {
+  dolares();
+  totales();
+});
+$(document).on('change', 'input[name="haber[]"]', () => {
+  dolares();
+  totales();
+});
+$(document).on('change', 'input[name="debeDolar[]"]', () => {
+  totales();
+});
+$(document).on('change', 'input[name="haberDolar[]"]', () => {
+  totales();
+});
 
-$('input[name="haber[]"]').on('change', () => {
-  let c = Number($('#cantidad').val());
-  dolares(c);
-  totales(c);
-})
-
-function totales(c){
+function totales(){
   var total_debe = 0;
   var total_haber = 0;
 
   var total_debe_s = 0;
   var total_haber_s = 0;
 
-  for( i = 1 ; i <= c; i++ ){
-    total_debe += parseFloat($('#debe-'+i).val());
-    total_haber += parseFloat($('#haber-'+i).val());
+  rows.forEach((i) => {
+    total_debe += parseFloat($('#debe-'+i).val()) ?  parseFloat($('#debe-'+i).val()) : 0;
+    total_haber += parseFloat($('#haber-'+i).val()) ? parseFloat($('#haber-'+i).val()) : 0;
 
-    total_debe_s += parseFloat($('#debe-'+i+'-s').text()) ? parseFloat($('#debe-'+i+'-s').text()) : 0;
-    total_haber_s += parseFloat($('#haber-'+i+'-s').text()) ? parseFloat($('#haber-'+i+'-s').text()) : 0;
-  }
+    total_debe_s += parseFloat($('#debe-'+i+'-s').val()) ? parseFloat($('#debe-'+i+'-s').val()) : 0;
+    total_haber_s += parseFloat($('#haber-'+i+'-s').val()) ? parseFloat($('#haber-'+i+'-s').val()) : 0;
+  })
   
   $('#total_debe').text(total_debe.toFixed(2));
   $('#total_haber').text(total_haber.toFixed(2));
@@ -42,12 +54,12 @@ function totales(c){
   $('#total_haber_s').text(total_haber_s.toFixed(2));
 }
 
-async function updateComprobante(c){
+async function updateComprobante(){
   if(verificaTotales()){
     const id = $("#id_comprobante").val();
     const tipoComp = $("#comprobante_tipo").val();
     const fecha = $("#comprobante_fecha").val();
-    const asientos = recuperarAsientos();
+    const asientos = recuperarAsientosUpdate();
     let data = {};
     const existePDF = $("#namePDF").val();
     let pdf = await leerArchivo();
@@ -105,39 +117,37 @@ async function updateComprobante(c){
             "text-bg-warning"
           );
         }
-  
       },
       error: function (response) {
         console.log(response,'---Error')
       }
     })
     console.log(data)
+    console.log('-------- update')
   }else{
     show_toast('NO SE PUEDE ACTUALIZAR', 'Comprobante desbalanceado', 'text-bg-warning')
   }
   
 }
 
-function recuperarAsientos(){
+function recuperarAsientosUpdate(){
   const asientos = [];
-  const rows = $("#asientos tr");
-
-  rows.each((index, row) => {
-    let inputs = $(row).find('input');
-    let dolarDebe = $("#debe-"+(index+1)+"-s").text();
-    let dolarHaber = $("#haber-"+(index+1)+"-s").text();
+  // Obtenemos los asientos que se actualizaran
+  const indices = rows.filter(element => !rowsInsert.includes(element));
+  indices.forEach( (i) => {
+    let inputs = $("#row-"+i).find('input');
     asientos.push({
       idAsiento: $(inputs[0]).val(),
       idCuenta: $(inputs[2]).val(),
       referencia: $(inputs[3]).val(),
-      debe: $(inputs[4]).val(),
-      haber: $(inputs[5]).val(),
-      bco: $(inputs[6]).val(),
-      cheque: $(inputs[7]).val(),
-      debeDolar: dolarDebe,
-      haberDolar: dolarHaber,
+      debe: $(inputs[4]).val() == '' ? 0 : $(inputs[4]).val(),
+      haber: $(inputs[5]).val() == '' ? 0 : $(inputs[5]).val(),
+      debeDolar: $(inputs[6]).val() == '' ? 0 : $(inputs[6]).val(),
+      haberDolar: $(inputs[7]).val() == '' ? 0 : $(inputs[7]).val(),
+      bco: $(inputs[8]).val(),
+      cheque: $(inputs[9]).val(),
     })
-  })
+  });
   return asientos;
 }
 
@@ -173,14 +183,14 @@ const listarCuentas_e = (e) => {
   seleccionarCuenta();
 };
 
-const dolares = (c) => {
+const dolares = () => {
   const cambio = parseFloat($("#comprobante_tipo_cambio").val());
-  for( i = 1 ; i <= c; i++ ){
-    let debe = parseFloat($("#debe-"+i).val());
-    let haber = parseFloat($("#haber-"+i).val());
-    $("#debe-"+i+'-s').text((debe / cambio).toFixed(2));
-    $("#haber-"+i+'-s').text((haber / cambio).toFixed(2));
-  }
+  rows.forEach((i) => {
+    let debe = parseFloat($("#debe-"+i).val() == '' ? 0 : $("#debe-"+i).val());
+    let haber = parseFloat($("#haber-"+i).val() == '' ? 0 : $("#haber-"+i).val());
+    $("#debe-"+i+'-s').val((debe / cambio).toFixed(2));
+    $("#haber-"+i+'-s').val((haber / cambio).toFixed(2));
+  })
 }
 
 const verificaTotales = () => {
@@ -193,4 +203,170 @@ const verificaTotales = () => {
   }else{
     return false;
   }
+}
+
+const eliminarAsiento = (pos) => {
+  if($("#idAsiento-"+pos).val() != '0'){
+    rowsEliminar.push($("#idAsiento-"+pos).val());
+  }
+  $("#row-"+pos).remove();
+  rows = rows.filter((element) => element !== pos);
+  rowsInsert = rowsInsert.filter((element) => element !== pos);
+  totales();
+}
+
+const deleteAsientos = () => {
+  if(rowsEliminar.length > 0 && verificaTotales()){
+    let data = {
+      ids: rowsEliminar
+    }
+    $.ajax({
+      type: "POST",
+      url: "./services/eliminar_asientos.php",
+      data: data,
+      dataType: "JSON",
+      success: function (response) {
+        console.log(response)
+        if(!response.ok){
+          show_toast(
+            'OCURRIO UN ERROR',
+            'Ocurrio un error al eliminar asientos',
+            "text-bg-warning"
+          );
+        }
+      },
+      error: function (response) {
+        console.log(response,'---Error')
+      }
+    })
+  }
+}
+
+const insertAsientos = () => {
+  if(rowsInsert.length > 0 && verificaTotales()){
+    let asientos = [];
+    rowsInsert.forEach((i) => {
+      let inputs = $("#row-"+i).find('input');
+      asientos.push({
+        idAsiento: $(inputs[0]).val(),
+        idCuenta: $(inputs[2]).val(),
+        referencia: $(inputs[3]).val(),
+        debe: $(inputs[4]).val() == '' ? 0 : $(inputs[4]).val(),
+        haber: $(inputs[5]).val() == '' ? 0 : $(inputs[5]).val(),
+        debeDolar: $(inputs[6]).val() == '' ? 0 : $(inputs[6]).val(),
+        haberDolar: $(inputs[7]).val() == '' ? 0 : $(inputs[7]).val(),
+        bco: $(inputs[8]).val(),
+        cheque: $(inputs[9]).val(),
+      })
+    })
+    const data = {
+      idComprobante: $("#id_comprobante").val(),
+      asientos
+    }
+    $.ajax({
+      type: "POST",
+      url: "./services/insertar_asientos.php",
+      data: data,
+      dataType: "JSON",
+      success: function (response) {
+        console.log(response)
+        if(!response.ok){
+          show_toast(
+            'OCURRIO UN ERROR',
+            'Ocurrio un error al insertar asientos',
+            "text-bg-warning"
+          );
+        }
+      },
+      error: function (response) {
+        console.log(response,'---Error INSERT')
+      }
+    })
+  }
+  console.log('//////// insert ')
+}
+
+const addAsiento = () => {
+  posicion++;
+  const id = posicion;
+  rows.push(id);
+  rowsInsert.push(id);
+  $("#asientos").append(
+  `<tr id="row-${id}">
+    <input type="hidden" id="idAsiento-${id}"  value="0">
+    <td>
+      <div class="form-outline">
+        <input type="text" name="codigo[]" id="codigo-${id}" class="form-control" autocomplete="off" value="" ondblclick="listarCuentas_e(this)">
+      </div>
+      <input type="hidden" name="cuenta[]" id="id-cuenta-${id}" value="">
+    </td>
+    <td>
+      <span id="sp-${id}"></span>
+    </td>
+    <td>
+      <div class="form-outline">
+        <input type="text" id="referencia-${id}" name="referencia[]" class="form-control" value="">
+      </div>
+    </td>
+    <td>
+      <div class="form-outline">
+        <input type="decimal" id="debe-${id}" name="debe[]" class="form-control" value="">
+      </div>
+    </td>
+    <td>
+      <div class="form-outline">
+        <input type="decimal" id="haber-${id}" name="haber[]" class="form-control" value="">
+      </div>
+    </td>
+    <td>
+      <div class="form-outline">
+        <input type="decimal" id="debe-${id}-s" name="debeDolar[]" class="form-control" value="">
+      </div>
+    </td>
+    <td >
+      <div class="form-outline">
+        <input type="decimal" id="haber-${id}-s" name="haberDolar[]" class="form-control" value="">
+      </div>
+    </td>
+    <td>
+      <div class="form-outline">
+        <input type="text" id="banco-${id}" name="banco[]" class="form-control" value="">
+      </div>
+    </td>
+    <td>
+      <div class="form-outline">
+        <input type="text" id="cheque-${id}" name="cheque[]" class="form-control" value="">
+      </div>
+    </td>
+    <td>
+      <button type="button" class="btn btn-danger btn-circle" onclick="eliminarAsiento(${id})"><i class="bi bi-x"></i></button>
+    </td>
+  </tr>`
+  );
+}
+
+$(document).on('focusout', 'input[name="codigo[]"]', (e) => {
+  const codigo = e.currentTarget.value;
+  if(codigo != ''){
+    const id = e.currentTarget.id.split('-')[1];
+    var datos = { 
+      codigo: codigo,
+      movimiento: 1
+    };
+    peticionObtenerCodigo(id, datos, 'OBTENER CUENTA CODIGO');
+  }
+})
+
+
+
+
+
+const getRows = () => {
+  return rows;
+}
+const getRowsEliminar = () => {
+  return rowsEliminar;
+}
+const getRowsInsert = () => {
+  return rowsInsert;
 }

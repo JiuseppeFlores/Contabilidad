@@ -37,7 +37,7 @@
         $nroRecibo = $row['nroRecibo'];
         $glosa = $row['glosa'];
         $filePdf = $row['filepdf'];
-        $asientos[] = ["idAsiento"=>$row['idAsiento'],"codigo"=>$row['codigo'], "referencia"=>$row['referencia'],"descripcion"=>$row['descripcion'], "debe"=>$row['debe'], "haber"=>$row['haber'], "idCuenta"=>$row['idCuenta'], "bco"=>$row['bco'], "cheque"=>$row['cheque']];
+        $asientos[] = ["idAsiento"=>$row['idAsiento'],"codigo"=>$row['codigo'], "referencia"=>$row['referencia'],"descripcion"=>$row['descripcion'], "debe"=>$row['debe'], "haber"=>$row['haber'], "idCuenta"=>$row['idCuenta'], "bco"=>$row['bco'], "cheque"=>$row['cheque'], "debeDolar"=>$row['debeDolar'], "haberDolar"=>$row['haberDolar']];
       }
       
     }else{
@@ -60,22 +60,8 @@
       <link href="../css/select2.min.css" rel="stylesheet" />
       <script src="../js/jquery.min.js"></script>
       <link rel="stylesheet" href="../css/bootstrap-table.min.css">
+      <link rel="stylesheet" href="../css/ajustes.css">
       <script src="../js/bootstrap-table.min.js"></script>
-      <style>
-        .btn-circle {
-          width: 30px;
-          height: 30px;
-          padding: 6px 0px;
-          border-radius: 15px;
-          text-align: center;
-          font-size: 12px;
-          line-height: 1.42857;
-        }
-        .btn-circle i{
-          line-height: 1rem;
-          font-size: 19px;
-        }
-      </style>
     </head>
     <body>
         <?php
@@ -177,13 +163,13 @@
                           <input type="hidden" id="namePDF" value="<?php echo $filePdf != null && $filePdf != 'no' ? $filePdf : 'x';  ?>">
                         </div>
                         <div class="col-md-4">
-                          <button class="btn btn-primary" onclick="addAsiento()"><i class="bi bi-plus me-2"></i>Adicionar Asiento</button>
+                          <button role="button" type="button" style="float:right;" class="btn btn-primary" onclick="addAsiento()"><i class="bi bi-plus me-2"></i>Adicionar Asiento</button>
                         </div>
                       </div>
                       <div class="row mt-2">
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="overflow-y: scroll; height: 330px;">
                           <table class="table table-hover table-bordered align-middle">
-                            <thead>
+                            <thead class="sticky-top">
                               <tr class="table-info text-center">
                                 <th scope="col">CÓDIGO</th>
                                 <th scope="col">CUENTA</th>
@@ -203,11 +189,11 @@
                             foreach($asientos as $asiento){
                               $cantidad++;
                             ?>
-                              <tr>
+                              <tr id="row-<?php echo $cantidad?>">
                                 <input type="hidden" id="idAsiento-<?php echo $cantidad?>"  value="<?php echo $asiento['idAsiento']; ?>">
                                 <td>
                                   <div class="form-outline">
-                                    <input type="text" id="codigo-<?php echo $cantidad?>" class="form-control"  autocomplete="off" style="cursor:pointer;" value="<?php echo $asiento['codigo']; ?>" onclick="listarCuentas_e(this)">
+                                    <input type="text" id="codigo-<?php echo $cantidad?>" class="form-control" name="codigo[]" autocomplete="off" value="<?php echo $asiento['codigo']; ?>" ondblclick="listarCuentas_e(this)">
                                   </div>
                                   <input type="hidden" name="cuenta[]" id="id-cuenta-<?php echo $cantidad?>" value="<?php echo $asiento['idCuenta']; ?>">
                                 </td>
@@ -229,8 +215,16 @@
                                     <input type="decimal" id="haber-<?php echo $cantidad?>" name="haber[]" class="form-control" value="<?php echo $asiento['haber']; ?>">
                                   </div>
                                 </td>
-                                <td id="debe-<?php echo $cantidad?>-s">0</td>
-                                <td id="haber-<?php echo $cantidad?>-s">0</td>
+                                <td>
+                                  <div class="form-outline">
+                                    <input type="decimal" id="debe-<?php echo $cantidad?>-s" name="debeDolar[]" class="form-control" value="<?php echo $asiento['debeDolar']; ?>">
+                                  </div>
+                                </td>
+                                <td >
+                                  <div class="form-outline">
+                                    <input type="decimal" id="haber-<?php echo $cantidad?>-s" name="haberDolar[]" class="form-control" value="<?php echo $asiento['haberDolar']; ?>">
+                                  </div>
+                                </td>
                                 <td>
                                   <div class="form-outline">
                                     <input type="text" id="banco-<?php echo $cantidad?>" name="banco[]" class="form-control" value="<?php echo $asiento['bco']; ?>">
@@ -242,20 +236,21 @@
                                   </div>
                                 </td>
                                 <td>
-                                  <button type="button" class="btn btn-danger btn-circle" onclick="eliminarAsiento(<?php echo $cantidad?>)"><i class="bi bi-x-circle"></i></button>
+                                  <button type="button" class="btn btn-danger btn-circle" onclick="eliminarAsiento(<?php echo $cantidad?>)"><i class="bi bi-x"></i></button>
                                 </td>
                               </tr>
                             <?php
+
                             }?>
                             <input type="hidden" id="cantidad" value="<?php echo $cantidad; ?>">
                             </tbody>
-                            <tfoot>
+                            <tfoot class="sticky-bottom bg-light">
                                 <tr>
                                     <th scope="col" colspan="3" style="text-align:center;">TOTALES: </th>
                                     <th class="text-center" scope="col" id="total_debe"></th>
                                     <th class="text-center" scope="col" id="total_haber"></th>
-                                    <th scope="col" id="total_debe_s"></th>
-                                    <th scope="col" id="total_haber_s"></th>
+                                    <th class="text-center" scope="col" id="total_debe_s"></th>
+                                    <th class="text-center" scope="col" id="total_haber_s"></th>
                                     <th scope="col" colspan="3"></th>
                                 </tr>
                             </tfoot>

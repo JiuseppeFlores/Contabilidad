@@ -108,13 +108,13 @@
                                     <tbody id="asientos">
 
                                     </tbody>
-                                    <tfoot>
+                                    <tfoot class="sticky-bottom bg-light">
                                         <tr>
-                                            <th scope="col" colspan="3"></th>
+                                            <th scope="col" colspan="3" style="text-align:center;">TOTALES: </th>
                                             <th class="text-center" scope="col" id="total_debe"></th>
                                             <th class="text-center" scope="col" id="total_haber"></th>
-                                            <th scope="col" id="total_debe_dolar"></th>
-                                            <th scope="col" id="total_haber_dolar"></th>
+                                            <th class="text-center" scope="col" id="total_debe_dolar"></th>
+                                            <th class="text-center" scope="col" id="total_haber_dolar"></th>
                                             <th scope="col" colspan="3"></th>
                                         </tr>
                                     </tfoot>

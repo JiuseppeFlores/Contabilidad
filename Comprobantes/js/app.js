@@ -348,12 +348,11 @@ function operateFormatter(value, row, index) {
     return [""].join("");
   } else {
     let url = window.location.origin + '/Contabilidad/Reportes/comprobantePdf.php?idComprobante='+row.idComprobante;
-    console.log(url);
     return [
       '<div style="text-align: center;display: flex;flex-direction: row;justify-content: space-evenly;">',
-      '<a href="./edit.php?id=' + row.idComprobante +'" title="EDITAR" class="btn btn-primary"><i style="font-size:17px;" class="bi bi-pen"></i></a>',
-      '<button data-bs-toggle="modal" data-bs-target="#modal_anular_comprobante" data-id="' + row.idComprobante +'" title="ANULAR" class="btn btn-danger"><i style="font-size:17px;" class="bi bi-x-octagon"></i></button>',
-      '<a href="'+url+'" target="_blank" title="IMPRIMIR" class="btn btn-dark"><i class="bi bi-printer" style="font-size:17px;"></i></a>',
+      '<a href="./edit.php?id=' + row.idComprobante +'" title="EDITAR" class="btn btn-primary btn-sm"><i style="font-size:17px;" class="bi bi-pen"></i></a>',
+      '<button data-bs-toggle="modal" data-bs-target="#modal_anular_comprobante" data-id="' + row.idComprobante +'" title="ANULAR" class="btn btn-danger btn-sm"><i style="font-size:17px;" class="bi bi-x-octagon"></i></button>',
+      '<a href="'+url+'" target="_blank" title="IMPRIMIR" class="btn btn-dark btn-sm"><i class="bi bi-printer" style="font-size:17px;"></i></a>',
       '</div>'
     ].join("");
   }
