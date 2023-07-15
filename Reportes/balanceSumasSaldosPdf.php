@@ -30,6 +30,17 @@ while ($row = sqlsrv_fetch_array($query)) {
     $listaRegistros[] = $row;
 }
 
+$datosEmpresa = obtenerDatosEmpresa();
+$nombreEmpresa = $datosEmpresa['nombre'];
+$direccion = $datosEmpresa['direccion'];
+$nit = $datosEmpresa['nit'];
+
+define("fechaInicialFormato", $fechaInicialFormato);
+define("fechaFinalFormato", $fechaFinalFormato);
+define('nombreEmpresa', $nombreEmpresa);
+define('direccion', $direccion);
+define('nit', $nit);
+
 class MYPDF extends TCPDF
 {
     public function Header()
@@ -38,21 +49,39 @@ class MYPDF extends TCPDF
         if ($_COOKIE['conta_subdomain'] == 'sabor_andino') {
             $image_file = '../Images/logo_sabor_andino.jpg';
             $this->Image($image_file, 163, 5, 35, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-        } else if ($_COOKIE['conta_subdomain'] == 'sindan'){
+        } else if ($_COOKIE['conta_subdomain'] == 'sindan') {
             $image_file = '../Images/logo_sindan.png';
             $this->Image($image_file, 163, 5, 35, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         }
         $this->SetFont('helvetica', '', 9);
         // $this->MultiCell(50, 10, "NIT   181252025\nGESTION    2023", 0, 'L', 0, 1, '170', '8', true);
         $this->MultiCell(23, 10, "EMPRESA\nDIRECCION\nNIT\nN° DE PAG.", 0, 'L', 0, 1, '20', '8', true);
-        $this->MultiCell(100, 10, $datosEmpresa['nombre']."\n".$datosEmpresa['direccion']."\n".$datosEmpresa['nit']."\n" . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '43', '8', true);
+        $this->MultiCell(100, 10, nombreEmpresa . "\n" . direccion . "\n" . nit . "\n" . $this->getAliasNumPage() . "/" . $this->getAliasNbPages() . "", 0, 'L', 0, 1, '43', '8', true);
+
+        // Agregar contenido al documento
+        $this->SetFont('helvetica', '', 14);
+        $tabla = '';
+        $tabla .= '
+        <table border="0" cellpaddind="2">
+        <tr align="center">
+        <td colspan="3"><b>BALANCE DE SUMAS Y SALDOS</b></td>
+        </tr>
+        <tr align="center" style="font-size: 10px;">
+        <td colspan="3">Experesado en Bs.</td>
+        </tr>
+        <tr align="center" style="font-size: 11px;">
+        <td colspan="3">Desde ' . fechaInicialFormato . '    Hasta ' . fechaFinalFormato . '</td>
+        </tr>
+        </table>
+        ';
+        $this->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);
     }
     public function Footer()
     {
     }
 }
 $carta = array(215.9, 279.4);
-$pdf = new MYPDF('P', 'mm', $cata, true, 'UTF-8', false);
+$pdf = new MYPDF('P', 'mm', $carta, true, 'UTF-8', false);
 // Configurar las propiedades del documento
 $pdf->SetCreator('STIS');
 $pdf->SetAuthor('STIS');
@@ -62,30 +91,12 @@ $pdf->SetSubject('BALANCE DE SUMAS Y SALDOS');
 // Establecer las dimensiones y la orientación del papel
 $pdf->setPrintHeader(true);
 $pdf->setPrintFooter(true);
-$pdf->SetMargins(20, 25, 10, true);
+$pdf->SetMargins(20, 45, 10, true);
 $pdf->SetAutoPageBreak(true, 10);
 
 // Agregar una página
 $pdf->AddPage();
 
-// Agregar contenido al documento
-$pdf->SetFont('helvetica', '', 14);
-// $pdf->Cell(0, 10, '¡Hola, TCPDF!', 0, 1, 'C');
-$tabla = '';
-$tabla .= '
-<table border="0" cellpaddind="2">
-<tr align="center">
-<td colspan="3"><b>BALANCE DE SUMAS Y SALDOS</b></td>
-</tr>
-<tr align="center" style="font-size: 10px;">
-<td colspan="3">Experesado en Bs.</td>
-</tr>
-<tr align="center" style="font-size: 11px;">
-<td colspan="3">Desde ' . $fechaInicialFormato . '    Hasta ' . $fechaFinalFormato . '</td>
-</tr>
-</table>
-';
-$pdf->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);
 $pdf->SetFont('helvetica', '', 9);
 $tabla = '
 <table border="1" cellpadding="2">
@@ -127,12 +138,29 @@ if (count($listaRegistros) > 0) {
 
         $tabla .= '
         <tr align="center">
-        <td colspan="2" align="left">' . $value['codigo'] . '</td>
-        <td colspan="6" align="left">' . $value['descripcion'] . '</td>
-        <td colspan="2" align="rigth">' . number_format($value['debe'], 2) . '</td>
-        <td colspan="2" align="rigth">' . number_format($value['haber'], 2) . '</td>
-        <td colspan="2" align="rigth">' . number_format($deudor, 2) . '</td>
-        <td colspan="2" align="rigth">' . number_format((-1) * $acreedor, 2) . '</td>
+        <td colspan="2" align="left" style="border-left: 0.7px solid black;">' . $value['codigo'] . '</td>
+        <td colspan="6" align="left" style="border-left: 0.7px solid black;">' . $value['descripcion'] . '</td>';
+        if ($value['debe'] == 0) {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;"> - </td>';
+        } else {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;">' . number_format($value['debe'], 2) . '</td>';
+        }
+        if ($value['haber'] == 0) {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;"> - </td>';
+        } else {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;">' . number_format($value['haber'], 2) . '</td>';
+        }
+        if ($deudor == 0) {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;"> - </td>';
+        } else {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;">' . number_format($deudor, 2) . '</td>';
+        }
+        if ($acreedor == 0) {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;"> - </td>';
+        } else {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;">' . number_format((-1) * $acreedor, 2) . '</td>';
+        }
+        $tabla .= '        
         </tr>
         ';
     }

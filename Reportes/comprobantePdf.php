@@ -108,13 +108,13 @@ class MYPDF extends TCPDF
         <tr align="left" style="font-size: 10px;">
         <td colspan="4">POR CONCEPTO DE:&nbsp;&nbsp;' . glosa . '</td>
         </tr>';
-                // $tabla .= '
-                // <tr align="left" style="font-size: 10px;">
-                // <td colspan="1">Efectivo:&nbsp;&nbsp;' . $moneda . '</td>
-                // <td colspan="1">Cheque:&nbsp;&nbsp;</td>
-                // <td colspan="2">Bancos:&nbsp;&nbsp;</td>
-                // </tr>';
-                $tabla .= '
+        // $tabla .= '
+        // <tr align="left" style="font-size: 10px;">
+        // <td colspan="1">Efectivo:&nbsp;&nbsp;' . $moneda . '</td>
+        // <td colspan="1">Cheque:&nbsp;&nbsp;</td>
+        // <td colspan="2">Bancos:&nbsp;&nbsp;</td>
+        // </tr>';
+        $tabla .= '
         </table>
         ';
         $this->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);
@@ -124,7 +124,7 @@ class MYPDF extends TCPDF
     }
 }
 $carta = array(215.9, 279.4);
-$pdf = new MYPDF('P', 'mm', $cata, true, 'UTF-8', false);
+$pdf = new MYPDF('P', 'mm', $carta, true, 'UTF-8', false);
 $nombreComprobante = $tipo != '' ? 'DE ' . $tipo : '';
 // Configurar las propiedades del documento
 $pdf->SetCreator('STIS');
@@ -217,12 +217,29 @@ if (count($listaComprobantes) > 0) {
         $totalHaberUs = $totalHaberUs + $haberUs;
         $tabla .= '
         <tr>
-        <td colspan="2">' . $value['codigo'] . '</td>
-        <td colspan="6"><u>' . $value['descripcion'] . '</u><br> ' . $value['referencia'] . '</td>
-        <td colspan="2" align="rigth">' . number_format($value['totalDebe'], 2) . '</td>
-        <td colspan="2" align="rigth">' . number_format($value['totalHaber'], 2) . '</td>
-        <td colspan="2" align="rigth">' . number_format($debeUs, 2) . '</td>
-        <td colspan="2" align="rigth">' . number_format($haberUs, 2) . '</td>
+        <td colspan="2" style="border-left: 0.7px solid black;">' . $value['codigo'] . '</td>
+        <td colspan="6" style="border-left: 0.7px solid black;"><u>' . $value['descripcion'] . '</u><br> ' . $value['referencia'] . '</td>';
+        if ($value['totalDebe'] == 0) {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;"> - </td>';
+        } else {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;">' . number_format($value['totalDebe'], 2) . '</td>';
+        }
+        if ($value['totalHaber'] == 0) {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;"> - </td>';
+        } else {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;">' . number_format($value['totalHaber'], 2) . '</td>';
+        }
+        if ($debeUs == 0) {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;"> - </td>';
+        } else {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;">' . number_format($debeUs, 2) . '</td>';
+        }
+        if ($haberUs == 0) {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;"> - </td>';
+        } else {
+            $tabla .= '<td colspan="2" align="rigth" style="border-left: 0.7px solid black;">' . number_format($haberUs, 2) . '</td>';
+        }
+        $tabla .= '
         </tr>';
     }
     $tabla .= '
